@@ -1,5 +1,6 @@
-##Welcome to CineMan
-####A Cinema Management System
+## Welcome to CineMan
+
+#### A Cinema Management System
 
 CineMan was created as a part of classes in Java Backend Developer Academy by Bottega
 
