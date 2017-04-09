@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-public class Calendar {
+public class Calendar implements Validatable {
 
 	private LocalDateTime fromDate;
 	private LocalDateTime untilDate;
@@ -45,6 +45,18 @@ public class Calendar {
 
 	public void setTimes(Set<LocalTime> times) {
 		this.times = times;
+	}
+
+	@Override
+	public void validate(ValidationErrors errors) {
+		if (fromDate == null)
+			errors.add("fromDate", "cannot be blank");
+		if (untilDate == null)
+			errors.add("untilDate", "cannot be blank");
+		if (daysOfWeek == null || daysOfWeek.isEmpty())
+			errors.add("daysOfWeek", "cannot be empty");
+		if (times == null || times.isEmpty())
+			errors.add("times", "cannot be empty");
 	}
 
 }
