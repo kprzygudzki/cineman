@@ -23,6 +23,7 @@ public class JPAMovieCatalog implements MovieCatalog {
 		List<Movie> movies = query.getResultList();
 		for (Movie movie : movies) {
 			MovieDto dto = new MovieDto();
+			dto.setId(movie.getId());
 			dto.setTitle(movie.getTitle());
 			dto.setDescription(movie.getDescription());
 			dto.setActors(movie.getActors());
@@ -33,4 +34,5 @@ public class JPAMovieCatalog implements MovieCatalog {
 		}
 		return movieDtos;
 	}
+
 }
