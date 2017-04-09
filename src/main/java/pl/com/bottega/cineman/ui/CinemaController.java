@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/cinemas")
 public class CinemaController {
 
+	@Autowired
     private AdminPanel adminPanel;
 
     @PutMapping
