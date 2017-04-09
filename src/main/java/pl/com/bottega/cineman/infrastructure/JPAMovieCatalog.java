@@ -2,6 +2,7 @@ package pl.com.bottega.cineman.infrastructure;
 
 import pl.com.bottega.cineman.application.MovieCatalog;
 import pl.com.bottega.cineman.application.MovieDto;
+import pl.com.bottega.cineman.application.MovieDtoBuilder;
 import pl.com.bottega.cineman.model.Movie;
 
 
@@ -22,15 +23,10 @@ public class JPAMovieCatalog implements MovieCatalog {
 		Query query = entityManager.createQuery("FROM Movie");
 		List<Movie> movies = query.getResultList();
 		for (Movie movie : movies) {
-			MovieDto dto = new MovieDto();
-			dto.setId(movie.getId());
-			dto.setTitle(movie.getTitle());
-			dto.setDescription(movie.getDescription());
-			dto.setActors(movie.getActors());
-			dto.setGenres(movie.getGenres());
-			dto.setMinAge(movie.getMinAge());
-			dto.setLength(movie.getLength());
-			movieDtos.add(dto);
+			MovieDtoBuilder builder = new MovieDtoBuilder();
+			movie.export(builder);
+			MovieDto movieDto = builder.build();
+			movieDtos.add(movieDto);
 		}
 		return movieDtos;
 	}
