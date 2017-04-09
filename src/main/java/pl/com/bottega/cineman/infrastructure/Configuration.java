@@ -3,6 +3,7 @@ package pl.com.bottega.cineman.infrastructure;
 import org.springframework.context.annotation.Bean;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
+import pl.com.bottega.cineman.application.MovieCatalog;
 import pl.com.bottega.cineman.application.impl.StandardAdminPanel;
 import pl.com.bottega.cineman.model.CinemaRepository;
 import pl.com.bottega.cineman.model.MovieRepository;
@@ -16,13 +17,18 @@ public class Configuration {
 	}
 
 	@Bean
+	public MovieRepository movieRepository() {
+		return new JPAMovieRepository();
+	}
+
+	@Bean
 	public CinemaCatalog cinemaCatalog() {
 		return new JPACinemaCatalog();
 	}
 
 	@Bean
-	public MovieRepository movieRepository() {
-		return new JPAMovieRepository();
+	public MovieCatalog movieCatalog() {
+		return new JPAMovieCatalog();
 	}
 
 	@Bean
