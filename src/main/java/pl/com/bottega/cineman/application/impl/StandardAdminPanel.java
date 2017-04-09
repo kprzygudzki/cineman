@@ -42,7 +42,7 @@ public class StandardAdminPanel implements AdminPanel {
 		if (!errors.isValid())
 			throw new InvalidCommandException(errors);
 		Cinema cinema = cinemaRepository.get(command.getCinemaId());
-		Movie movie = movieRepository.get(command.getCinemaId());
+		Movie movie = movieRepository.get(command.getMovieId());
 		ShowingFactory showingFactory = new ShowingFactory();
 		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		for (Showing showing : showings)
