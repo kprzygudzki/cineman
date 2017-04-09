@@ -3,7 +3,6 @@ package pl.com.bottega.cineman.model.commands;
 public class CreateCinemaCommand {
 
 	private String name;
-
 	private String city;
 
 	public CreateCinemaCommand() {

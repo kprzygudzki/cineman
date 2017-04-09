@@ -1,5 +1,7 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
