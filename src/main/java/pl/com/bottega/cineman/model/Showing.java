@@ -12,13 +12,11 @@ public class Showing {
 
 	@ManyToOne
 	private Cinema cinema;
-
 	@ManyToOne
 	private Movie movie;
-
 	private LocalDateTime beginsAt;
 
-	public Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
+	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
 		this.movie = movie;
 		this.beginsAt = beginsAt;

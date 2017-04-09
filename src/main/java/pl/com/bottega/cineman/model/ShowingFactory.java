@@ -16,12 +16,13 @@ public class ShowingFactory {
 	}
 
 	public List<Showing> createShowings(CreateShowingsCommand command, Cinema cinema, Movie movie) {
+		List<Showing> showings = new LinkedList<>();
+
 		if (command.getDates() == null && command.getCalendar() != null)
-			return createShowingsForCalendar(command, cinema, movie);
+			showings = createShowingsForCalendar(command, cinema, movie);
 		else if (command.getCalendar() == null && command.getDates() != null)
-			return createShowingsForDates(command, cinema, movie);
-		else
-			return null;
+			showings = createShowingsForDates(command, cinema, movie);
+		return showings;
 	}
 
 	private List<Showing> createShowingsForDates(CreateShowingsCommand command, Cinema cinema, Movie movie) {
