@@ -23,6 +23,11 @@ public class Configuration {
 	}
 
 	@Bean
+	public ShowingRepository showingRepository() {
+		return new JPAShowingRepository();
+	}
+
+	@Bean
 	public CinemaCatalog cinemaCatalog() {
 		return new JPACinemaCatalog();
 	}
@@ -36,11 +41,6 @@ public class Configuration {
 	public AdminPanel adminPanel(
 			CinemaRepository cinemaRepository, MovieRepository movieRepository, ShowingRepository showingRepository) {
 		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository);
-	}
-
-	@Bean
-	public ShowingRepository showingRepository() {
-		return new JPAShowingRepository();
 	}
 
 }

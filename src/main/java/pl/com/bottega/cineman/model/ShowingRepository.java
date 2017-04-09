@@ -6,6 +6,4 @@ public interface ShowingRepository {
 
 	void put(Showing showing);
 
-	void putAll(List<Showing> showings);
-
 }

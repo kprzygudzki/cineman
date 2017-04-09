@@ -17,10 +17,4 @@ public class JPAShowingRepository implements ShowingRepository {
 		entityManager.persist(showing);
 	}
 
-	@Override
-	public void putAll(List<Showing> showings) {
-		for (Showing showing : showings)
-			entityManager.persist(showing);
-	}
-
 }
