@@ -7,11 +7,12 @@ import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
 import java.util.List;
 
+
 public class CinemaController {
 
     private AdminPanel adminPanel;
 
-    void create (CreateCinemaCommand cmd) {
+    void create(CreateCinemaCommand cmd) {
 
     }
 
