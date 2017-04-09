@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("/cinemas")
 public class CinemaController {
 
-    @Autowired
     private AdminPanel adminPanel;
 
     @PutMapping
