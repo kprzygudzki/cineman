@@ -1,6 +1,8 @@
 package pl.com.bottega.cineman.model;
 
 import org.junit.Test;
+import pl.com.bottega.cineman.application.CinemaDto;
+import pl.com.bottega.cineman.application.CinemaDtoBuilder;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,29 +16,37 @@ public class CinemaTest {
 	public void shouldRememberName() {
 		//given
 		name = "Felicity";
+		CreateCinemaCommand command = prepareCreateCinemaCommand();
 		//when
-		Cinema cinema = createCinema();
+		Cinema cinema = new Cinema(command);
+		CinemaDto cinemaDto = buildCinemaDto(cinema);
 		//then
-		assertThat(cinema.getName()).isEqualTo(name);
+		assertThat(cinemaDto.getName()).isEqualTo(name);
 	}
 
 	@Test
 	public void shouldRememberCity() {
 		//given
 		city = "Lublin";
-		name = "Felicity";
+		CreateCinemaCommand command = prepareCreateCinemaCommand();
 		//when
-		Cinema cinema = createCinema();
+		Cinema cinema = new Cinema(command);
+		CinemaDto cinemaDto = buildCinemaDto(cinema);
 		//then
-		assertThat(cinema.getName()).isEqualTo(name);
-		assertThat(cinema.getCity()).isEqualTo(city);
+		assertThat(cinemaDto.getCity()).isEqualTo(city);
 	}
 
-	private Cinema createCinema() {
+	private CreateCinemaCommand prepareCreateCinemaCommand() {
 		CreateCinemaCommand command = new CreateCinemaCommand();
-		command.setName(name);
 		command.setCity(city);
-		return new Cinema(command);
+		command.setName(name);
+		return command;
+	}
+
+	private CinemaDto buildCinemaDto(Cinema cinema) {
+		CinemaDtoBuilder builder = new CinemaDtoBuilder();
+		cinema.export(builder);
+		return builder.build();
 	}
 
 }
