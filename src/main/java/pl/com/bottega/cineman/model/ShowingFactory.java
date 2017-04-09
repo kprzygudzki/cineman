@@ -12,41 +12,28 @@ import java.util.Set;
 
 public class ShowingFactory {
 
-	private CinemaRepository cinemaRepository;
-	private MovieRepository movieRepository;
-
-	public ShowingFactory(CinemaRepository cinemaRepository, MovieRepository movieRepository) {
-		this.cinemaRepository = cinemaRepository;
-		this.movieRepository = movieRepository;
+	public ShowingFactory() {
 	}
 
-	public List<Showing> createShowings(CreateShowingsCommand command) {
+	public List<Showing> createShowings(CreateShowingsCommand command, Cinema cinema, Movie movie) {
 		if (command.getDates() == null && command.getCalendar() != null)
-			return createShowingsForCalendar(command);
+			return createShowingsForCalendar(command, cinema, movie);
 		else if (command.getCalendar() == null && command.getDates() != null)
-			return createShowingsForDates(command);
+			return createShowingsForDates(command, cinema, movie);
 		else
 			return null;
 	}
 
-	private List<Showing> createShowingsForDates(CreateShowingsCommand command) {
+	private List<Showing> createShowingsForDates(CreateShowingsCommand command, Cinema cinema, Movie movie) {
 		List<Showing> result = new LinkedList<>();
-		Long cinemaId = command.getCinemaId();
-		Cinema cinema = cinemaRepository.get(cinemaId);
-		Long movieId = command.getMovieId();
-		Movie movie = movieRepository.get(movieId);
 		List<LocalDateTime> dateTimes = command.getDates();
 		for (LocalDateTime dateTime : dateTimes)
 			result.add(new Showing(cinema, movie, dateTime));
 		return result;
 	}
 
-	private List<Showing> createShowingsForCalendar(CreateShowingsCommand command) {
+	private List<Showing> createShowingsForCalendar(CreateShowingsCommand command, Cinema cinema, Movie movie) {
 		List<Showing> result = new LinkedList<>();
-		Long cinemaId = command.getCinemaId();
-		Cinema cinema = cinemaRepository.get(cinemaId);
-		Long movieId = command.getMovieId();
-		Movie movie = movieRepository.get(movieId);
 		Calendar calendar = command.getCalendar();
 
 		LocalDateTime fromDateTime = calendar.getFromDate();

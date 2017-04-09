@@ -18,29 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@SpringBootTest
 public class ShowingFactoryTest {
 
-	private CinemaRepository cinemaRepository = new CinemaRepository() {
-		@Override
-		public void put(Cinema cinema) {
-		}
-
-		@Override
-		public Cinema get(Long id) throws CinemaNotFoundException {
-//			if (id.equals(1L))
-			return cinema;
-		}
-	};
-	private MovieRepository movieRepository = new MovieRepository() {
-		@Override
-		public void put(Movie movie) {
-		}
-
-		@Override
-		public Movie get(Long id) {
-//			if (id.equals(2L))
-			return movie;
-		}
-	};
-	private ShowingFactory showingFactory = new ShowingFactory(cinemaRepository, movieRepository);
+	private ShowingFactory showingFactory = new ShowingFactory();
 
 	private Cinema cinema = new Cinema();
 	private Movie movie = new Movie();
@@ -57,7 +35,7 @@ public class ShowingFactoryTest {
 		localDateTimes.add(localDateTime);
 		CreateShowingsCommand command = prepareCreateShowingsCommandWithDate();
 		//when
-		List<Showing> showings = showingFactory.createShowings(command);
+		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		//then
 		assertThat(showings.size()).isEqualTo(1);
 		assertThat(showings.get(0).getCinema()).isEqualTo(cinema);
@@ -72,7 +50,7 @@ public class ShowingFactoryTest {
 		CreateShowingsCommand command = prepareCreateShowingsCommandWithDate();
 		command.setDates(localDateTimes);
 		//when
-		List<Showing> showings = showingFactory.createShowings(command);
+		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		//then
 		assertThat(showings.size()).isEqualTo(2);
 	}
@@ -83,7 +61,7 @@ public class ShowingFactoryTest {
 		LocalDateTime untilDate = LocalDateTime.of(2017, 4, 14, 20, 0);
 		CreateShowingsCommand command = prepareCreateShowingsCommandWithCalendar(fromDate, untilDate);
 		//when
-		List<Showing> showings = showingFactory.createShowings(command);
+		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		//then
 		assertThat(showings.size()).isEqualTo(6);
 	}
@@ -94,7 +72,7 @@ public class ShowingFactoryTest {
 		LocalDateTime untilDate = LocalDateTime.of(2017, 4, 14, 8, 0);
 		CreateShowingsCommand command = prepareCreateShowingsCommandWithCalendar(fromDate, untilDate);
 		//when
-		List<Showing> showings = showingFactory.createShowings(command);
+		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		//then
 		assertThat(showings.size()).isEqualTo(2);
 	}
