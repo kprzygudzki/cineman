@@ -2,10 +2,7 @@ package pl.com.bottega.cineman.model;
 
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -17,7 +14,9 @@ public class Movie {
 
 	private String title;
 	private String description;
+	@ElementCollection
 	private Set<String> actors;
+	@ElementCollection
 	private Set<String> genres;
 	private Integer minAge;
 	private Integer length;
