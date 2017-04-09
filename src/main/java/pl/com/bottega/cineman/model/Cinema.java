@@ -48,4 +48,5 @@ public class Cinema {
 	public String getCity() {
 		return city;
 	}
+
 }
