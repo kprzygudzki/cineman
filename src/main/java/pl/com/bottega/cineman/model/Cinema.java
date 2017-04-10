@@ -37,15 +37,14 @@ public class Cinema {
 		this.city = city;
 	}
 
+	public void export(CinemaExporter exporter) {
+		exporter.addId(id);
+		exporter.addName(name);
+		exporter.addCity(city);
+	}
+
 	public Long getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getCity() {
-		return city;
-	}
 }

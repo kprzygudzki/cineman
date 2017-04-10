@@ -2,6 +2,7 @@ package pl.com.bottega.cineman.infrastructure;
 
 import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.CinemaDto;
+import pl.com.bottega.cineman.application.CinemaDtoBuilder;
 import pl.com.bottega.cineman.model.Cinema;
 
 import javax.persistence.EntityManager;
@@ -21,11 +22,10 @@ public class JPACinemaCatalog implements CinemaCatalog {
 		Query query = entityManager.createQuery("FROM Cinema");
 		List<Cinema> cinemas = query.getResultList();
 		for (Cinema cinema : cinemas) {
-			CinemaDto dto = new CinemaDto();
-			dto.setCity(cinema.getCity());
-			dto.setName(cinema.getName());
-			dto.setId(cinema.getId());
-			cinemaDtos.add(dto);
+			CinemaDtoBuilder builder = new CinemaDtoBuilder();
+			cinema.export(builder);
+			CinemaDto cinemaDto = builder.build();
+			cinemaDtos.add(cinemaDto);
 		}
 		return cinemaDtos;
 	}

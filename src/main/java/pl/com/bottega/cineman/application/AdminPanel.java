@@ -6,10 +6,10 @@ import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
 public interface AdminPanel {
 
-    void createCinema(CreateCinemaCommand cmd);
+    void createCinema(CreateCinemaCommand command);
 
-    void createMovie(CreateMovieCommand cmd);
+    void createMovie(CreateMovieCommand command);
 
-    void createShowings(CreateShowingsCommand cmd);
+    void createShowings(CreateShowingsCommand command);
 
 }
