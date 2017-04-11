@@ -1,20 +1,15 @@
 package pl.com.bottega.cineman.model;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.com.bottega.cineman.model.commands.Calendar;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
-import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class ShowingFactoryTest {
 
@@ -129,11 +124,11 @@ public class ShowingFactoryTest {
 		daysOfWeek.add(DayOfWeek.MONDAY);
 		daysOfWeek.add(DayOfWeek.WEDNESDAY);
 		daysOfWeek.add(DayOfWeek.FRIDAY);
-		calendar.setDaysOfWeek(daysOfWeek);
+		calendar.setWeekDays(daysOfWeek);
 		Set<LocalTime> times = new HashSet<>();
 		times.add(LocalTime.of(14, 35));
 		times.add(LocalTime.of(17, 50));
-		calendar.setTimes(times);
+		calendar.setHours(times);
 		command.setCalendar(calendar);
 		return command;
 	}

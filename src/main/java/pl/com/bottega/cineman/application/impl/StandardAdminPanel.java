@@ -37,10 +37,10 @@ public class StandardAdminPanel implements AdminPanel {
 
 	@Override
 	public void createShowings(CreateShowingsCommand command) {
-		ValidationErrors errors = new ValidationErrors();
-		command.validate(errors);
-		if (!errors.isValid())
-			throw new InvalidCommandException(errors);
+//		ValidationErrors errors = new ValidationErrors();
+//		command.validate(errors);
+//		if (!errors.isValid())
+//			throw new InvalidCommandException(errors);
 		Cinema cinema = cinemaRepository.get(command.getCinemaId());
 		Movie movie = movieRepository.get(command.getMovieId());
 		ShowingFactory showingFactory = new ShowingFactory();

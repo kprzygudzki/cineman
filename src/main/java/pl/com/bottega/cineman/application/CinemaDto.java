@@ -2,9 +2,9 @@ package pl.com.bottega.cineman.application;
 
 public class CinemaDto {
 
+	private Long id;
 	private String name;
 	private String city;
-	private Long id;
 
 	public String getName() {
 		return name;

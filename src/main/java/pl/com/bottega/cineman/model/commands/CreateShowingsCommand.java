@@ -1,5 +1,7 @@
 package pl.com.bottega.cineman.model.commands;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class CreateShowingsCommand implements Validatable {
 
 	private Long cinemaId;
 	private Long movieId;
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
