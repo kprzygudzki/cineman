@@ -1,18 +1,13 @@
 package pl.com.bottega.cineman.model.commands;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Calendar implements Validatable {
 
-	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime fromDate;
-	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime untilDate;
 	private Set<DayOfWeek> weekDays;
 	private Set<LocalTime> hours;

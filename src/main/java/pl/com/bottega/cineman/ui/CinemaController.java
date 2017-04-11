@@ -1,7 +1,5 @@
 package pl.com.bottega.cineman.ui;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
@@ -9,8 +7,6 @@ import pl.com.bottega.cineman.application.CinemaDto;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -36,8 +32,9 @@ public class CinemaController {
 	}
 
 	@PutMapping("/{cinemaId}/shows")
-	void createShowings(@PathVariable Long cinemaId, @RequestBody CreateShowingsCommand command) {
-		command.setCinemaId(cinemaId);
+	void createShowings(@PathVariable Long cinemaId, @RequestBody CreateShowingsCommandDto commandDto) {
+		commandDto.setCinemaId(cinemaId);
+		CreateShowingsCommand command = commandDto.getCreateShowingsCommand();
 		adminPanel.createShowings(command);
 	}
 
