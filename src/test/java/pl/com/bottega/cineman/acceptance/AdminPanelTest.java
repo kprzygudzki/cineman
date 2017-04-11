@@ -12,6 +12,7 @@ import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.MovieCatalog;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
+import pl.com.bottega.cineman.model.commands.DuplicateRecordException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,18 +35,18 @@ public class AdminPanelTest {
 
 	@Test
 	public void shouldCreateCinema() {
-		CreateCinemaCommand cmd = new CreateCinemaCommand();
-		cmd.setName("Felicity");
-		cmd.setCity("Lublin");
+		CreateCinemaCommand command = new CreateCinemaCommand();
+		command.setName("Felicity");
+		command.setCity("Lublin");
 
-		adminPanel.createCinema(cmd);
+		adminPanel.createCinema(command);
 
 		assertThat(cinemaCatalog.getCinemas().size()).isEqualTo(1);
 	}
 
 	@Test
 	public void shouldCreateMovie() {
-		CreateMovieCommand cmd = new CreateMovieCommand();
+		CreateMovieCommand command = new CreateMovieCommand();
 		Set<String> actors = new HashSet<>();
 		actors.add("John Travolta");
 		actors.add("Samuel L. Jackson");
@@ -53,15 +54,25 @@ public class AdminPanelTest {
 		Set<String> genres = new HashSet<>();
 		genres.add("Crime");
 		genres.add("Drama");
-		cmd.setTitle("Pulp Fiction");
-		cmd.setDescription("You have to see this");
-		cmd.setActors(actors);
-		cmd.setGenres(genres);
-		cmd.setMinAge(16);
-		cmd.setLength(120);
+		command.setTitle("Pulp Fiction");
+		command.setDescription("You have to see this");
+		command.setActors(actors);
+		command.setGenres(genres);
+		command.setMinAge(16);
+		command.setLength(120);
 
-		adminPanel.createMovie(cmd);
+		adminPanel.createMovie(command);
 		assertThat(movieCatalog.getMovies().size()).isEqualTo(1);
+	}
+
+	@Test(expected = DuplicateRecordException.class)
+	public void shouldNotAddTwoSameCinemas() {
+		CreateCinemaCommand command = new CreateCinemaCommand();
+		command.setName("Felicity");
+		command.setCity("Lublin");
+
+		adminPanel.createCinema(command);
+		adminPanel.createCinema(command);
 	}
 
 }
