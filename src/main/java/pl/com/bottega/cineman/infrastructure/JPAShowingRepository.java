@@ -10,7 +10,7 @@ import java.util.List;
 public class JPAShowingRepository implements ShowingRepository {
 
 	@PersistenceContext
-	EntityManager entityManager;
+	private EntityManager entityManager;
 
 	@Override
 	public void put(Showing showing) {

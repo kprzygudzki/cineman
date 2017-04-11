@@ -1,16 +1,21 @@
 package pl.com.bottega.cineman.model.commands;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Calendar implements Validatable {
 
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime fromDate;
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime untilDate;
-	private Set<DayOfWeek> daysOfWeek;
-	private Set<LocalTime> times;
+	private Set<DayOfWeek> weekDays;
+	private Set<LocalTime> hours;
 
 	public Calendar() {
 	}
@@ -31,20 +36,20 @@ public class Calendar implements Validatable {
 		this.untilDate = untilDate;
 	}
 
-	public Set<DayOfWeek> getDaysOfWeek() {
-		return daysOfWeek;
+	public Set<DayOfWeek> getWeekDays() {
+		return weekDays;
 	}
 
-	public void setDaysOfWeek(Set<DayOfWeek> daysOfWeek) {
-		this.daysOfWeek = daysOfWeek;
+	public void setWeekDays(Set<DayOfWeek> weekDays) {
+		this.weekDays = weekDays;
 	}
 
-	public Set<LocalTime> getTimes() {
-		return times;
+	public Set<LocalTime> getHours() {
+		return hours;
 	}
 
-	public void setTimes(Set<LocalTime> times) {
-		this.times = times;
+	public void setHours(Set<LocalTime> hours) {
+		this.hours = hours;
 	}
 
 	@Override
@@ -53,9 +58,9 @@ public class Calendar implements Validatable {
 			errors.add("fromDate", "cannot be blank");
 		if (untilDate == null)
 			errors.add("untilDate", "cannot be blank");
-		if (daysOfWeek == null || daysOfWeek.isEmpty())
-			errors.add("daysOfWeek", "cannot be empty");
-		if (times == null || times.isEmpty())
+		if (weekDays == null || weekDays.isEmpty())
+			errors.add("weekDays", "cannot be empty");
+		if (hours == null || hours.isEmpty())
 			errors.add("times", "cannot be empty");
 	}
 

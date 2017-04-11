@@ -4,7 +4,6 @@ import pl.com.bottega.cineman.model.commands.Calendar;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
 import java.time.*;
-import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -39,8 +38,8 @@ public class ShowingFactory {
 
 		LocalDateTime fromDateTime = calendar.getFromDate();
 		LocalDateTime untilDateTime = calendar.getUntilDate();
-		Set<DayOfWeek> daysOfWeek = calendar.getDaysOfWeek();
-		Set<LocalTime> times = calendar.getTimes();
+		Set<DayOfWeek> daysOfWeek = calendar.getWeekDays();
+		Set<LocalTime> times = calendar.getHours();
 
 		LocalDate fromDate = fromDateTime.toLocalDate();
 		LocalDate untilDate = untilDateTime.toLocalDate();
