@@ -12,8 +12,11 @@ import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 @RequestMapping("/movies")
 public class MovieController {
 
-    @Autowired
     private AdminPanel adminPanel;
+
+	public MovieController(AdminPanel adminPanel) {
+		this.adminPanel = adminPanel;
+	}
 
     @PutMapping
     void create(@RequestBody CreateMovieCommand cmd) {

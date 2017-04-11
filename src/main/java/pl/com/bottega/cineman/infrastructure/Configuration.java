@@ -38,9 +38,11 @@ public class Configuration {
 	}
 
 	@Bean
-	public AdminPanel adminPanel(CinemaRepository cinemaRepository, MovieRepository movieRepository,
-								 ShowingRepository showingRepository) {
-		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository);
+	public AdminPanel adminPanel(CinemaRepository cinemaRepository,
+								 MovieRepository movieRepository,
+								 ShowingRepository showingRepository,
+								 CinemaCatalog cinemaCatalog) {
+		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository, cinemaCatalog);
 	}
 
 }
