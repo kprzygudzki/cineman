@@ -15,8 +15,12 @@ public class Movie {
 	private String title;
 	private String description;
 	@ElementCollection
+	@CollectionTable(name = "actors")
+	@Column(name = "actor")
 	private Set<String> actors;
 	@ElementCollection
+	@CollectionTable(name = "genres")
+	@Column(name = "genre")
 	private Set<String> genres;
 	private Integer minAge;
 	private Integer length;
