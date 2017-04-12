@@ -35,9 +35,7 @@ public class AdminPanelTest {
 
 	@Test
 	public void shouldCreateCinema() {
-		CreateCinemaCommand command = new CreateCinemaCommand();
-		command.setName("Felicity");
-		command.setCity("Lublin");
+		CreateCinemaCommand command = prepareCreateCinemaCommand();
 
 		adminPanel.createCinema(command);
 
@@ -46,14 +44,48 @@ public class AdminPanelTest {
 
 	@Test
 	public void shouldCreateMovie() {
+		CreateMovieCommand command = prepareCreateMovieCommand();
+
+		adminPanel.createMovie(command);
+
+		assertThat(movieCatalog.getMovies().size()).isEqualTo(1);
+	}
+
+	@Test(expected = DuplicateRecordException.class)
+	public void shouldNotAddTwoSameCinemas() {
+		CreateCinemaCommand command = prepareCreateCinemaCommand();
+
+		adminPanel.createCinema(command);
+		adminPanel.createCinema(command);
+	}
+
+	@Test(expected = DuplicateRecordException.class)
+	public void shouldNotAddTwoSameMovies() {
+		CreateMovieCommand command = prepareCreateMovieCommand();
+
+		adminPanel.createMovie(command);
+		adminPanel.createMovie(command);
+	}
+
+	private CreateCinemaCommand prepareCreateCinemaCommand() {
+		CreateCinemaCommand command = new CreateCinemaCommand();
+		command.setName("Felicity");
+		command.setCity("Lublin");
+		return command;
+	}
+
+	private CreateMovieCommand prepareCreateMovieCommand() {
 		CreateMovieCommand command = new CreateMovieCommand();
+
 		Set<String> actors = new HashSet<>();
 		actors.add("John Travolta");
 		actors.add("Samuel L. Jackson");
 		actors.add("Uma Thurman");
+
 		Set<String> genres = new HashSet<>();
 		genres.add("Crime");
 		genres.add("Drama");
+
 		command.setTitle("Pulp Fiction");
 		command.setDescription("You have to see this");
 		command.setActors(actors);
@@ -61,18 +93,7 @@ public class AdminPanelTest {
 		command.setMinAge(16);
 		command.setLength(120);
 
-		adminPanel.createMovie(command);
-		assertThat(movieCatalog.getMovies().size()).isEqualTo(1);
-	}
-
-	@Test(expected = DuplicateRecordException.class)
-	public void shouldNotAddTwoSameCinemas() {
-		CreateCinemaCommand command = new CreateCinemaCommand();
-		command.setName("Felicity");
-		command.setCity("Lublin");
-
-		adminPanel.createCinema(command);
-		adminPanel.createCinema(command);
+		return command;
 	}
 
 }

@@ -41,8 +41,9 @@ public class Configuration {
 	public AdminPanel adminPanel(CinemaRepository cinemaRepository,
 								 MovieRepository movieRepository,
 								 ShowingRepository showingRepository,
-								 CinemaCatalog cinemaCatalog) {
-		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository, cinemaCatalog);
+								 CinemaCatalog cinemaCatalog,
+								 MovieCatalog movieCatalog) {
+		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository, cinemaCatalog, movieCatalog);
 	}
 
 }
