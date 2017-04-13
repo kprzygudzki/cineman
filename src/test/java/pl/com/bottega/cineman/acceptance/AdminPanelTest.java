@@ -58,8 +58,8 @@ public class AdminPanelTest {
 		adminPanel.createCinema(command);
 	}
 
-	@Test(expected = DuplicateRecordException.class)
-	public void shouldNotAddTwoSameMovies() {
+	@Test
+	public void shouldAddTwoSameMovies() {
 		CreateMovieCommand command = prepareCreateMovieCommand();
 
 		adminPanel.createMovie(command);

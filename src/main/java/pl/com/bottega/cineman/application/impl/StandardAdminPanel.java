@@ -59,23 +59,8 @@ public class StandardAdminPanel implements AdminPanel {
 		if (!errors.isValid())
 			throw new InvalidCommandException(errors);
 
-		checkDuplicatedMovies(command);
-
 		Movie movie = new Movie(command);
 		movieRepository.put(movie);
-	}
-
-	private void checkDuplicatedMovies(CreateMovieCommand command) {
-		List<MovieDto> movieDtos = movieCatalog.getMovies();
-		for (MovieDto movieDto : movieDtos) {
-			if (movieDto.getTitle().equals(command.getTitle())
-					&& movieDto.getDescription().equals(command.getDescription())
-					&& movieDto.getActors().equals(command.getActors())
-					&& movieDto.getGenres().equals(command.getGenres())
-					&& movieDto.getMinAge().equals(command.getMinAge())
-					&& movieDto.getLength().equals(command.getLength()))
-				throw new DuplicateRecordException();
-		}
 	}
 
 	@Override
