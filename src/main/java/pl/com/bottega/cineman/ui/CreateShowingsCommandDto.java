@@ -17,26 +17,20 @@ public class CreateShowingsCommandDto {
 	private Long movieId;
 	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
 	private List<LocalDateTime> dates;
-	private CalendarDto calendar = new CalendarDto();
+	private CalendarDto calendar;
 
 	public CreateShowingsCommandDto() {
 	}
 
-	public CreateShowingsCommand getCreateShowingsCommand() {
+	CreateShowingsCommand getCreateShowingsCommand() {
 		CreateShowingsCommand command = new CreateShowingsCommand();
 		command.setCinemaId(cinemaId);
 		command.setMovieId(movieId);
 		command.setDates(dates);
-
-		Calendar calendar = new Calendar();
-		calendar.setFromDate(this.calendar.fromDate);
-		calendar.setUntilDate(this.calendar.untilDate);
-		Set<DayOfWeek> daysOfWeek = new HashSet<>();
-		for (String s : this.calendar.weekDays)
-			daysOfWeek.add(DayOfWeek.valueOf(s.toUpperCase()));
-		calendar.setWeekDays(daysOfWeek);
-		calendar.setHours(this.calendar.hours);
-		command.setCalendar(calendar);
+		if (this.calendar != null) {
+			Calendar calendar = this.calendar.getCalendar();
+			command.setCalendar(calendar);
+		}
 		return command;
 	}
 
@@ -64,6 +58,20 @@ public class CreateShowingsCommandDto {
 		private LocalDateTime untilDate;
 		private Set<String> weekDays;
 		private Set<LocalTime> hours;
+
+		Calendar getCalendar() {
+			Calendar calendar = new Calendar();
+			calendar.setFromDate(this.fromDate);
+			calendar.setUntilDate(this.untilDate);
+			if (weekDays != null) {
+				Set<DayOfWeek> daysOfWeek = new HashSet<>();
+				for (String s : this.weekDays)
+					daysOfWeek.add(DayOfWeek.valueOf(s.toUpperCase()));
+				calendar.setWeekDays(daysOfWeek);
+			}
+			calendar.setHours(this.hours);
+			return calendar;
+		}
 
 		public void setFromDate(LocalDateTime fromDate) {
 			this.fromDate = fromDate;

@@ -50,13 +50,13 @@ public class Calendar implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (fromDate == null)
-			errors.add("fromDate", "cannot be blank");
+			errors.add("fromDate", "is a required field and cannot be blank");
 		if (untilDate == null)
-			errors.add("untilDate", "cannot be blank");
+			errors.add("untilDate", "is a required field and cannot be blank");
 		if (weekDays == null || weekDays.isEmpty())
-			errors.add("weekDays", "cannot be empty");
+			errors.add("weekDays", "is a required field and cannot be blank");
 		if (hours == null || hours.isEmpty())
-			errors.add("times", "cannot be empty");
+			errors.add("times", "is a required field and cannot be blank");
 	}
 
 }

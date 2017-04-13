@@ -7,7 +7,7 @@ import pl.com.bottega.cineman.model.commands.*;
 
 import java.util.List;
 
-import static pl.com.bottega.cineman.model.commands.Validatable.*;
+import static pl.com.bottega.cineman.model.commands.Validatable.ValidationErrors;
 
 @Transactional
 public class StandardAdminPanel implements AdminPanel {
@@ -80,10 +80,10 @@ public class StandardAdminPanel implements AdminPanel {
 
 	@Override
 	public void createShowings(CreateShowingsCommand command) {
-//		ValidationErrors errors = new ValidationErrors();
-//		command.validate(errors);
-//		if (!errors.isValid())
-//			throw new InvalidCommandException(errors);
+		ValidationErrors errors = new ValidationErrors();
+		command.validate(errors);
+		if (!errors.isValid())
+			throw new InvalidCommandException(errors);
 		Cinema cinema = cinemaRepository.get(command.getCinemaId());
 		Movie movie = movieRepository.get(command.getMovieId());
 		ShowingFactory showingFactory = new ShowingFactory();

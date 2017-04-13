@@ -45,17 +45,20 @@ public class CreateShowingsCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (cinemaId == null)
-			errors.add("cinemaId", "cannot be blank");
+			errors.add("cinemaId", "is a required field and cannot be blank");
 		if (movieId == null)
-			errors.add("movieId", "cannot be blank");
-		if ((dates == null || dates.isEmpty()) && calendar ==  null) {
-			errors.add("calendar", "both calendar and dates cannot be blank");
-			errors.add("dates", "both calendar and dates cannot be blank");
-		}
-		if (calendar == null)
-			errors.add("calendar", "cannot be blank");
-		else
+			errors.add("movieId", "is a required field and cannot be blank");
+		if (dates == null && calendar == null) {
+			errors.add("calendar", "either of calendar or dates is required; cannot both be blank");
+			errors.add("dates", "either of calendar or dates is required; cannot both be blank");
+		} else if (calendar != null && dates != null) {
+			errors.add("calendar", "cannot provide both calendar and dates");
+			errors.add("dates", "cannot provide both calendar and dates");
+		} else if (dates != null && dates.isEmpty()) {
+			errors.add("dates", "is a required field and cannot be blank");
+		} else if (calendar != null) {
 			calendar.validate(errors);
+		}
 	}
 
 }
