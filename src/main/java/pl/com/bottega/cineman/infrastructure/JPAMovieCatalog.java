@@ -5,10 +5,10 @@ import pl.com.bottega.cineman.application.MovieDto;
 import pl.com.bottega.cineman.application.MovieDtoBuilder;
 import pl.com.bottega.cineman.model.Movie;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +19,17 @@ public class JPAMovieCatalog implements MovieCatalog {
 
 	@Override
 	public List<MovieDto> getMovies() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Movie> criteria = builder.createQuery(Movie.class);
+		criteria.from(Movie.class);
+		List<Movie> movieList = entityManager.createQuery(criteria).getResultList();
+		return createMovieDtos(movieList);
+	}
+
+	private List<MovieDto> createMovieDtos(List<Movie> movies) {
 		List<MovieDto> movieDtos = new ArrayList<>();
-		Query query = entityManager.createQuery("FROM Movie");
-		List<Movie> movies = query.getResultList();
+		MovieDtoBuilder builder = new MovieDtoBuilder();
 		for (Movie movie : movies) {
-			MovieDtoBuilder builder = new MovieDtoBuilder();
 			movie.export(builder);
 			MovieDto movieDto = builder.build();
 			movieDtos.add(movieDto);
