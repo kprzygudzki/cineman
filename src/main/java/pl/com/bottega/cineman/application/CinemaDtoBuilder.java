@@ -22,7 +22,9 @@ public class CinemaDtoBuilder implements CinemaExporter {
 	}
 
 	public CinemaDto build() {
-		return cinemaDto;
+		CinemaDto result = cinemaDto;
+		cinemaDto = new CinemaDto();
+		return result;
 	}
 
 }
