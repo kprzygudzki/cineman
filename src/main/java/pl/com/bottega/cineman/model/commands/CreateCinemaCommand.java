@@ -26,10 +26,10 @@ public class CreateCinemaCommand implements Validatable {
 
 	@Override
 	public void validate(ValidationErrors errors) {
-		if (name == null)
-			errors.add("name", "cannot be blank");
-		if (city == null)
-			errors.add("city", "cannot be blank");
+		if (name == null || name.isEmpty())
+			errors.add("name", "is a required field and cannot be blank");
+		if (city == null || city.isEmpty())
+			errors.add("city", "is a required field and cannot be blank");
 	}
 
 }
