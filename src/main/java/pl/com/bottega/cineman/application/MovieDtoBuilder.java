@@ -44,7 +44,9 @@ public class MovieDtoBuilder implements MovieExporter {
 	}
 
 	public MovieDto build() {
-		return movieDto;
+		MovieDto result = movieDto;
+		movieDto = new MovieDto();
+		return result;
 	}
 
 }
