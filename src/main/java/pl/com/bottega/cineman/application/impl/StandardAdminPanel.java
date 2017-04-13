@@ -62,7 +62,7 @@ public class StandardAdminPanel implements AdminPanel {
 
 	private void ensureNotADuplicate(CreateCinemaCommand command) {
 		if (cinemaRepository.existsWithCityAndName(command.getCity(), command.getName()))
-			throw new DuplicateRecordException();
+			throw new DuplicateCinemaException();
 	}
 
 }

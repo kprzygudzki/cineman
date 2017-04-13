@@ -5,6 +5,8 @@ public class CreateCinemaCommand implements Validatable {
 	private String name;
 	private String city;
 
+	private static final String REQUIED_FIELD = "is a required field and cannot be blank";
+
 	public CreateCinemaCommand() {
 	}
 
@@ -27,9 +29,9 @@ public class CreateCinemaCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (name == null || name.isEmpty())
-			errors.add("name", "is a required field and cannot be blank");
+			errors.add("name", REQUIED_FIELD);
 		if (city == null || city.isEmpty())
-			errors.add("city", "is a required field and cannot be blank");
+			errors.add("city", REQUIED_FIELD);
 	}
 
 }

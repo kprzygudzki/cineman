@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.com.bottega.cineman.model.commands.DuplicateRecordException;
+import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 import pl.com.bottega.cineman.model.commands.InvalidCommandException;
 import pl.com.bottega.cineman.model.commands.Validatable;
 
@@ -23,12 +23,12 @@ public class ErrorHandlers {
 		);
 	}
 
-	@ExceptionHandler(DuplicateRecordException.class)
+	@ExceptionHandler(DuplicateCinemaException.class)
 	public ResponseEntity<String> handleDuplicateRecordException() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, "application/json");
 		return new ResponseEntity<String>(
-				"{\"error\": \"Such record already exists\"}",
+				"{\"error\": \"Cinema with that city and name already exists\"}",
 				headers,
 				HttpStatus.UNPROCESSABLE_ENTITY
 		);

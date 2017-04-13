@@ -11,7 +11,7 @@ import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.MovieCatalog;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
-import pl.com.bottega.cineman.model.commands.DuplicateRecordException;
+import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +50,7 @@ public class AdminPanelTest {
 		assertThat(movieCatalog.getMovies().size()).isEqualTo(1);
 	}
 
-	@Test(expected = DuplicateRecordException.class)
+	@Test(expected = DuplicateCinemaException.class)
 	public void shouldNotAddTwoSameCinemas() {
 		CreateCinemaCommand command = prepareCreateCinemaCommand();
 
