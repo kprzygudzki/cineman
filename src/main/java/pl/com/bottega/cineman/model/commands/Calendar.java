@@ -55,8 +55,12 @@ public class Calendar implements Validatable {
 			errors.add("untilDate", "is a required field and cannot be blank");
 		if (weekDays == null || weekDays.isEmpty())
 			errors.add("weekDays", "is a required field and cannot be blank");
+		if (weekDays.contains(null))
+			errors.add("weekDays", "cannot contain a null value");
 		if (hours == null || hours.isEmpty())
 			errors.add("times", "is a required field and cannot be blank");
+		if (hours.contains(null))
+			errors.add("times", "cannot contain a null value");
 	}
 
 }
