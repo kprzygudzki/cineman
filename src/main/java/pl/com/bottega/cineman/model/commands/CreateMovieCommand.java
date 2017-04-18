@@ -11,7 +11,8 @@ public class CreateMovieCommand implements Validatable {
 	private Integer minAge;
 	private Integer length;
 
-	private static final String REQUIED_FIELD = "is a required field and cannot be blank";
+	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
+	private static final String REQUIRED_NOT_NULL_ELEMENT = "cannot contain a null element";
 
 	public CreateMovieCommand() {
 	}
@@ -67,17 +68,21 @@ public class CreateMovieCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (title == null || title.isEmpty())
-			errors.add("title", REQUIED_FIELD);
+			errors.add("title", REQUIRED_FIELD);
 		if (description == null || description.isEmpty())
-			errors.add("description", REQUIED_FIELD);
+			errors.add("description", REQUIRED_FIELD);
 		if (actors == null || actors.isEmpty())
-			errors.add("actors", REQUIED_FIELD);
+			errors.add("actors", REQUIRED_FIELD);
+		if (actors.contains(null))
+			errors.add("actors", REQUIRED_NOT_NULL_ELEMENT);
 		if (genres == null || genres.isEmpty())
-			errors.add("genres", REQUIED_FIELD);
+			errors.add("genres", REQUIRED_FIELD);
+		if (genres.contains(null))
+			errors.add("genres", REQUIRED_NOT_NULL_ELEMENT);
 		if (minAge == null)
-			errors.add("minAge", REQUIED_FIELD);
+			errors.add("minAge", REQUIRED_FIELD);
 		if (length == null)
-			errors.add("length", REQUIED_FIELD);
+			errors.add("length", REQUIRED_FIELD);
 	}
 
 }
