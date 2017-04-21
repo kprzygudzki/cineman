@@ -16,7 +16,7 @@ public class ErrorHandlers {
 	public ResponseEntity<Validatable.ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, "application/json");
-		return new ResponseEntity<Validatable.ValidationErrors>(
+		return new ResponseEntity<>(
 				ex.getErrors(),
 				headers,
 				HttpStatus.UNPROCESSABLE_ENTITY
@@ -27,7 +27,7 @@ public class ErrorHandlers {
 	public ResponseEntity<String> handleDuplicateRecordException() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, "application/json");
-		return new ResponseEntity<String>(
+		return new ResponseEntity<>(
 				"{\"error\": \"Cinema with that city and name already exists\"}",
 				headers,
 				HttpStatus.UNPROCESSABLE_ENTITY

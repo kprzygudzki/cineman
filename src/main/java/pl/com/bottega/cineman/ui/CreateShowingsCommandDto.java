@@ -65,8 +65,10 @@ public class CreateShowingsCommandDto {
 			calendar.setUntilDate(this.untilDate);
 			if (weekDays != null) {
 				Set<DayOfWeek> daysOfWeek = new HashSet<>();
-				for (String s : this.weekDays)
-					daysOfWeek.add(DayOfWeek.valueOf(s.toUpperCase()));
+				for (String s : this.weekDays) {
+					DayOfWeek dayOfWeek = DayOfWeek.valueOf(s.toUpperCase());
+					daysOfWeek.add(dayOfWeek);
+				}
 				calendar.setWeekDays(daysOfWeek);
 			}
 			calendar.setHours(this.hours);
