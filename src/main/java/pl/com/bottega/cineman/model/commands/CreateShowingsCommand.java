@@ -10,6 +10,10 @@ public class CreateShowingsCommand implements Validatable {
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
+	private static final String REQUIED_FIELD = "is a required field and cannot be blank";
+	private static final String REQUIED_MIN_ONE_FIELD = "either of calendar or dates is required; cannot both be blank";
+	private static final String REQUIED_EXACTLY_ONE_FIELD = "cannot provide both calendar and dates";
+
 	public Long getCinemaId() {
 		return cinemaId;
 	}
@@ -45,17 +49,17 @@ public class CreateShowingsCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (cinemaId == null)
-			errors.add("cinemaId", "is a required field and cannot be blank");
+			errors.add("cinemaId", REQUIED_FIELD);
 		if (movieId == null)
-			errors.add("movieId", "is a required field and cannot be blank");
+			errors.add("movieId", REQUIED_FIELD);
 		if (dates == null && calendar == null) {
-			errors.add("calendar", "either of calendar or dates is required; cannot both be blank");
-			errors.add("dates", "either of calendar or dates is required; cannot both be blank");
+			errors.add("calendar", REQUIED_MIN_ONE_FIELD);
+			errors.add("dates", REQUIED_MIN_ONE_FIELD);
 		} else if (calendar != null && dates != null) {
-			errors.add("calendar", "cannot provide both calendar and dates");
-			errors.add("dates", "cannot provide both calendar and dates");
+			errors.add("calendar", REQUIED_EXACTLY_ONE_FIELD);
+			errors.add("dates", REQUIED_EXACTLY_ONE_FIELD);
 		} else if (dates != null && dates.isEmpty()) {
-			errors.add("dates", "is a required field and cannot be blank");
+			errors.add("dates", REQUIED_FIELD);
 		} else if (calendar != null) {
 			calendar.validate(errors);
 		}
