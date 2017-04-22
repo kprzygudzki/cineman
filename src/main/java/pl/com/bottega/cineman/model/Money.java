@@ -12,7 +12,6 @@ public class Money implements Comparable<Money>, Serializable {
 	private BigDecimal value;
 
 	public Money() {
-
 	}
 
 	public Money(double value) {
@@ -40,23 +39,19 @@ public class Money implements Comparable<Money>, Serializable {
 	}
 
 	public Money multiply(long multiplicand) {
-		BigDecimal newValue = value.multiply(new BigDecimal(multiplicand));
-		return new Money(newValue);
+		return new Money(value.multiply(new BigDecimal(multiplicand)));
 	}
 
-	public Money divide(int divider){
-		BigDecimal newValue = value.divide(new BigDecimal(divider));
-		return new Money(newValue);
+	public Money divide(int divisor){
+		return new Money(value.divide(new BigDecimal(divisor)));
 	}
 
 	public Money add(Money summand) {
-		BigDecimal sum = value.add(summand.value);
-		return new Money(sum);
+		return new Money(value.add(summand.value));
 	}
 
 	public Money subtract(Money subtrahend){
-		BigDecimal sum = this.value.subtract(subtrahend.value);
-		return new Money(sum);
+		return new Money(value.subtract(subtrahend.value));
 	}
 
 	public boolean greaterThan(Money comparator){
@@ -102,6 +97,7 @@ public class Money implements Comparable<Money>, Serializable {
 	@Override
 	public int compareTo(Money compareMoney) {
 		//descending order
-		return compareMoney.getIntValue() - this.getIntValue();
+		return this.value.compareTo(compareMoney.value);
 	}
+
 }
