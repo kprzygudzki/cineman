@@ -1,0 +1,1 @@
+package pl.com.bottega.cineman.model;public class PricingNotFoundException extends RuntimeException {	public PricingNotFoundException(Long id) {		super(String.format("Pricing with id: %s does not exist", id));	}}
