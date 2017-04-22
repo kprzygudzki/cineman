@@ -10,9 +10,10 @@ public class CreateShowingsCommand implements Validatable {
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
-	private static final String REQUIRED_FIELD_MESSAGE = "is a required field and cannot be blank";
-	private static final String MIN_ONE_FIELD_REQUIRED_MESSAGE = "either of calendar or dates is required; cannot both be blank";
-	private static final String EXACTLY_ONE_FIELD_REQUIRED_MESSAGE = "cannot provide both calendar and dates";
+	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
+	private static final String REQUIRED_MIN_ONE_FIELD = "either of calendar or dates is required; cannot both be blank";
+	private static final String REQUIRED_EXACTLY_ONE_FIELD = "cannot provide both calendar and dates";
+	private static final String REQUIRED_NOT_NULL_ELEMENT = "cannot contain a null element";
 
 	public Long getCinemaId() {
 		return cinemaId;
@@ -49,17 +50,17 @@ public class CreateShowingsCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (cinemaId == null)
-			errors.add("cinemaId", REQUIRED_FIELD_MESSAGE);
+			errors.add("cinemaId", REQUIRED_FIELD);
 		if (movieId == null)
-			errors.add("movieId", REQUIRED_FIELD_MESSAGE);
+			errors.add("movieId", REQUIRED_FIELD);
 		if (dates == null && calendar == null) {
-			errors.add("calendar", MIN_ONE_FIELD_REQUIRED_MESSAGE);
-			errors.add("dates", MIN_ONE_FIELD_REQUIRED_MESSAGE);
+			errors.add("calendar", REQUIRED_MIN_ONE_FIELD);
+			errors.add("dates", REQUIRED_MIN_ONE_FIELD);
 		} else if (calendar != null && dates != null) {
-			errors.add("calendar", EXACTLY_ONE_FIELD_REQUIRED_MESSAGE);
-			errors.add("dates", EXACTLY_ONE_FIELD_REQUIRED_MESSAGE);
+			errors.add("calendar", REQUIRED_EXACTLY_ONE_FIELD);
+			errors.add("dates", REQUIRED_EXACTLY_ONE_FIELD);
 		} else if (dates != null && dates.isEmpty()) {
-			errors.add("dates", REQUIRED_FIELD_MESSAGE);
+			errors.add("dates", REQUIRED_FIELD);
 		} else if (calendar != null) {
 			calendar.validate(errors);
 		}

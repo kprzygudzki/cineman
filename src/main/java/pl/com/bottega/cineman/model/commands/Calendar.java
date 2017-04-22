@@ -12,6 +12,9 @@ public class Calendar implements Validatable {
 	private Set<DayOfWeek> weekDays;
 	private Set<LocalTime> hours;
 
+	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
+	private static final String REQUIRED_NON_NULL = "cannot contain a null value";
+
 	public Calendar() {
 	}
 
@@ -50,17 +53,17 @@ public class Calendar implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		if (fromDate == null)
-			errors.add("fromDate", "is a required field and cannot be blank");
+			errors.add("fromDate", REQUIRED_FIELD);
 		if (untilDate == null)
-			errors.add("untilDate", "is a required field and cannot be blank");
+			errors.add("untilDate", REQUIRED_FIELD);
 		if (weekDays == null || weekDays.isEmpty())
-			errors.add("weekDays", "is a required field and cannot be blank");
+			errors.add("weekDays", REQUIRED_FIELD);
 		if (weekDays.contains(null))
-			errors.add("weekDays", "cannot contain a null value");
+			errors.add("weekDays", REQUIRED_NON_NULL);
 		if (hours == null || hours.isEmpty())
-			errors.add("times", "is a required field and cannot be blank");
+			errors.add("times", REQUIRED_FIELD);
 		if (hours.contains(null))
-			errors.add("times", "cannot contain a null value");
+			errors.add("times", REQUIRED_NON_NULL);
 	}
 
 }

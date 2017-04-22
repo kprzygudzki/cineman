@@ -3,6 +3,7 @@ package pl.com.bottega.cineman.model;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
