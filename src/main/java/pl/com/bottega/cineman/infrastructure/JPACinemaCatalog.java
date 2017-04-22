@@ -1,16 +1,17 @@
 package pl.com.bottega.cineman.infrastructure;
 
-import pl.com.bottega.cineman.application.CinemaCatalog;
-import pl.com.bottega.cineman.application.CinemaDto;
-import pl.com.bottega.cineman.application.CinemaDtoBuilder;
+import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.model.Cinema;
+import pl.com.bottega.cineman.model.Movie;
+import pl.com.bottega.cineman.model.Showing;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.*;
 
 public class JPACinemaCatalog implements CinemaCatalog {
 
@@ -35,6 +36,53 @@ public class JPACinemaCatalog implements CinemaCatalog {
 			cinemaDtos.add(cinemaDto);
 		}
 		return cinemaDtos;
+	}
+
+	@Override
+	public List<MovieShowingsDto> getShowings(Long cinemaId, LocalDate date) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Showing> criteria = builder.createQuery(Showing.class);
+		Root<Showing> root = criteria.from(Showing.class);
+		criteria.where(
+				builder.equal(root.get("cinema").get("id"), cinemaId),
+				builder.greaterThanOrEqualTo(root.get("beginsAt"), date.atStartOfDay()),
+				builder.lessThan(root.get("beginsAt"), date.plusDays(1L).atStartOfDay()));
+		List<Showing> showings = entityManager.createQuery(criteria).getResultList();
+		return getMovieShowingsDtos(showings);
+	}
+
+	private List<MovieShowingsDto> getMovieShowingsDtos(List<Showing> showings) {
+		List<MovieShowingsDto> dtos = new LinkedList<>();
+		Map<Movie, List<ShowingDto>> map = new HashMap<>();
+		for (Showing showing : showings) {
+			Movie movie = showing.getMovie();
+			List<ShowingDto> showingDtos = map.getOrDefault(movie, new LinkedList<>());
+			showingDtos.add(getShowingDto(showing));
+			map.put(movie, showingDtos);
+		}
+
+		MovieShowingsDtoBuilder dtoBuilder = new MovieShowingsDtoBuilder();
+		for (Movie movie : map.keySet()) {
+			movie.export(dtoBuilder);
+			MovieShowingsDto dto = dtoBuilder.build();
+
+			List<ShowingDto> showingDtos = map.get(movie);
+			showingDtos.sort(new Comparator<ShowingDto>() {
+				@Override
+				public int compare(ShowingDto dto1, ShowingDto dto2) {
+					return dto1.getTime().compareTo(dto2.getTime());
+				}
+			});
+			dto.setShows(showingDtos);
+			dtos.add(dto);
+		}
+		return dtos;
+	}
+
+	private ShowingDto getShowingDto(Showing showing) {
+		ShowingDtoBuilder builder = new ShowingDtoBuilder();
+		showing.export(builder);
+		return builder.build();
 	}
 
 }

@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CreateShowingsCommandDto {
+public class CreateShowingsRequest {
 
 	private Long cinemaId;
 	private Long movieId;
@@ -21,7 +21,7 @@ public class CreateShowingsCommandDto {
 	private List<LocalDateTime> dates;
 	private CalendarDto calendar;
 
-	public CreateShowingsCommandDto() {
+	public CreateShowingsRequest() {
 	}
 
 	CreateShowingsCommand getCreateShowingsCommand() {

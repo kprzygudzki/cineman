@@ -1,12 +1,15 @@
 package pl.com.bottega.cineman.ui;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.CinemaDto;
+import pl.com.bottega.cineman.application.MovieShowingsDto;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,6 +39,12 @@ public class CinemaController {
 		commandDto.setCinemaId(cinemaId);
 		CreateShowingsCommand command = commandDto.getCreateShowingsCommand();
 		adminPanel.createShowings(command);
+	}
+
+	@GetMapping("/{cinemaId}/movies")
+	List<MovieShowingsDto> getShowings(
+			@PathVariable Long cinemaId, @RequestParam @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate date) {
+		return cinemaCatalog.getShowings(cinemaId, date);
 	}
 
 }
