@@ -57,4 +57,11 @@ public class Showing {
 		this.beginsAt = beginsAt;
 	}
 
+	public void export(ShowingExporter exporter) {
+		exporter.addId(id);
+		exporter.addCinema(cinema);
+		exporter.addMovie(movie);
+		exporter.addBeginsAt(beginsAt);
+	}
+
 }
