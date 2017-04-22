@@ -16,7 +16,6 @@ public class ShowingFactory {
 
 	public List<Showing> createShowings(CreateShowingsCommand command, Cinema cinema, Movie movie) {
 		List<Showing> showings = new LinkedList<>();
-
 		if (command.getDates() == null && command.getCalendar() != null)
 			showings = createShowingsForCalendar(command, cinema, movie);
 		else if (command.getCalendar() == null && command.getDates() != null)

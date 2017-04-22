@@ -9,13 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.MovieCatalog;
-import pl.com.bottega.cineman.application.PriceCatalog;
 
-import pl.com.bottega.cineman.model.Money;
-import pl.com.bottega.cineman.model.Movie;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
-import pl.com.bottega.cineman.model.commands.CreatePriceCommand;
 import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 
 import java.util.HashSet;
@@ -36,9 +32,6 @@ public class AdminPanelTest {
 
 	@Autowired
 	private MovieCatalog movieCatalog;
-
-	@Autowired
-	private PriceCatalog priceCatalog;
 
 	@Test
 	public void shouldCreateCinema() {
@@ -72,18 +65,6 @@ public class AdminPanelTest {
 
 		adminPanel.createMovie(command);
 		adminPanel.createMovie(command);
-	}
-
-	@Test
-	public void shouldCreatePrices() {
-		CreateMovieCommand command = prepareCreateMovieCommand();
-		CreatePriceCommand priceCommand = new CreatePriceCommand();
-		priceCommand.setMovie(new Movie(command));
-		priceCommand.setRegular(new Money(20));
-		priceCommand.setStudent(new Money(17));
-
-		adminPanel.createPrices(priceCommand);
-		assertThat(priceCatalog.getPrices().size()).isEqualTo(1);
 	}
 
 	private CreateCinemaCommand prepareCreateCinemaCommand() {

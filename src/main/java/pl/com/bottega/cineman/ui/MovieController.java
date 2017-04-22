@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.model.MovieRepository;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
-import pl.com.bottega.cineman.model.commands.CreatePriceCommand;
 
 @RestController
 @RequestMapping("/movies")
@@ -22,11 +21,4 @@ public class MovieController {
     void create(@RequestBody CreateMovieCommand cmd) {
         adminPanel.createMovie(cmd);
     }
-
-    @PutMapping("/{movieId}/prices")
-	void createPrices(@PathVariable Long movieId, @RequestBody CreatePriceCommand command) {
-		command.setMovie(movieRepository.get(movieId));
-		adminPanel.createPrices(command);
-	}
-
 }
