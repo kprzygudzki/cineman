@@ -68,10 +68,13 @@ public class CreateShowingsCommandDto {
 
 			if (weekDays != null) {
 				Set<DayOfWeek> daysOfWeek = new HashSet<>();
+				DayOfWeek dayOfWeek;
 				for (String s : this.weekDays) {
 					try {
-						DayOfWeek dayOfWeek = DayOfWeek.valueOf(s.toUpperCase());
-						daysOfWeek.add(dayOfWeek);
+						if (s != null) {
+							dayOfWeek = DayOfWeek.valueOf(s.toUpperCase());
+							daysOfWeek.add(dayOfWeek);
+						}
 					} catch (IllegalArgumentException ex) {
 						Validatable.ValidationErrors errors = new Validatable.ValidationErrors();
 						errors.add("weekDays", String.format("%s is not a valid day of week", s));
