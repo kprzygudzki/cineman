@@ -7,7 +7,10 @@ import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +55,7 @@ public class ShowingFactoryTest {
 		//when
 		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		//then
-		assertThat(showings.get(0).getCinema()).isEqualTo(cinema);
+		assertThat(showings.get(0).getBeginsAt()).isEqualTo(localDateTime);
 	}
 
 	@Test
