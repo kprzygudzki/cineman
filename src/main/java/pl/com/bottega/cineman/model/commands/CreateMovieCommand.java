@@ -12,7 +12,6 @@ public class CreateMovieCommand implements Validatable {
 	private Integer length;
 
 	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
-	private static final String REQUIRED_NOT_NULL_ELEMENT = "cannot contain a null element";
 
 	public CreateMovieCommand() {
 	}
@@ -71,14 +70,20 @@ public class CreateMovieCommand implements Validatable {
 			errors.add("title", REQUIRED_FIELD);
 		if (description == null || description.isEmpty())
 			errors.add("description", REQUIRED_FIELD);
-		if (actors == null || actors.isEmpty())
+		if (actors == null)
 			errors.add("actors", REQUIRED_FIELD);
-		if (actors.contains(null))
-			errors.add("actors", REQUIRED_NOT_NULL_ELEMENT);
-		if (genres == null || genres.isEmpty())
+		else {
+			actors.remove(null);
+			if (actors.isEmpty())
+				errors.add("actors", REQUIRED_FIELD);
+		}
+		if (genres == null)
 			errors.add("genres", REQUIRED_FIELD);
-		if (genres.contains(null))
-			errors.add("genres", REQUIRED_NOT_NULL_ELEMENT);
+		else {
+			genres.remove(null);
+			if (genres.isEmpty())
+				errors.add("genres", REQUIRED_FIELD);
+		}
 		if (minAge == null)
 			errors.add("minAge", REQUIRED_FIELD);
 		if (length == null)

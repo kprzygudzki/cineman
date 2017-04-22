@@ -10,10 +10,9 @@ public class CreateShowingsCommand implements Validatable {
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
-	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
-	private static final String REQUIRED_MIN_ONE_FIELD = "either of calendar or dates is required; cannot both be blank";
-	private static final String REQUIRED_EXACTLY_ONE_FIELD = "cannot provide both calendar and dates";
-	private static final String REQUIRED_NOT_NULL_ELEMENT = "cannot contain a null element";
+	private static final String REQUIRED_FIELD = "is a required field and can't be blank";
+	private static final String MAX_ONE_REQUIRED = "either calendar or dates is required; can't both be blank";
+	private static final String MIN_ONE_REQUIRED = "either calendar or dates is required; can't provide both";
 
 	public Long getCinemaId() {
 		return cinemaId;
@@ -54,14 +53,16 @@ public class CreateShowingsCommand implements Validatable {
 		if (movieId == null)
 			errors.add("movieId", REQUIRED_FIELD);
 		if (dates == null && calendar == null) {
-			errors.add("calendar", REQUIRED_MIN_ONE_FIELD);
-			errors.add("dates", REQUIRED_MIN_ONE_FIELD);
+			errors.add("calendar", MAX_ONE_REQUIRED);
+			errors.add("dates", MAX_ONE_REQUIRED);
 		} else if (calendar != null && dates != null) {
-			errors.add("calendar", REQUIRED_EXACTLY_ONE_FIELD);
-			errors.add("dates", REQUIRED_EXACTLY_ONE_FIELD);
-		} else if (dates != null && dates.isEmpty()) {
-			errors.add("dates", REQUIRED_FIELD);
-		} else if (calendar != null) {
+			errors.add("calendar", MIN_ONE_REQUIRED);
+			errors.add("dates", MIN_ONE_REQUIRED);
+		} else if (dates != null) {
+			dates.remove(null);
+			if (dates.isEmpty())
+				errors.add("dates", REQUIRED_FIELD);
+		} else {
 			calendar.validate(errors);
 		}
 	}
