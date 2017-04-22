@@ -3,6 +3,8 @@ package pl.com.bottega.cineman.ui;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import pl.com.bottega.cineman.model.commands.Calendar;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
+import pl.com.bottega.cineman.model.commands.InvalidCommandException;
+import pl.com.bottega.cineman.model.commands.Validatable;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -63,11 +65,18 @@ public class CreateShowingsCommandDto {
 			Calendar calendar = new Calendar();
 			calendar.setFromDate(this.fromDate);
 			calendar.setUntilDate(this.untilDate);
+
 			if (weekDays != null) {
 				Set<DayOfWeek> daysOfWeek = new HashSet<>();
 				for (String s : this.weekDays) {
-					DayOfWeek dayOfWeek = DayOfWeek.valueOf(s.toUpperCase());
-					daysOfWeek.add(dayOfWeek);
+					try {
+						DayOfWeek dayOfWeek = DayOfWeek.valueOf(s.toUpperCase());
+						daysOfWeek.add(dayOfWeek);
+					} catch (IllegalArgumentException ex) {
+						Validatable.ValidationErrors errors = new Validatable.ValidationErrors();
+						errors.add("weekDays", String.format("%s is not a valid day of week", s));
+						throw new InvalidCommandException(errors);
+					}
 				}
 				calendar.setWeekDays(daysOfWeek);
 			}
