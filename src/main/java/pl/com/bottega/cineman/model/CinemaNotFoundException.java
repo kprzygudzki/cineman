@@ -1,1 +1,0 @@
-package pl.com.bottega.cineman.model;public class CinemaNotFoundException extends RuntimeException {	public CinemaNotFoundException(Long id) {		super(String.format("Cinema with id %s does not exist", id));	}}

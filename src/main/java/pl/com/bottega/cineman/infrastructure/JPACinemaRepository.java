@@ -1,8 +1,8 @@
 package pl.com.bottega.cineman.infrastructure;
 
 import pl.com.bottega.cineman.model.Cinema;
-import pl.com.bottega.cineman.model.CinemaNotFoundException;
 import pl.com.bottega.cineman.model.CinemaRepository;
+import pl.com.bottega.cineman.model.ResourceNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +25,7 @@ public class JPACinemaRepository implements CinemaRepository {
 	public Cinema get(Long id) {
 		Cinema cinema = entityManager.find(Cinema.class, id);
 		if (cinema == null)
-			throw new CinemaNotFoundException(id);
+			throw new ResourceNotFoundException("cinema", id);
 		return cinema;
 	}
 
