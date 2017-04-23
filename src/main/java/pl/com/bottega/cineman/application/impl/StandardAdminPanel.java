@@ -64,11 +64,13 @@ public class StandardAdminPanel implements AdminPanel {
 	}
 
 	@Override
-	public void defineMoviePrices(Long movieId, DefineMoviePricesCommand command) {
+	public void defineMoviePrices(DefineMoviePricesCommand command) {
 		ValidationErrors errors = new ValidationErrors();
 		command.validate(errors);
 		if(!errors.isValid())
 			throw new InvalidCommandException(errors);
+		Movie movie = movieRepository.get(command.getMovieId());
+
 		Pricing pricing = new Pricing(command);
 		pricingRepository.put(pricing);
 	}

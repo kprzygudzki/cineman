@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ public class Money implements Comparable<Money>, Serializable {
 
 	public static final Money ZERO = new Money(BigDecimal.ZERO);
 
+	@Basic
 	private BigDecimal value;
 
 	public Money() {
