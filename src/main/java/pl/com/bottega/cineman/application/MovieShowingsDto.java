@@ -17,7 +17,7 @@ public class MovieShowingsDto {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -25,7 +25,7 @@ public class MovieShowingsDto {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -33,7 +33,7 @@ public class MovieShowingsDto {
 		return actors;
 	}
 
-	public void setActors(Set<String> actors) {
+	void setActors(Set<String> actors) {
 		this.actors = actors;
 	}
 
@@ -41,7 +41,7 @@ public class MovieShowingsDto {
 		return genres;
 	}
 
-	public void setGenres(Set<String> genres) {
+	void setGenres(Set<String> genres) {
 		this.genres = genres;
 	}
 
@@ -49,7 +49,7 @@ public class MovieShowingsDto {
 		return minAge;
 	}
 
-	public void setMinAge(Integer minAge) {
+	void setMinAge(Integer minAge) {
 		this.minAge = minAge;
 	}
 
@@ -57,7 +57,7 @@ public class MovieShowingsDto {
 		return length;
 	}
 
-	public void setLength(Integer length) {
+	void setLength(Integer length) {
 		this.length = length;
 	}
 

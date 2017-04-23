@@ -5,7 +5,6 @@ import pl.com.bottega.cineman.model.ShowingRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 public class JPAShowingRepository implements ShowingRepository {
 

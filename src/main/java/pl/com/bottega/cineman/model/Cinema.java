@@ -22,17 +22,13 @@ public class Cinema {
 		this.city = command.getCity();
 	}
 
-	public Cinema() {
+	Cinema() {
 	}
 
 	public void export(CinemaExporter exporter) {
 		exporter.addId(id);
 		exporter.addName(name);
 		exporter.addCity(city);
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 }

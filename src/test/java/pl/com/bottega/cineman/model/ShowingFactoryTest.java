@@ -119,7 +119,8 @@ public class ShowingFactoryTest {
 		return command;
 	}
 
-	private CreateShowingsCommand prepareCreateShowingsCommandWithCalendar(LocalDateTime fromDate, LocalDateTime untilDate) {
+	private CreateShowingsCommand prepareCreateShowingsCommandWithCalendar(
+			LocalDateTime fromDate, LocalDateTime untilDate) {
 		CreateShowingsCommand command = new CreateShowingsCommand();
 		calendar.setFromDate(fromDate);
 		calendar.setUntilDate(untilDate);

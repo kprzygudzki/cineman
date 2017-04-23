@@ -7,11 +7,12 @@ import pl.com.bottega.cineman.model.commands.DefineMoviePricesCommand;
 
 public interface AdminPanel {
 
-    void createCinema(CreateCinemaCommand command);
+	void createCinema(CreateCinemaCommand command);
 
-    void createMovie(CreateMovieCommand command);
+	void createMovie(CreateMovieCommand command);
 
-    void createShowings(CreateShowingsCommand command);
+	void createShowings(CreateShowingsCommand command);
 
-    void defineMoviePrices(DefineMoviePricesCommand command);
+	void defineMoviePrices(DefineMoviePricesCommand command);
+
 }
