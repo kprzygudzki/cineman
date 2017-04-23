@@ -8,10 +8,10 @@ public class ShowingDto {
 
 	private Long id;
 
-	@JsonFormat(pattern = "hh:mm")
+	@JsonFormat(pattern = "HH:mm")
 	private LocalTime time;
 
-	public ShowingDto() {
+	ShowingDto() {
 	}
 
 	public Long getId() {
