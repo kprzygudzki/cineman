@@ -1,0 +1,1 @@
+package pl.com.bottega.cineman.model;public interface PricingRepository {	void put(Pricing pricing);	Pricing get(Long id);}

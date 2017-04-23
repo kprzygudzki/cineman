@@ -15,14 +15,17 @@ public class StandardAdminPanel implements AdminPanel {
 	private CinemaRepository cinemaRepository;
 	private MovieRepository movieRepository;
 	private ShowingRepository showingRepository;
+	private PricingRepository pricingRepository;
 
 	public StandardAdminPanel(
 			CinemaRepository cinemaRepository,
 			MovieRepository movieRepository,
-			ShowingRepository showingRepository) {
+			ShowingRepository showingRepository,
+			PricingRepository pricingRepository) {
 		this.cinemaRepository = cinemaRepository;
 		this.movieRepository = movieRepository;
 		this.showingRepository = showingRepository;
+		this.pricingRepository = pricingRepository;
 	}
 
 	@Override
@@ -58,6 +61,16 @@ public class StandardAdminPanel implements AdminPanel {
 		List<Showing> showings = showingFactory.createShowings(command, cinema, movie);
 		for (Showing showing : showings)
 			showingRepository.put(showing);
+	}
+
+	@Override
+	public void defineMoviePrices(Long movieId, DefineMoviePricesCommand command) {
+		ValidationErrors errors = new ValidationErrors();
+		command.validate(errors);
+		if(!errors.isValid())
+			throw new InvalidCommandException(errors);
+		Pricing pricing = new Pricing(command);
+		pricingRepository.put(pricing);
 	}
 
 

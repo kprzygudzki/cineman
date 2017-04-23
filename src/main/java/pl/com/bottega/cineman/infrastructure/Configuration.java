@@ -7,6 +7,7 @@ import pl.com.bottega.cineman.application.MovieCatalog;
 import pl.com.bottega.cineman.application.impl.StandardAdminPanel;
 import pl.com.bottega.cineman.model.CinemaRepository;
 import pl.com.bottega.cineman.model.MovieRepository;
+import pl.com.bottega.cineman.model.PricingRepository;
 import pl.com.bottega.cineman.model.ShowingRepository;
 
 @org.springframework.context.annotation.Configuration
@@ -38,10 +39,16 @@ public class Configuration {
 	}
 
 	@Bean
+	public PricingRepository pricingRepository(){
+		return new JPAPricingRepository();
+	}
+
+	@Bean
 	public AdminPanel adminPanel(CinemaRepository cinemaRepository,
 								 MovieRepository movieRepository,
-								 ShowingRepository showingRepository) {
-		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository);
+								 ShowingRepository showingRepository,
+								 PricingRepository pricingRepository) {
+		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository, pricingRepository);
 	}
 
 }
