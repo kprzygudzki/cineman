@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.ui;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
@@ -42,7 +43,7 @@ public class CinemaController {
 
 	@GetMapping("/{cinemaId}/movies")
 	List<MovieShowingsDto> getShowings(
-			@PathVariable Long cinemaId, @RequestParam LocalDate date) {
+			@PathVariable Long cinemaId, @RequestParam @DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate date) {
 		return cinemaCatalog.getShowings(cinemaId, date);
 	}
 
