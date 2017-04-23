@@ -10,11 +10,16 @@ import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.MovieCatalog;
 
+import pl.com.bottega.cineman.model.Pricing;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
+import pl.com.bottega.cineman.model.commands.DefineMoviePricesCommand;
 import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
