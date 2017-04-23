@@ -1,10 +1,9 @@
 package pl.com.bottega.cineman.ui;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.Calendar;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
-import pl.com.bottega.cineman.model.commands.InvalidCommandException;
-import pl.com.bottega.cineman.model.commands.Validatable;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class CreateShowingsRequest {
 		return command;
 	}
 
-	public void setCinemaId(Long cinemaId) {
+	void setCinemaId(Long cinemaId) {
 		this.cinemaId = cinemaId;
 	}
 
@@ -76,9 +75,7 @@ public class CreateShowingsRequest {
 							daysOfWeek.add(dayOfWeek);
 						}
 					} catch (IllegalArgumentException ex) {
-						Validatable.ValidationErrors errors = new Validatable.ValidationErrors();
-						errors.add("weekDays", String.format("%s is not a valid day of week", s));
-						throw new InvalidCommandException(errors);
+						throw new InvalidRequestException(String.format("%s is not a valid day of week", s));
 					}
 				}
 				calendar.setWeekDays(daysOfWeek);

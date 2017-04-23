@@ -3,6 +3,7 @@ package pl.com.bottega.cineman.infrastructure;
 import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.model.Cinema;
 import pl.com.bottega.cineman.model.Movie;
+import pl.com.bottega.cineman.model.ResourceNotFoundException;
 import pl.com.bottega.cineman.model.Showing;
 
 import javax.persistence.EntityManager;
@@ -40,6 +41,10 @@ public class JPACinemaCatalog implements CinemaCatalog {
 
 	@Override
 	public List<MovieShowingsDto> getShowings(Long cinemaId, LocalDate date) {
+		ensureCinemaExists(cinemaId);
+		if (date == null) {
+			throw new InvalidRequestException("date can not be null");
+		}
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Showing> criteria = builder.createQuery(Showing.class);
 		Root<Showing> root = criteria.from(Showing.class);
@@ -49,6 +54,11 @@ public class JPACinemaCatalog implements CinemaCatalog {
 				builder.lessThan(root.get("beginsAt"), date.plusDays(1L).atStartOfDay()));
 		List<Showing> showings = entityManager.createQuery(criteria).getResultList();
 		return getMovieShowingsDtos(showings);
+	}
+
+	private void ensureCinemaExists(Long id) {
+		if (entityManager.find(Cinema.class, id) == null)
+			throw new ResourceNotFoundException("cinema", id);
 	}
 
 	private List<MovieShowingsDto> getMovieShowingsDtos(List<Showing> showings) {
