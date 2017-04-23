@@ -13,7 +13,7 @@ public class Calendar implements Validatable {
 	private Set<LocalTime> hours;
 
 	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
-	private static final String REQUIRED_NON_NULL = "cannot contain a null value";
+	private static final String REQUIRED_FUTURE_DATE = "must be in the future";
 
 	public Calendar() {
 	}
@@ -54,8 +54,12 @@ public class Calendar implements Validatable {
 	public void validate(ValidationErrors errors) {
 		if (fromDate == null)
 			errors.add("fromDate", REQUIRED_FIELD);
+		if (fromDate.isBefore(LocalDateTime.now()))
+			errors.add("fromDate", REQUIRED_FUTURE_DATE);
 		if (untilDate == null)
 			errors.add("untilDate", REQUIRED_FIELD);
+		if (untilDate.isBefore(LocalDateTime.now()))
+			errors.add("untilDate", REQUIRED_FUTURE_DATE);
 		if (weekDays == null)
 			errors.add("weekDays", REQUIRED_FIELD);
 		else {
@@ -63,8 +67,6 @@ public class Calendar implements Validatable {
 			if (weekDays.isEmpty())
 				errors.add("weekDays", REQUIRED_FIELD);
 		}
-		if (weekDays.contains(null))
-			errors.add("weekDays", REQUIRED_NON_NULL);
 		if (hours == null)
 			errors.add("times", REQUIRED_FIELD);
 		else {
@@ -72,8 +74,6 @@ public class Calendar implements Validatable {
 			if (hours.isEmpty())
 				errors.add("times", REQUIRED_FIELD);
 		}
-		if (hours.contains(null))
-			errors.add("times", REQUIRED_NON_NULL);
 	}
 
 }
