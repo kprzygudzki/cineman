@@ -3,7 +3,10 @@ package pl.com.bottega.cineman.model;
 import pl.com.bottega.cineman.model.commands.Calendar;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -42,14 +45,14 @@ public class ShowingFactory {
 
 		LocalDate fromDate = fromDateTime.toLocalDate();
 		LocalDate untilDate = untilDateTime.toLocalDate();
-		LocalDateTime currentDateTime;
+		LocalDateTime processedDateTime;
 
-		for (LocalDate currentDate = fromDate; !currentDate.isAfter(untilDate); currentDate = currentDate.plusDays(1))
-			if (daysOfWeek.contains(currentDate.getDayOfWeek()))
+		for (LocalDate processedDate = fromDate; !processedDate.isAfter(untilDate); processedDate = processedDate.plusDays(1))
+			if (daysOfWeek.contains(processedDate.getDayOfWeek()))
 				for (LocalTime time : times) {
-					currentDateTime = LocalDateTime.of(currentDate, time);
-					if (doesNotExceedBounds(fromDateTime, untilDateTime, currentDateTime))
-						result.add(new Showing(cinema, movie, currentDateTime));
+					processedDateTime = LocalDateTime.of(processedDate, time);
+					if (doesNotExceedBounds(fromDateTime, untilDateTime, processedDateTime))
+						result.add(new Showing(cinema, movie, processedDateTime));
 				}
 		return result;
 	}
