@@ -30,4 +30,5 @@ public class MovieController {
     	command.setMovieId(movieId);
     	adminPanel.defineMoviePrices(command);
 	}
+
 }
