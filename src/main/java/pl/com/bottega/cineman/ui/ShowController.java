@@ -1,20 +1,25 @@
 package pl.com.bottega.cineman.ui;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.com.bottega.cineman.application.ReservationProcess;
 import pl.com.bottega.cineman.application.ViewingRoomDto;
 
-@Controller
+@RestController
 @RequestMapping("/shows")
 public class ShowController {
 
-	ReservationProcess reservationProcess;
+	private ReservationProcess reservationProcess;
 
-	@GetMapping("/{showId}/seats")
-	ViewingRoomDto getSeats(Long showId) {
-		return reservationProcess.getSeats(showId);
+	public ShowController(ReservationProcess reservationProcess) {
+		this.reservationProcess = reservationProcess;
+	}
+
+	@GetMapping("/{showingId}/seats")
+	ViewingRoomDto getSeats(@PathVariable Long showingId) {
+		return reservationProcess.getSeats(showingId);
 	}
 
 }

@@ -14,12 +14,11 @@ public class ViewingRoom {
 	private List<Seat> freeSeats;
 	private List<Seat> occupiedSeats;
 
-	public ViewingRoom(Set<Reservation> reservations) {
+	ViewingRoom(Set<Reservation> reservations) {
 		for (Reservation reservation : reservations) {
 			Set<Seat> seats = reservation.getSeats();
-			for (Seat seat : seats) {
+			for (Seat seat : seats)
 				this.seats[seat.getRow()][seat.getNumber()] = true;
-			}
 		}
 	}
 
@@ -38,12 +37,12 @@ public class ViewingRoom {
 	private void populateSeats() {
 		freeSeats = new LinkedList<>();
 		occupiedSeats = new LinkedList<>();
-		for (int rowNumber = 1; rowNumber <= rowsCount; rowNumber++)
-			for (int seatNumber = 1; seatNumber <= seatsCount; seatNumber++)
+		for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
+			for (int seatNumber = 0; seatNumber < seatsCount; seatNumber++)
 				if (seats[rowNumber][seatNumber])
-					freeSeats.add(new Seat(rowNumber, seatNumber));
-				else
 					occupiedSeats.add(new Seat(rowNumber, seatNumber));
+				else
+					freeSeats.add(new Seat(rowNumber + 1, seatNumber + 1));
 	}
 
 	public void export(ViewingRoomExporter exporter) {

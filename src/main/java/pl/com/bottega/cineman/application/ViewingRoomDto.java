@@ -1,5 +1,7 @@
 package pl.com.bottega.cineman.application;
 
+import pl.com.bottega.cineman.model.Seat;
+
 import java.util.List;
 
 public class ViewingRoomDto {
@@ -13,15 +15,22 @@ public class ViewingRoomDto {
 //    ]
 //	}
 
-	private List<SeatDto> free;
-	private List<SeatDto> occupied;
+	private List<Seat> free;
+	private List<Seat> occupied;
 
-	public void setFree(List<SeatDto> free) {
+	void setFree(List<Seat> free) {
 		this.free = free;
 	}
 
-	public void setOccupied(List<SeatDto> occupied) {
+	void setOccupied(List<Seat> occupied) {
 		this.occupied = occupied;
 	}
 
+	public List<Seat> getFree() {
+		return free;
+	}
+
+	public List<Seat> getOccupied() {
+		return occupied;
+	}
 }

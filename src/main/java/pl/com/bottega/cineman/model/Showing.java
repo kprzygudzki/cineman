@@ -2,6 +2,8 @@ package pl.com.bottega.cineman.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Showing {
@@ -12,9 +14,14 @@ public class Showing {
 
 	@ManyToOne
 	private Cinema cinema;
+
 	@ManyToOne
 	private Movie movie;
+
 	private LocalDateTime beginsAt;
+
+	@OneToMany
+	private Set<Reservation> reservations = new HashSet<>();
 
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
@@ -37,24 +44,16 @@ public class Showing {
 		return cinema;
 	}
 
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
-
 	public Movie getMovie() {
 		return movie;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
-	public LocalDateTime getBeginsAt() {
+	LocalDateTime getBeginsAt() {
 		return beginsAt;
 	}
 
-	public void setBeginsAt(LocalDateTime beginsAt) {
-		this.beginsAt = beginsAt;
+	public ViewingRoom getViewingRoom() {
+		return new ViewingRoom(reservations);
 	}
 
 	public void export(ShowingExporter exporter) {

@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Bean;
 import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.CinemaCatalog;
 import pl.com.bottega.cineman.application.MovieCatalog;
+import pl.com.bottega.cineman.application.ReservationProcess;
 import pl.com.bottega.cineman.application.impl.StandardAdminPanel;
+import pl.com.bottega.cineman.application.impl.StandardReservationProcess;
 import pl.com.bottega.cineman.model.CinemaRepository;
 import pl.com.bottega.cineman.model.MovieRepository;
 import pl.com.bottega.cineman.model.PricingRepository;
@@ -49,6 +51,11 @@ public class Configuration {
 								 ShowingRepository showingRepository,
 								 PricingRepository pricingRepository) {
 		return new StandardAdminPanel(cinemaRepository, movieRepository, showingRepository, pricingRepository);
+	}
+
+	@Bean
+	public ReservationProcess reservationProcess(ShowingRepository showingRepository) {
+		return new StandardReservationProcess(showingRepository);
 	}
 
 }
