@@ -25,18 +25,6 @@ public class Cinema {
 	public Cinema() {
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public void export(CinemaExporter exporter) {
 		exporter.addId(id);
 		exporter.addName(name);
