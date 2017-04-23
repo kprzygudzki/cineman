@@ -61,34 +61,54 @@ public class JPACinemaCatalog implements CinemaCatalog {
 
 	private List<MovieShowingsDto> getMovieShowingsDtos(List<Showing> showings) {
 		List<MovieShowingsDto> dtos = new LinkedList<>();
-		Map<Movie, List<ShowingDto>> map = new HashMap<>();
-		for (Showing showing : showings) {
-			Movie movie = showing.getMovie();
-			List<ShowingDto> showingDtos = map.getOrDefault(movie, new LinkedList<>());
-			showingDtos.add(getShowingDto(showing));
-			map.put(movie, showingDtos);
-		}
-		MovieShowingsDtoBuilder dtoBuilder = new MovieShowingsDtoBuilder();
+		Map<Movie, List<ShowingDto>> map = getMovieShowingsMap(showings);
+		MovieDtoBuilder dtoBuilder = new MovieDtoBuilder();
 		for (Movie movie : map.keySet()) {
-			movie.export(dtoBuilder);
-			MovieShowingsDto dto = dtoBuilder.build();
 			List<ShowingDto> showingDtos = map.get(movie);
-			showingDtos.sort(new Comparator<ShowingDto>() {
-				@Override
-				public int compare(ShowingDto dto1, ShowingDto dto2) {
-					return dto1.getTime().compareTo(dto2.getTime());
-				}
-			});
-			dto.setShows(showingDtos);
+			MovieDto movieDto = createMovieDto(dtoBuilder, movie);
+			MovieShowingsDto dto = createMovieShowingsDto(movieDto, showingDtos);
 			dtos.add(dto);
 		}
 		return dtos;
 	}
 
-	private ShowingDto getShowingDto(Showing showing) {
+	private Map<Movie, List<ShowingDto>> getMovieShowingsMap(List<Showing> showings) {
+		Map<Movie, List<ShowingDto>> map = new HashMap<>();
 		ShowingDtoBuilder builder = new ShowingDtoBuilder();
+		for (Showing showing : showings) {
+			Movie movie = showing.getMovie();
+			List<ShowingDto> showingDtos = map.getOrDefault(movie, new LinkedList<>());
+			showingDtos.add(getShowingDto(showing, builder));
+			map.put(movie, showingDtos);
+		}
+		return map;
+	}
+
+	private MovieShowingsDto createMovieShowingsDto(MovieDto movieDto, List<ShowingDto> showingDtos) {
+		MovieShowingsDto movieShowingsDto = new MovieShowingsDto();
+		movieShowingsDto.setMovie(movieDto);
+		showingDtos.sort(new ShowingTimeComparator());
+		movieShowingsDto.setShows(showingDtos);
+		return movieShowingsDto;
+	}
+
+	private MovieDto createMovieDto(MovieDtoBuilder dtoBuilder, Movie movie) {
+		movie.export(dtoBuilder);
+		return dtoBuilder.build();
+	}
+
+	private ShowingDto getShowingDto(Showing showing, ShowingDtoBuilder builder) {
 		showing.export(builder);
 		return builder.build();
+	}
+
+	private class ShowingTimeComparator implements Comparator<ShowingDto> {
+
+		@Override
+		public int compare(ShowingDto dto1, ShowingDto dto2) {
+			return dto1.getTime().compareTo(dto2.getTime());
+		}
+
 	}
 
 }
