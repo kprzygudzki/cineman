@@ -49,8 +49,7 @@ public class JPACinemaCatalog implements CinemaCatalog {
 		Root<Showing> root = criteria.from(Showing.class);
 		criteria.where(
 				builder.equal(root.get("cinema").get("id"), cinemaId),
-				builder.greaterThanOrEqualTo(root.get("beginsAt"), date.atStartOfDay()),
-				builder.lessThan(root.get("beginsAt"), date.plusDays(1L).atStartOfDay()));
+				builder.between(root.get("beginsAt"), date.atStartOfDay(), date.plusDays(1).atStartOfDay()));
 		List<Showing> showings = entityManager.createQuery(criteria).getResultList();
 		return getMovieShowingsDtos(showings);
 	}
