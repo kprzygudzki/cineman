@@ -35,4 +35,5 @@ public class Pricing {
 	public Map<String, BigDecimal> getPrices() {
 		return prices;
 	}
+
 }
