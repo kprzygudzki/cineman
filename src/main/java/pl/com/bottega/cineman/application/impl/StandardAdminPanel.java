@@ -74,7 +74,6 @@ public class StandardAdminPanel implements AdminPanel {
 		pricingRepository.put(movie.getPricing());
 	}
 
-
 	private void ensureNotADuplicate(CreateCinemaCommand command) {
 		if (cinemaRepository.existsWithCityAndName(command.getCity(), command.getName()))
 			throw new DuplicateCinemaException();
