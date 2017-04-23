@@ -70,9 +70,8 @@ public class StandardAdminPanel implements AdminPanel {
 		if(!errors.isValid())
 			throw new InvalidCommandException(errors);
 		Movie movie = movieRepository.get(command.getMovieId());
-
-		Pricing pricing = new Pricing(command);
-		pricingRepository.put(pricing);
+		movie.definePricing(command);
+		pricingRepository.put(movie.getPricing());
 	}
 
 

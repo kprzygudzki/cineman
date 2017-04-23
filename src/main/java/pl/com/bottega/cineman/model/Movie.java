@@ -93,4 +93,8 @@ public class Movie {
 		return id;
 	}
 
+	public Pricing getPricing() {
+		return pricing;
+	}
+
 }
