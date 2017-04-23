@@ -42,9 +42,8 @@ public class JPACinemaCatalog implements CinemaCatalog {
 	@Override
 	public List<MovieShowingsDto> getShowings(Long cinemaId, LocalDate date) {
 		ensureCinemaExists(cinemaId);
-		if (date == null) {
+		if (date == null)
 			throw new InvalidRequestException("date can not be null");
-		}
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Showing> criteria = builder.createQuery(Showing.class);
 		Root<Showing> root = criteria.from(Showing.class);
@@ -70,12 +69,10 @@ public class JPACinemaCatalog implements CinemaCatalog {
 			showingDtos.add(getShowingDto(showing));
 			map.put(movie, showingDtos);
 		}
-
 		MovieShowingsDtoBuilder dtoBuilder = new MovieShowingsDtoBuilder();
 		for (Movie movie : map.keySet()) {
 			movie.export(dtoBuilder);
 			MovieShowingsDto dto = dtoBuilder.build();
-
 			List<ShowingDto> showingDtos = map.get(movie);
 			showingDtos.sort(new Comparator<ShowingDto>() {
 				@Override
