@@ -1,9 +1,6 @@
 package pl.com.bottega.cineman.model;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -15,6 +12,19 @@ public class Reservation {
 
 	@ElementCollection
 	private Set<Seat> seats;
+
+	@ElementCollection
+	private Set<ReservationItem> items;
+
+	@Embedded
+	@AttributeOverride(name = "number", column = @Column(name = "reservation_number"))
+	private ReservationNumber reservationNumber;
+
+	@Enumerated(EnumType.STRING)
+	private ReservationStatus status;
+
+	@OneToOne
+	private Customer customer;
 
 	Set<Seat> getSeats() {
 		return seats;
