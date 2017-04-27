@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class CreateReservationCommand {
 
-	private Long showingId;
+	private Long showId;
 	private Set<ReservationItem> tickets;
 	private Set<Seat> seats;
 	private Customer customer;
@@ -16,12 +16,12 @@ public class CreateReservationCommand {
 	public CreateReservationCommand() {
 	}
 
-	public Long getShowingId() {
-		return showingId;
+	public Long getShowId() {
+		return showId;
 	}
 
-	public void setShowingId(Long showingId) {
-		this.showingId = showingId;
+	public void setShowId(Long showId) {
+		this.showId = showId;
 	}
 
 	public Set<ReservationItem> getTickets() {

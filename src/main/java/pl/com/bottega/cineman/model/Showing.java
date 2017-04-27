@@ -22,7 +22,7 @@ public class Showing {
 
 	private LocalDateTime beginsAt;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Reservation> reservations = new HashSet<>();
 
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {

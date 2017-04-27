@@ -26,7 +26,7 @@ public class StandardReservationProcess implements ReservationProcess {
 
 	@Override
 	public ReservationNumber create(CreateReservationCommand command) {
-		Showing showing = showingRepo.get(command.getShowingId());
+		Showing showing = showingRepo.get(command.getShowId());
 		ReservationNumber reservationNumber = showing.createReservation(command);
 		showingRepo.put(showing);
 		return reservationNumber;

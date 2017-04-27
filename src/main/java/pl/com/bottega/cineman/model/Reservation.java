@@ -1,6 +1,7 @@
 package pl.com.bottega.cineman.model;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class Reservation {
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
 	public Reservation(Set<Seat> seats, Set<ReservationItem> reservationItems, Customer customer) {
@@ -31,6 +32,7 @@ public class Reservation {
 		this.items = reservationItems;
 		this.reservationNumber = new ReservationNumber();
 		this.status = ReservationStatus.PENDING;
+		this.customer = customer;
 	}
 
 	Set<Seat> getSeats() {
