@@ -6,18 +6,18 @@ import javax.persistence.Embeddable;
 public class ReservationItem {
 
 	private String ticketType;
-	private Integer count;
+	private Integer quantity;
 
-	public ReservationItem(String ticketType, Integer count) {
+	public ReservationItem(String ticketType, Integer quantity) {
 		this.ticketType = ticketType;
-		this.count = count;
+		this.quantity = quantity;
 	}
 
 	public String getTicketType() {
 		return ticketType;
 	}
 
-	public Integer getCount() {
-		return count;
+	public Integer getQuantity() {
+		return quantity;
 	}
 }

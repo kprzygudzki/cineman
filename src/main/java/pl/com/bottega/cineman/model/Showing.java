@@ -35,7 +35,12 @@ public class Showing {
 	}
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
-		return new ReservationNumber();
+		Set<ReservationItem> reservationItems = command.getTickets();
+		Set<Seat> seats = command.getSeats();
+		Customer customer = command.getCustomer();
+		Reservation reservation = new Reservation(seats, reservationItems, customer);
+		reservations.add(reservation);
+		return reservation.getReservationNumber();
 	}
 
 	public Long getId() {

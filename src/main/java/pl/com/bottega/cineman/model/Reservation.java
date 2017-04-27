@@ -26,8 +26,18 @@ public class Reservation {
 	@OneToOne
 	private Customer customer;
 
+	public Reservation(Set<Seat> seats, Set<ReservationItem> reservationItems, Customer customer) {
+		this.seats = seats;
+		this.items = reservationItems;
+		this.reservationNumber = new ReservationNumber();
+		this.status = ReservationStatus.PENDING;
+	}
+
 	Set<Seat> getSeats() {
 		return seats;
 	}
 
+	public ReservationNumber getReservationNumber() {
+		return reservationNumber;
+	}
 }

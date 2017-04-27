@@ -26,7 +26,10 @@ public class StandardReservationProcess implements ReservationProcess {
 
 	@Override
 	public ReservationNumber create(CreateReservationCommand command) {
-		return null;
+		Showing showing = showingRepo.get(command.getShowingId());
+		ReservationNumber reservationNumber = showing.createReservation(command);
+		showingRepo.put(showing);
+		return reservationNumber;
 	}
 
 	private ViewingRoomDto createViewingRoomDto(ViewingRoom viewingRoom) {

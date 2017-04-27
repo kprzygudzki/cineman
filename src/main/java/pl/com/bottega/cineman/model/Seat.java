@@ -8,6 +8,10 @@ public class Seat {
 	private Integer row;
 	private Integer number;
 
+	public Seat() {
+
+	}
+
 	Seat(int row, int number) {
 		this.number = row;
 		this.row = number;
