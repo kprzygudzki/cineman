@@ -4,7 +4,6 @@ import org.junit.Test;
 import pl.com.bottega.cineman.application.MovieDto;
 import pl.com.bottega.cineman.application.MovieDtoBuilder;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
-import pl.com.bottega.cineman.model.commands.CreatePriceCommand;
 
 import java.util.HashSet;
 import java.util.Set;
