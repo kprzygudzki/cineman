@@ -25,4 +25,11 @@ public class Seat {
 		return number;
 	}
 
+	public void setRow(Integer row) {
+		this.row = row;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
 }

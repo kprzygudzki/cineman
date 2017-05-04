@@ -41,8 +41,10 @@ public class Showing {
 		Set<ReservationItem> reservationItems = command.getTickets();
 		Set<Seat> seats = command.getSeats();
 		Customer customer = command.getCustomer();
+
 		Reservation reservation = new Reservation(seats, reservationItems, customer);
-		//TODO add seats booking in ViewingRoom
+		viewingRoom = new ViewingRoom(reservations);
+		viewingRoom.bookSeats(seats);
 		reservations.add(reservation);
 		return reservation.getReservationNumber();
 	}

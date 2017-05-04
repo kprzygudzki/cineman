@@ -1,5 +1,7 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -52,4 +54,18 @@ public class ViewingRoom {
 		exporter.addOccupiedSeats(occupiedSeats);
 	}
 
+	public void bookSeats(Set<Seat> seats) {
+		if (isPossible(seats)) {
+			for (Seat seat : seats)
+				this.seats[seat.getRow()][seat.getNumber()] = true;
+		}
+	}
+
+	private boolean isPossible(Set<Seat> seats) {
+		for (Seat seat : seats) {
+			if(getOccupiedSeats().contains(seat))
+				return false;
+		}
+		return true;
+	}
 }

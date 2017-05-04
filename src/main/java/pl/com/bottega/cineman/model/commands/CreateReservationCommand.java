@@ -6,7 +6,7 @@ import pl.com.bottega.cineman.model.Seat;
 
 import java.util.Set;
 
-public class CreateReservationCommand {
+public class CreateReservationCommand implements Validatable {
 
 	private Long showId;
 	private Set<ReservationItem> tickets;
@@ -46,5 +46,11 @@ public class CreateReservationCommand {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	@Override
+	public void validate(ValidationErrors errors) {
+		if (tickets.size() == 0)
+			errors.add("tickets", "required at least one item");
 	}
 }

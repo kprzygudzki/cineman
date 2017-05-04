@@ -35,6 +35,10 @@ public class Reservation {
 		this.customer = customer;
 	}
 
+	public Reservation() {
+
+	}
+
 	Set<Seat> getSeats() {
 		return seats;
 	}
