@@ -5,19 +5,23 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ReservationItem {
 
-	private String ticketType;
+	private String kind;
 	private Integer quantity;
 
-	public ReservationItem(String ticketType, Integer quantity) {
-		this.ticketType = ticketType;
-		this.quantity = quantity;
+	public String getKind() {
+		return kind;
 	}
 
-	public String getTicketType() {
-		return ticketType;
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 
 	public Integer getQuantity() {
 		return quantity;
 	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
 }

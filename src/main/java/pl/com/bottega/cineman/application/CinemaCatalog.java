@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CinemaCatalog {
 
-    List<CinemaDto> getCinemas();
+	List<CinemaDto> getCinemas();
 
 	List<MovieShowingsDto> getShowings(Long cinemaId, LocalDate date);
 

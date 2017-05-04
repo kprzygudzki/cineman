@@ -27,6 +27,14 @@ public class Pricing {
 	Pricing() {
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public Map<String, BigDecimal> getPrices() {
+		return prices;
+	}
+
 	public void update(DefineMoviePricesCommand command) {
 		prices.clear();
 		prices.putAll(command.getPrices());
