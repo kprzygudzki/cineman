@@ -14,8 +14,7 @@ public class Reservation {
 	@ElementCollection
 	private Set<Seat> seats;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "reservation_id")
+	@ElementCollection
 	private Set<ReservationItem> items;
 
 	@Embedded

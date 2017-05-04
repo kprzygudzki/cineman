@@ -50,7 +50,7 @@ public class CalculatePriceCommand implements Validatable {
 	private void duplicatedItemType(ValidationErrors errors) {
 		for (ReservationItem ticket : tickets) {
 			for (ReservationItem ticket2 : tickets) {
-				if (ticket.getKind() != ticket2.getKind() && ticket.getKind().equals(ticket2.getKind()))
+				if (ticket != ticket2 && ticket.getKind().equals(ticket2.getKind()))
 					errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
 			}
 		}
