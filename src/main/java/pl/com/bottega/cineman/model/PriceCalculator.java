@@ -19,11 +19,12 @@ public class PriceCalculator {
 	public CalculationResult calculatePrices(CalculatePriceCommand cmd) {
 		Collection<CalculationItem> calculationItems = new HashSet<>();
 		Showing showing = showingRepository.get(cmd.getShowId());
-		Pricing pricing = showing.getMovie().getPricing();
-		Set<ReservationItem> reservationItems = cmd.getReservationItems();
-		BigDecimal unitPrice = (BigDecimal) pricing.getPrices();
-		for (ReservationItem reservationItem : reservationItems) {
-			CalculationItem items = new CalculationItem(reservationItem, unitPrice);
+		Set<ReservationItem> tickets = cmd.getTickets();
+		Map<String, BigDecimal> pricing = showing.getMovie().getPricing().getPrices();
+		for (ReservationItem ticket : tickets) {
+			String kind = ticket.getKind();
+			BigDecimal unitPrice = pricing.get(kind);
+			CalculationItem items = new CalculationItem(ticket, unitPrice);
 			calculationItems.add(items);
 		}
 		return new CalculationResult(calculationItems);

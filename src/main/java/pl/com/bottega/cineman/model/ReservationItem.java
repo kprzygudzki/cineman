@@ -1,9 +1,12 @@
 package pl.com.bottega.cineman.model;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class ReservationItem {
 
 	private String kind;
-	private Integer count;
+	private Integer quantity;
 
 	public String getKind() {
 		return kind;
@@ -13,12 +16,12 @@ public class ReservationItem {
 		this.kind = kind;
 	}
 
-	public Integer getCount() {
-		return count;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setCount(Integer count) {
-		this.count = count;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 }

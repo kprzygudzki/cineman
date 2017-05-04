@@ -14,7 +14,7 @@ public class CalculatePriceCommand implements Validatable {
 	private static final String INVALID_ITEM_TYPE = "invalid item type";
 
 	private Long showId;
-	private Set<ReservationItem> reservationItems;
+	private Set<ReservationItem> tickets;
 
 	public CalculatePriceCommand() {
 	}
@@ -27,12 +27,12 @@ public class CalculatePriceCommand implements Validatable {
 		this.showId = showId;
 	}
 
-	public Set<ReservationItem> getReservationItems() {
-		return reservationItems;
+	public Set<ReservationItem> getTickets() {
+		return tickets;
 	}
 
-	public void setReservationItems(Set<ReservationItem> reservationItems) {
-		this.reservationItems = reservationItems;
+	public void setTickets(Set<ReservationItem> tickets) {
+		this.tickets = tickets;
 	}
 
 	@Override
@@ -48,17 +48,17 @@ public class CalculatePriceCommand implements Validatable {
 	}
 
 	private void duplicatedItemType(ValidationErrors errors) {
-		Set<String> items = new HashSet<>();
-		for (ReservationItem reservationItem : reservationItems) {
-			items.add(reservationItem.getKind());
-			if (items.contains(reservationItem.getKind()))
-				errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
+		for (ReservationItem ticket : tickets) {
+			for (ReservationItem ticket2 : tickets) {
+				if (ticket.getKind() != ticket2.getKind() && ticket.getKind().equals(ticket2.getKind()))
+					errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
+			}
 		}
 	}
 
 	private void invalidItemType(ValidationErrors errors) {
 		Set<String> itemsType = new HashSet<>();
-		for (ReservationItem reservationItem : reservationItems) {
+		for (ReservationItem reservationItem : tickets) {
 			itemsType.add(reservationItem.getKind());
 			if (!itemsType.contains(reservationItem.getKind()))
 				errors.add("invalidItemType", INVALID_ITEM_TYPE);
@@ -66,7 +66,7 @@ public class CalculatePriceCommand implements Validatable {
 	}
 
 	private void notExistItem(ValidationErrors errors) {
-		if (isNull(reservationItems))
+		if (isNull(tickets))
 			errors.add("reservationItems", REQUIRED_FIELD);
 	}
 
