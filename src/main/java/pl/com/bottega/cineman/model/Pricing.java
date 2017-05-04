@@ -40,4 +40,8 @@ public class Pricing {
 		prices.putAll(command.getPrices());
 	}
 
+	public Map<String, BigDecimal> getPrices() {
+		return prices;
+	}
+
 }
