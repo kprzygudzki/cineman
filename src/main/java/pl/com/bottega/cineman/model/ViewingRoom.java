@@ -1,7 +1,5 @@
 package pl.com.bottega.cineman.model;
 
-import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +18,7 @@ public class ViewingRoom {
 		for (Reservation reservation : reservations) {
 			Set<Seat> seats = reservation.getSeats();
 			for (Seat seat : seats)
-				this.seats[seat.getRow()][seat.getNumber()] = true;
+				this.seats[seat.getRow() - 1][seat.getNumber() - 1] = true;
 		}
 	}
 
@@ -39,12 +37,12 @@ public class ViewingRoom {
 	private void populateSeats() {
 		freeSeats = new LinkedList<>();
 		occupiedSeats = new LinkedList<>();
-		for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
-			for (int seatNumber = 0; seatNumber < seatsCount; seatNumber++)
-				if (seats[rowNumber][seatNumber])
-					occupiedSeats.add(new Seat(rowNumber, seatNumber));
+		for (int zeroIndexedRowNumber = 0; zeroIndexedRowNumber < rowsCount; zeroIndexedRowNumber++)
+			for (int zeroIndexedSeatNumber = 0; zeroIndexedSeatNumber < seatsCount; zeroIndexedSeatNumber++)
+				if (seats[zeroIndexedRowNumber][zeroIndexedSeatNumber])
+					occupiedSeats.add(new Seat(zeroIndexedRowNumber + 1, zeroIndexedSeatNumber + 1));
 				else
-					freeSeats.add(new Seat(rowNumber + 1, seatNumber + 1));
+					freeSeats.add(new Seat(zeroIndexedRowNumber + 1, zeroIndexedSeatNumber + 1));
 	}
 
 	public void export(ViewingRoomExporter exporter) {
@@ -54,18 +52,37 @@ public class ViewingRoom {
 		exporter.addOccupiedSeats(occupiedSeats);
 	}
 
-	public void bookSeats(Set<Seat> seats) {
-		if (isPossible(seats)) {
-			for (Seat seat : seats)
-				this.seats[seat.getRow()][seat.getNumber()] = true;
-		}
+	public boolean isPossible(Set<Seat> seats) {
+		return areNotOccupied(seats) && isAllowed(seats);
 	}
 
-	private boolean isPossible(Set<Seat> seats) {
-		for (Seat seat : seats) {
-			if(getOccupiedSeats().contains(seat))
-				return false;
-		}
+	private boolean isAllowed(Set<Seat> seats) {
+//		areNextToEachOther(seats);
+//		areNotLeavingSingleEmptySeat(seats);
 		return true;
 	}
+
+//	private boolean areNextToEachOther(Set<Seat> seatSet) {
+//		List<Seat> seats = new LinkedList<>(seatSet);
+//		int row = seats.get(0).getRow();
+//		List<Integer> seatNumbers = new LinkedList<>();
+//		for (Seat seat : seats) {
+//			if (seat.getRow() != row)
+//				return false;
+//			seatNumbers.add(seat.getReservationNumber());
+//		}
+//		seatNumbers.sort(Integer::compareTo);
+//		Integer i = seatNumbers.get(0);
+//		for (Integer number : seatNumbers) {
+//			if (number.compareTo(i) > 0)
+//				return false;
+//			i++;
+//		}
+//		return true;
+//	}
+
+	private boolean areNotOccupied(Set<Seat> seats) {
+		return !getOccupiedSeats().containsAll(seats);
+	}
+
 }
