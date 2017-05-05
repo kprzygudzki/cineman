@@ -7,6 +7,7 @@ public class ReservationItem {
 
 	private String kind;
 	private Integer quantity;
+	//TODO should be "count"
 
 	public String getKind() {
 		return kind;

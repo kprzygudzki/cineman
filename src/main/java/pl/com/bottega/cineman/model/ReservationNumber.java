@@ -2,34 +2,39 @@ package pl.com.bottega.cineman.model;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Embeddable
 public class ReservationNumber implements Serializable {
 
-	private String number;
+	private String reservationNumber;
 
-	public ReservationNumber() {
-		this.number = LocalDateTime.now().getMonthValue() + "" +
-				LocalDateTime.now().getDayOfMonth() + "-" +
-				LocalDateTime.now().getHour() +
-				LocalDateTime.now().getMinute() +
-				LocalDateTime.now().getSecond();
+	private ReservationNumber(String reservationNumber) {
+		this.reservationNumber = reservationNumber;
+	}
+
+	public static ReservationNumber generate() {
+		return new ReservationNumber(UUID.randomUUID().toString());
+	}
+
+	private ReservationNumber() {
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof ReservationNumber)) return false;
-
 		ReservationNumber that = (ReservationNumber) o;
-
-		return number.equals(that.number);
+		return reservationNumber.equals(that.reservationNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return number.hashCode();
+		return reservationNumber.hashCode();
 	}
+
+	public String getReservationNumber() {
+		return reservationNumber;
+	}
+
 }

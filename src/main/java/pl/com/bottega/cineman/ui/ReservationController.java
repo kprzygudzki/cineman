@@ -18,14 +18,13 @@ public class ReservationController {
 	}
 
 	@PostMapping("/price_calculator")
-	private CalculationResult calculatePrices(@RequestBody CalculatePriceCommand cmd) {
+	CalculationResult calculatePrices(@RequestBody CalculatePriceCommand cmd) {
 		return reservationProcess.calculatePrices(cmd);
 	}
 
 	@PutMapping("/reservations")
 	ReservationNumber create(@RequestBody CreateReservationCommand command) {
-		ReservationNumber reservationNumber = reservationProcess.create(command);
-		return reservationNumber;
+		return reservationProcess.create(command);
 	}
 
 }

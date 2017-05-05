@@ -25,9 +25,6 @@ public class Showing {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Reservation> reservations = new HashSet<>();
 
-	@Transient
-	private ViewingRoom viewingRoom;
-
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
 		this.movie = movie;
@@ -38,13 +35,10 @@ public class Showing {
 	}
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
-		Set<ReservationItem> reservationItems = command.getTickets();
 		Set<Seat> seats = command.getSeats();
-		Customer customer = command.getCustomer();
-
-		Reservation reservation = new Reservation(seats, reservationItems, customer);
-		viewingRoom = new ViewingRoom(reservations);
-		viewingRoom.bookSeats(seats);
+		if (!getViewingRoom().isPossible(seats))
+			throw new SeatingNotAvailableException(seats);
+		Reservation reservation = new Reservation(command);
 		reservations.add(reservation);
 		return reservation.getReservationNumber();
 	}

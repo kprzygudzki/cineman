@@ -1,15 +1,21 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
+
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.Set;
+
+import static pl.com.bottega.cineman.model.ReservationStatus.PENDING;
 
 @Entity
 public class Reservation {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long id; //TODO remove and replace with ReservationNumber as an embedded id
+
+	@Enumerated(EnumType.STRING)
+	private ReservationStatus status;
 
 	@ElementCollection
 	private Set<Seat> seats;
@@ -21,22 +27,18 @@ public class Reservation {
 	@AttributeOverride(name = "number", column = @Column(name = "reservation_number"))
 	private ReservationNumber reservationNumber;
 
-	@Enumerated(EnumType.STRING)
-	private ReservationStatus status;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
-	public Reservation(Set<Seat> seats, Set<ReservationItem> reservationItems, Customer customer) {
-		this.seats = seats;
-		this.items = reservationItems;
-		this.reservationNumber = new ReservationNumber();
-		this.status = ReservationStatus.PENDING;
-		this.customer = customer;
+	public Reservation(CreateReservationCommand command) {
+		seats = command.getSeats();
+		items = command.getTickets();
+		reservationNumber = ReservationNumber.generate();
+		status = PENDING;
+		customer = command.getCustomer();
 	}
 
 	public Reservation() {
-
 	}
 
 	Set<Seat> getSeats() {
@@ -46,4 +48,5 @@ public class Reservation {
 	public ReservationNumber getReservationNumber() {
 		return reservationNumber;
 	}
+
 }
