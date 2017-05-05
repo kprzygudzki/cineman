@@ -36,8 +36,7 @@ public class Showing {
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
 		Set<Seat> seats = command.getSeats();
-		if (!getViewingRoom().isPossible(seats))
-			throw new SeatingNotAvailableException(seats);
+		getViewingRoom().ensureLegal(seats);
 		Reservation reservation = new Reservation(command);
 		reservations.add(reservation);
 		return reservation.getReservationNumber();

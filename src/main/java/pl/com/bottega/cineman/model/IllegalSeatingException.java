@@ -2,11 +2,12 @@ package pl.com.bottega.cineman.model;
 
 import java.util.Set;
 
-public class SeatingNotAvailableException extends RuntimeException {
+public class IllegalSeatingException extends RuntimeException {
 
 	private final Set<Seat> seats;
 
-	public SeatingNotAvailableException(Set<Seat> seats) {
+	public IllegalSeatingException(String message, Set<Seat> seats) {
+		super(message);
 		this.seats = seats;
 	}
 

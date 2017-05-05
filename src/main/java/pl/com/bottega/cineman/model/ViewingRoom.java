@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.model;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -52,37 +53,76 @@ public class ViewingRoom {
 		exporter.addOccupiedSeats(occupiedSeats);
 	}
 
-	public boolean isPossible(Set<Seat> seats) {
-		return areNotOccupied(seats) && isAllowed(seats);
+	public void ensureLegal(Set<Seat> seats) {
+		ensureNotOccupied(seats);
+		ensureAllowed(seats);
 	}
 
-	private boolean isAllowed(Set<Seat> seats) {
-//		areNextToEachOther(seats);
-//		areNotLeavingSingleEmptySeat(seats);
+	private void ensureNotOccupied(Set<Seat> seats) {
+		Set<Seat> unavailableSeats = new HashSet<>(getOccupiedSeats());
+		unavailableSeats.retainAll(seats);
+		if (!unavailableSeats.isEmpty())
+			throw new IllegalSeatingException("Requested seats are not available", unavailableSeats);
+
+	}
+
+	private void ensureAllowed(Set<Seat> seats) {
+		boolean consecutive = areConsecutive(seats);
+		boolean sameRow = areInTheSameRow(seats);
+		boolean possible = isPossible(seats.size());
+
+		if (!sameRow && possible)
+			throw new IllegalSeatingException("Requested seats are not in the same row", seats);
+		if (!consecutive && possible)
+			throw new IllegalSeatingException("Requested seats are not consecutive", seats);
+	}
+
+	private boolean areInTheSameRow(Set<Seat> seats) {
+		Integer row = null;
+		for (Seat seat : seats) {
+			if (row == null)
+				row = seat.getRow();
+			if (!row.equals(seat.getRow()))
+				return false;
+		}
 		return true;
 	}
 
-//	private boolean areNextToEachOther(Set<Seat> seatSet) {
-//		List<Seat> seats = new LinkedList<>(seatSet);
-//		int row = seats.get(0).getRow();
-//		List<Integer> seatNumbers = new LinkedList<>();
-//		for (Seat seat : seats) {
-//			if (seat.getRow() != row)
-//				return false;
-//			seatNumbers.add(seat.getReservationNumber());
-//		}
-//		seatNumbers.sort(Integer::compareTo);
-//		Integer i = seatNumbers.get(0);
-//		for (Integer number : seatNumbers) {
-//			if (number.compareTo(i) > 0)
-//				return false;
-//			i++;
-//		}
-//		return true;
-//	}
+	private boolean areConsecutive(Set<Seat> seats) {
+		List<Integer> seatNumbers = new LinkedList<>();
+		for (Seat seat : seats)
+			seatNumbers.add(seat.getNumber());
+		seatNumbers.sort(Integer::compareTo);
 
-	private boolean areNotOccupied(Set<Seat> seats) {
-		return !getOccupiedSeats().containsAll(seats);
+		Integer temporaryNumber = seatNumbers.get(0);
+		for (int i = 0; i < seatNumbers.size(); i++, temporaryNumber++)
+			if (!seatNumbers.get(i).equals(temporaryNumber))
+				return false;
+		return true;
+	}
+
+	private boolean isPossible(int requiredSeats) {
+		int foundSeats;
+		for (int row = 0; row < rowsCount; row++) {
+			foundSeats = 0;
+			for (int seat = 0; seat < seatsCount - requiredSeats; seat++) {
+				if (!seats[row][seat]) {
+					if (++foundSeats == requiredSeats)
+						if (!leavesOrphanedSeat(row, seat))
+							return true;
+				} else
+					foundSeats = 0;
+			}
+		}
+		return false;
+	}
+
+	private boolean leavesOrphanedSeat(int row, int seat) {
+		if (seat == seatsCount - 1)
+			return false;
+		if (seat + 1 == seatsCount - 1)
+			return (seats[row][seat + 1]);
+		return (!seats[row][seat + 1]) && (seats[row][seat + 2]);
 	}
 
 }

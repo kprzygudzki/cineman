@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.com.bottega.cineman.application.InvalidRequestException;
+import pl.com.bottega.cineman.model.IllegalSeatingException;
 import pl.com.bottega.cineman.model.ResourceNotFoundException;
-import pl.com.bottega.cineman.model.SeatingNotAvailableException;
 import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 import pl.com.bottega.cineman.model.commands.InvalidCommandException;
 import pl.com.bottega.cineman.model.commands.Validatable;
@@ -15,7 +15,7 @@ import pl.com.bottega.cineman.model.commands.Validatable;
 @ControllerAdvice
 public class ErrorHandlers {
 
-	public static final String APPLICATION_JSON = "application/json";
+	private static final String APPLICATION_JSON = "application/json";
 
 	@ExceptionHandler(InvalidCommandException.class)
 	public ResponseEntity<Validatable.ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
@@ -61,12 +61,12 @@ public class ErrorHandlers {
 		);
 	}
 
-	@ExceptionHandler(SeatingNotAvailableException.class)
-	public ResponseEntity<String> handleSeatingNotAvailableException(SeatingNotAvailableException ex) {
+	@ExceptionHandler(IllegalSeatingException.class)
+	public ResponseEntity<String> handleIllegalSeatingException(IllegalSeatingException ex) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 		return new ResponseEntity<>(
-				"{\"error\": \"Provided seats cannot be reserved\"}",
+				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,
 				HttpStatus.UNPROCESSABLE_ENTITY
 		);
