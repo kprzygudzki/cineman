@@ -19,12 +19,4 @@ public class ValidationAspect {
 			throw new InvalidCommandException(errors);
 	}
 
-//	@Before( "within(pl.com.bottega.cineman.application.*) && args(validatable,..)" )
-//	public void validate(Validatable validatable) {
-//		ValidationErrors errors = new ValidationErrors();
-//		validatable.validate(errors);
-//		if (!errors.isValid())
-//			throw new InvalidCommandException(errors);
-//	}
-
 }
