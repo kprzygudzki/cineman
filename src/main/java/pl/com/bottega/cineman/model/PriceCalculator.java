@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
 
 import java.math.BigDecimal;
@@ -23,6 +24,8 @@ public class PriceCalculator {
 		Map<String, BigDecimal> pricing = showing.getMovie().getPricing().getPrices();
 		for (ReservationItem ticket : tickets) {
 			String kind = ticket.getKind();
+			if (!pricing.containsKey(kind))
+				throw new InvalidRequestException("specified kind of ticket was not defined");
 			BigDecimal unitPrice = pricing.get(kind);
 			CalculationItem items = new CalculationItem(ticket, unitPrice);
 			calculationItems.add(items);
