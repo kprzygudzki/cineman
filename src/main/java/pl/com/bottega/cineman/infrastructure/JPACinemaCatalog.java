@@ -8,9 +8,7 @@ import pl.com.bottega.cineman.model.Showing;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -46,10 +44,13 @@ public class JPACinemaCatalog implements CinemaCatalog {
 			throw new InvalidRequestException("date can not be null");
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Showing> criteria = builder.createQuery(Showing.class);
-		Root<Showing> root = criteria.from(Showing.class);
+		Root<Showing> showing = criteria.distinct(true).from(Showing.class);
+		Fetch movie = showing.fetch("movie", JoinType.LEFT);
+		Fetch actors = movie.fetch("actors", JoinType.LEFT);
+		Fetch genres = movie.fetch("genres", JoinType.LEFT);
 		criteria.where(
-				builder.equal(root.get("cinema").get("id"), cinemaId),
-				builder.between(root.get("beginsAt"), date.atStartOfDay(), date.plusDays(1).atStartOfDay()));
+				builder.equal(showing.get("cinema").get("id"), cinemaId),
+				builder.between(showing.get("beginsAt"), date.atStartOfDay(), date.plusDays(1).atStartOfDay()));
 		List<Showing> showings = entityManager.createQuery(criteria).getResultList();
 		return getMovieShowingsDtos(showings);
 	}
