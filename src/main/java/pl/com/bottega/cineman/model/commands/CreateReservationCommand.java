@@ -4,6 +4,7 @@ import pl.com.bottega.cineman.model.Customer;
 import pl.com.bottega.cineman.model.ReservationItem;
 import pl.com.bottega.cineman.model.Seat;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class CreateReservationCommand implements Validatable {
@@ -50,7 +51,23 @@ public class CreateReservationCommand implements Validatable {
 
 	@Override
 	public void validate(ValidationErrors errors) {
-		if (tickets.size() == 0)
-			errors.add("tickets", "required at least one item");
+		seats.remove(null);
+		if (seats == null || seats.isEmpty())
+			errors.add("seats", "is a required field and can not be empty");
+		tickets.remove(null);
+		if (tickets == null || tickets.isEmpty())
+			errors.add("tickets", "is a required field and can not be empty");
+		else
+			ensureUniqueTicketKinds(errors);
+		customer.validate(errors);
 	}
+
+	private void ensureUniqueTicketKinds(ValidationErrors errors) {
+		Set<String> kinds = new HashSet<>();
+		for (ReservationItem ticket : tickets)
+			if (!kinds.add(ticket.getKind()))
+				errors.add("tickets",
+						"can not contain multiple ticket positions of the same kind");
+	}
+
 }
