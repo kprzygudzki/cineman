@@ -22,7 +22,7 @@ public class ReservationItem {
 		return count;
 	}
 
-	public void setQuantity(Integer count) {
+	public void setCount(Integer count) {
 		this.count = count;
 	}
 
