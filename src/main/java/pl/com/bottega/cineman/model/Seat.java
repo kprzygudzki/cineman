@@ -17,11 +17,11 @@ public class Seat {
 	public Seat() {
 	}
 
-	Integer getRow() {
+	public Integer getRow() {
 		return row;
 	}
 
-	Integer getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
