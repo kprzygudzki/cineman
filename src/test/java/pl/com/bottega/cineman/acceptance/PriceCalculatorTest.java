@@ -25,14 +25,14 @@ public class PriceCalculatorTest {
 	@Test
 	public void shouldCalculatePrices() {
 		/*CalculatePriceCommand command = new CalculatePriceCommand();
-		command.setShowId(1L);
+		command.setShowId(94L);
 
 		ReservationItem reservationItems1 = new ReservationItem();
 		reservationItems1.setKind("regular");
-		reservationItems1.setQuantity(2);
+		reservationItems1.setCount(2);
 		ReservationItem reservationItems2 = new ReservationItem();
 		reservationItems2.setKind("school");
-		reservationItems2.setQuantity(1);
+		reservationItems2.setCount(1);
 
 		CalculationItem calculationItem1 = new CalculationItem(reservationItems1, BigDecimal.valueOf(10));
 		CalculationItem calculationItem2 = new CalculationItem(reservationItems2, BigDecimal.valueOf(10));
@@ -47,8 +47,8 @@ public class PriceCalculatorTest {
 		calculationItems.add(calculationItem2);
 		CalculationResult calculationResult = new CalculationResult(calculationItems);
 
-		priceCalculator.calculatePrices(command);
-		//TODO*/
+		priceCalculator.calculatePrices(command);*/
+
 	}
 
 }

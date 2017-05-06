@@ -1,5 +1,7 @@
 package pl.com.bottega.cineman.model.commands;
 
+import com.sun.org.apache.regexp.internal.RE;
+import com.sun.org.apache.xml.internal.security.signature.ObjectContainer;
 import pl.com.bottega.cineman.model.ReservationItem;
 
 import java.util.HashSet;
@@ -43,25 +45,15 @@ public class CalculatePriceCommand implements Validatable {
 
 	private void validateReservationItem(ValidationErrors errors) {
 		notExistItem(errors);
-		invalidItemType(errors);
 		duplicatedItemType(errors);
+		validateNoTickets(errors);
 	}
 
 	private void duplicatedItemType(ValidationErrors errors) {
+		Set<String> kinds = new HashSet<>();
 		for (ReservationItem ticket : tickets) {
-			for (ReservationItem ticket2 : tickets) {
-				if (ticket != ticket2 && ticket.getKind().equals(ticket2.getKind()))
-					errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
-			}
-		}
-	}
-
-	private void invalidItemType(ValidationErrors errors) {
-		Set<String> itemsType = new HashSet<>();
-		for (ReservationItem reservationItem : tickets) {
-			itemsType.add(reservationItem.getKind());
-			if (!itemsType.contains(reservationItem.getKind()))
-				errors.add("invalidItemType", INVALID_ITEM_TYPE);
+			if (!kinds.add(ticket.getKind()))
+				errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
 		}
 	}
 
@@ -73,6 +65,18 @@ public class CalculatePriceCommand implements Validatable {
 	private void validateShowId(ValidationErrors errors) {
 		if (isNull(showId))
 			errors.add("showId", REQUIRED_FIELD);
+	}
+
+	private void validateNoTickets(ValidationErrors errors) {
+		if (tickets.isEmpty())
+			errors.add("noTickets", REQUIRED_FIELD);
+		tickets.remove(null);
+		for (ReservationItem ticket : tickets) {
+			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())
+				errors.add("noKind", REQUIRED_FIELD);
+			if (isNull(ticket.getCount()))
+				errors.add("noCount", REQUIRED_FIELD);
+		}
 	}
 
 }
