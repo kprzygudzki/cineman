@@ -1,13 +1,14 @@
 package pl.com.bottega.cineman.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class ReservationItem {
 
 	private String kind;
-	private Integer quantity;
-	//TODO should be "count"
+	@Column(name = "quantity")
+	private Integer count;
 
 	public String getKind() {
 		return kind;
@@ -17,12 +18,12 @@ public class ReservationItem {
 		this.kind = kind;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getCount() {
+		return count;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setQuantity(Integer count) {
+		this.count = count;
 	}
 
 }

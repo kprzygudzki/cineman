@@ -11,13 +11,13 @@ public class CalculationItem {
 
 	public CalculationItem(ReservationItem reservationItem, BigDecimal unitPrice) {
 		this.kind = reservationItem.getKind();
-		this.count = reservationItem.getQuantity();
+		this.count = reservationItem.getCount();
 		this.unitPrice = unitPrice;
 		this.totalPrice = calculateTotalPrice(reservationItem, unitPrice);
 	}
 
 	private BigDecimal calculateTotalPrice(ReservationItem reservationItemCount, BigDecimal reservationItemUnitPrice) {
-		return reservationItemUnitPrice.multiply(BigDecimal.valueOf(reservationItemCount.getQuantity()));
+		return reservationItemUnitPrice.multiply(BigDecimal.valueOf(reservationItemCount.getCount()));
 	}
 
 	public String getKind() {
