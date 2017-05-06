@@ -50,7 +50,15 @@ public class CreateReservationCommand implements Validatable {
 
 	@Override
 	public void validate(ValidationErrors errors) {
-		if (tickets.size() == 0)
-			errors.add("tickets", "required at least one item");
+		seats.remove(null);
+		if (seats == null || seats.isEmpty())
+			errors.add("seats", "is a required field and cannot be empty");
+		tickets.remove(null);
+		if (tickets == null || tickets.isEmpty())
+			errors.add("tickets", "is a required field and cannot be empty");
+		else
+
+		customer.validate(errors);
 	}
+
 }
