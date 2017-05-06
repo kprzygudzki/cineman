@@ -1,14 +1,12 @@
 package pl.com.bottega.cineman.acceptance;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-import pl.com.bottega.cineman.application.AdminPanel;
-import pl.com.bottega.cineman.application.CinemaCatalog;
-import pl.com.bottega.cineman.application.MovieCatalog;
+import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
@@ -27,7 +25,6 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional
 public class AdminPanelTest {
 
 	@Autowired
@@ -38,6 +35,14 @@ public class AdminPanelTest {
 
 	@Autowired
 	private MovieCatalog movieCatalog;
+
+	@Autowired
+	private DbCleaner cleaner;
+
+	@Before
+	public void setUp() throws Exception {
+		cleaner.clean();
+	}
 
 	@Test
 	public void shouldCreateCinema() {
@@ -57,7 +62,7 @@ public class AdminPanelTest {
 	public void shouldNotAddTwoSameCinemas() {
 		CreateCinemaCommand command = prepareCreateCinemaCommand();
 		adminPanel.createCinema(command);
-		Throwable thrown = catchThrowable( () -> adminPanel.createCinema(command) );
+		Throwable thrown = catchThrowable(() -> adminPanel.createCinema(command));
 		assertThat(thrown).isInstanceOf(DuplicateCinemaException.class);
 	}
 
@@ -76,8 +81,9 @@ public class AdminPanelTest {
 		dates.add(date.atTime(LocalTime.of(17, 30)));
 		CreateShowingsCommand command = prepareSingleShowingCommand(cinemaId, addMovie(), dates);
 		adminPanel.createShowings(command);
-		assertThat(cinemaCatalog.getShowings(cinemaId, date).size()).isEqualTo(1);
-		assertThat(cinemaCatalog.getShowings(cinemaId, date).get(0).getShows().size()).isEqualTo(1);
+		List<MovieShowingsDto> showings = cinemaCatalog.getShowings(cinemaId, date);
+		assertThat(showings.get(0).getShows().size()).isEqualTo(1);
+		assertThat(showings.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -89,8 +95,11 @@ public class AdminPanelTest {
 		dates.add(date.atTime(LocalTime.of(20, 30)));
 		CreateShowingsCommand command = prepareSingleShowingCommand(cinemaId, addMovie(), dates);
 		adminPanel.createShowings(command);
-		assertThat(cinemaCatalog.getShowings(cinemaId, date).size()).isEqualTo(1);
-		assertThat(cinemaCatalog.getShowings(cinemaId, date).get(0).getShows().size()).isEqualTo(2);
+		List<MovieShowingsDto> showings = cinemaCatalog.getShowings(cinemaId, date);
+		assertThat(showings.size()).isEqualTo(1);
+		assertThat(showings.get(0).getShows().size()).isEqualTo(2);
+
+		System.out.println();
 	}
 
 	private Long addMovie() {
