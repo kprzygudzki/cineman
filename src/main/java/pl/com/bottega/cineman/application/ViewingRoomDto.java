@@ -6,15 +6,6 @@ import java.util.List;
 
 public class ViewingRoomDto {
 
-//	{
-//		"free": [
-//		{"row": 1, "seat": 1}, {"row": 1, "seat": 2}, {"row": 1, "seat": 3}, ...
-//    ],
-//		"occupied": [
-//		{"row": 2, "seat": 2}, {"row": 1, "seat": 3}, {"row": 1, "seat": 6}, ....
-//    ]
-//	}
-
 	private List<Seat> free;
 	private List<Seat> occupied;
 
@@ -33,4 +24,5 @@ public class ViewingRoomDto {
 	public List<Seat> getOccupied() {
 		return occupied;
 	}
+
 }

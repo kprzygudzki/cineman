@@ -7,8 +7,6 @@ import pl.com.bottega.cineman.model.commands.*;
 
 import java.util.List;
 
-import static pl.com.bottega.cineman.model.commands.Validatable.ValidationErrors;
-
 @Transactional
 public class StandardAdminPanel implements AdminPanel {
 
@@ -17,11 +15,8 @@ public class StandardAdminPanel implements AdminPanel {
 	private ShowingRepository showingRepository;
 	private PricingRepository pricingRepository;
 
-	public StandardAdminPanel(
-			CinemaRepository cinemaRepository,
-			MovieRepository movieRepository,
-			ShowingRepository showingRepository,
-			PricingRepository pricingRepository) {
+	public StandardAdminPanel(CinemaRepository cinemaRepository, MovieRepository movieRepository,
+							  ShowingRepository showingRepository, PricingRepository pricingRepository) {
 		this.cinemaRepository = cinemaRepository;
 		this.movieRepository = movieRepository;
 		this.showingRepository = showingRepository;
@@ -30,10 +25,6 @@ public class StandardAdminPanel implements AdminPanel {
 
 	@Override
 	public void createCinema(CreateCinemaCommand command) {
-		ValidationErrors errors = new ValidationErrors();
-		command.validate(errors);
-		if (!errors.isValid())
-			throw new InvalidCommandException(errors);
 		ensureNotADuplicate(command);
 		Cinema cinema = new Cinema(command);
 		cinemaRepository.put(cinema);
@@ -41,20 +32,12 @@ public class StandardAdminPanel implements AdminPanel {
 
 	@Override
 	public void createMovie(CreateMovieCommand command) {
-		ValidationErrors errors = new ValidationErrors();
-		command.validate(errors);
-		if (!errors.isValid())
-			throw new InvalidCommandException(errors);
 		Movie movie = new Movie(command);
 		movieRepository.put(movie);
 	}
 
 	@Override
 	public void createShowings(CreateShowingsCommand command) {
-		ValidationErrors errors = new ValidationErrors();
-		command.validate(errors);
-		if (!errors.isValid())
-			throw new InvalidCommandException(errors);
 		Cinema cinema = cinemaRepository.get(command.getCinemaId());
 		Movie movie = movieRepository.get(command.getMovieId());
 		ShowingFactory showingFactory = new ShowingFactory();
@@ -65,10 +48,6 @@ public class StandardAdminPanel implements AdminPanel {
 
 	@Override
 	public void defineMoviePrices(DefineMoviePricesCommand command) {
-		ValidationErrors errors = new ValidationErrors();
-		command.validate(errors);
-		if(!errors.isValid())
-			throw new InvalidCommandException(errors);
 		Movie movie = movieRepository.get(command.getMovieId());
 		movie.definePricing(command);
 		pricingRepository.put(movie.getPricing());

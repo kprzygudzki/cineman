@@ -32,11 +32,15 @@ public class MovieDtoBuilder implements MovieExporter {
 
 	@Override
 	public void addActors(Set<String> actors) {
+		if (actors == null)
+			actors = new HashSet<>();
 		movieDto.setActors(new HashSet<>(actors));
 	}
 
 	@Override
 	public void addGenres(Set<String> genres) {
+		if (genres == null)
+			genres = new HashSet<>();
 		movieDto.setGenres(new HashSet<>(genres));
 	}
 
