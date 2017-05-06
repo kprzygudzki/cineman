@@ -19,7 +19,7 @@ public class ViewingRoom {
 		for (Reservation reservation : reservations) {
 			Set<Seat> seats = reservation.getSeats();
 			for (Seat seat : seats)
-				this.seats[seat.getRow() - 1][seat.getNumber() - 1] = true;
+				this.seats[seat.getRow() - 1][seat.getSeat() - 1] = true;
 		}
 	}
 
@@ -91,7 +91,7 @@ public class ViewingRoom {
 	private boolean areConsecutive(Set<Seat> seats) {
 		List<Integer> seatNumbers = new LinkedList<>();
 		for (Seat seat : seats)
-			seatNumbers.add(seat.getNumber());
+			seatNumbers.add(seat.getSeat());
 		seatNumbers.sort(Integer::compareTo);
 
 		Integer temporaryNumber = seatNumbers.get(0);

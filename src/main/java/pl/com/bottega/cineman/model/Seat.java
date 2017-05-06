@@ -6,12 +6,11 @@ import javax.persistence.Embeddable;
 public class Seat {
 
 	private Integer row;
-	private Integer number;
-	//TODO should be "seat"
+	private Integer seat;
 
 	Seat(int row, int number) {
 		this.row = row;
-		this.number = number;
+		this.seat = number;
 	}
 
 	public Seat() {
@@ -21,16 +20,16 @@ public class Seat {
 		return row;
 	}
 
-	public Integer getNumber() {
-		return number;
+	public Integer getSeat() {
+		return seat;
 	}
 
 	public void setRow(Integer row) {
 		this.row = row;
 	}
 
-	public void setNumber(Integer number) {
-		this.number = number;
+	public void setSeat(Integer seat) {
+		this.seat = seat;
 	}
 
 	@Override
@@ -38,13 +37,13 @@ public class Seat {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Seat seat = (Seat) o;
-		return (row != null ? row.equals(seat.row) : seat.row == null) && (number != null ? number.equals(seat.number) : seat.number == null);
+		return (row != null ? row.equals(seat.row) : seat.row == null) && (this.seat != null ? this.seat.equals(seat.seat) : seat.seat == null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = row != null ? row.hashCode() : 0;
-		result = 31 * result + (number != null ? number.hashCode() : 0);
+		result = 31 * result + (seat != null ? seat.hashCode() : 0);
 		return result;
 	}
 
