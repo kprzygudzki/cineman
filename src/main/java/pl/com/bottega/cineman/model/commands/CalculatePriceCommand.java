@@ -1,7 +1,5 @@
 package pl.com.bottega.cineman.model.commands;
 
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.org.apache.xml.internal.security.signature.ObjectContainer;
 import pl.com.bottega.cineman.model.ReservationItem;
 
 import java.util.HashSet;
@@ -13,7 +11,6 @@ public class CalculatePriceCommand implements Validatable {
 
 	private static final String REQUIRED_FIELD = "missing required field";
 	private static final String DUPLICATED_ITEM_TYPE = "item type can not be duplicated";
-	private static final String INVALID_ITEM_TYPE = "invalid item type";
 
 	private Long showId;
 	private Set<ReservationItem> tickets;
@@ -59,7 +56,7 @@ public class CalculatePriceCommand implements Validatable {
 
 	private void notExistItem(ValidationErrors errors) {
 		if (isNull(tickets))
-			errors.add("reservationItems", REQUIRED_FIELD);
+			errors.add("tickets", REQUIRED_FIELD);
 	}
 
 	private void validateShowId(ValidationErrors errors) {
@@ -69,13 +66,13 @@ public class CalculatePriceCommand implements Validatable {
 
 	private void validateNoTickets(ValidationErrors errors) {
 		if (tickets.isEmpty())
-			errors.add("noTickets", REQUIRED_FIELD);
+			errors.add("tickets", REQUIRED_FIELD);
 		tickets.remove(null);
 		for (ReservationItem ticket : tickets) {
 			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())
-				errors.add("noKind", REQUIRED_FIELD);
+				errors.add("ticket kind", REQUIRED_FIELD);
 			if (isNull(ticket.getCount()))
-				errors.add("noCount", REQUIRED_FIELD);
+				errors.add("ticket count", REQUIRED_FIELD);
 		}
 	}
 

@@ -1,25 +1,19 @@
 package pl.com.bottega.cineman.acceptance;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import pl.com.bottega.cineman.application.ReservationProcess;
-import pl.com.bottega.cineman.model.*;
-import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
-
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import pl.com.bottega.cineman.model.PriceCalculator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional
+@Transactional		// TODO acceptance test suites should not be run within a transaction; please use DbCleaner instead
 public class PriceCalculatorTest {
 
+	@Autowired
 	PriceCalculator priceCalculator;
 
 	@Test
@@ -48,7 +42,6 @@ public class PriceCalculatorTest {
 		CalculationResult calculationResult = new CalculationResult(calculationItems);
 
 		priceCalculator.calculatePrices(command);*/
-
 	}
 
 }
