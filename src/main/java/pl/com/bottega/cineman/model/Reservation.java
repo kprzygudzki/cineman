@@ -10,9 +10,8 @@ import static pl.com.bottega.cineman.model.ReservationStatus.PENDING;
 @Entity
 public class Reservation {
 
-	@Id
-	@GeneratedValue
-	private Long id; //TODO remove and replace with ReservationNumber as an embedded id
+	@EmbeddedId
+	private ReservationNumber number;
 
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
@@ -23,17 +22,13 @@ public class Reservation {
 	@ElementCollection
 	private Set<ReservationItem> items;
 
-	@Embedded
-	@AttributeOverride(name = "number", column = @Column(name = "reservation_number"))
-	private ReservationNumber reservationNumber;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
 	public Reservation(CreateReservationCommand command) {
 		seats = command.getSeats();
 		items = command.getTickets();
-		reservationNumber = ReservationNumber.generate();
+		number = ReservationNumber.generate();
 		status = PENDING;
 		customer = command.getCustomer();
 	}
@@ -45,8 +40,8 @@ public class Reservation {
 		return seats;
 	}
 
-	public ReservationNumber getReservationNumber() {
-		return reservationNumber;
+	public ReservationNumber getNumber() {
+		return number;
 	}
 
 }

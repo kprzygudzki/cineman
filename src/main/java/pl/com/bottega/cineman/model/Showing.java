@@ -39,7 +39,7 @@ public class Showing {
 		getViewingRoom().ensureLegal(seats);
 		Reservation reservation = new Reservation(command);
 		reservations.add(reservation);
-		return reservation.getReservationNumber();
+		return reservation.getNumber();
 	}
 
 	public Long getId() {
