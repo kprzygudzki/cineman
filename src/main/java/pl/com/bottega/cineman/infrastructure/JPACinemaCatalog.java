@@ -88,7 +88,7 @@ public class JPACinemaCatalog implements CinemaCatalog {
 	private MovieShowingsDto createMovieShowingsDto(MovieDto movieDto, List<ShowingDto> showingDtos) {
 		MovieShowingsDto movieShowingsDto = new MovieShowingsDto();
 		movieShowingsDto.setMovie(movieDto);
-		showingDtos.sort(new ShowingTimeComparator());
+		showingDtos.sort(Comparator.comparing(ShowingDto::getTime));
 		movieShowingsDto.setShows(showingDtos);
 		return movieShowingsDto;
 	}
@@ -101,15 +101,6 @@ public class JPACinemaCatalog implements CinemaCatalog {
 	private ShowingDto getShowingDto(Showing showing, ShowingDtoBuilder builder) {
 		showing.export(builder);
 		return builder.build();
-	}
-
-	private class ShowingTimeComparator implements Comparator<ShowingDto> {
-
-		@Override
-		public int compare(ShowingDto dto1, ShowingDto dto2) {
-			return dto1.getTime().compareTo(dto2.getTime());
-		}
-
 	}
 
 }
