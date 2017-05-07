@@ -42,12 +42,22 @@ public class CalculatePriceCommand implements Validatable {
 	}
 
 	private void validateReservationItem(ValidationErrors errors) {
-		notExistItem(errors);
-		validateNoTickets(errors);
-		duplicatedItemType(errors);
+		if (isNull(tickets))
+			errors.add("tickets", REQUIRED_FIELD);
+		else {
+			ensureNoNullElements(errors);
+			validateNoTickets(errors);
+			validateNoDuplication(errors);
+		}
 	}
 
-	private void duplicatedItemType(ValidationErrors errors) {
+	private void ensureNoNullElements(ValidationErrors errors) {
+		if (tickets.contains(null))
+			errors.add("tickets", NO_NULL_ELEMENTS);
+		tickets.remove(null);
+	}
+
+	private void validateNoDuplication(ValidationErrors errors) {
 		Set<String> kinds = new HashSet<>();
 		for (ReservationItem ticket : tickets) {
 			if (!kinds.add(ticket.getKind()))
@@ -56,8 +66,7 @@ public class CalculatePriceCommand implements Validatable {
 	}
 
 	private void notExistItem(ValidationErrors errors) {
-		if (isNull(tickets))
-			errors.add("tickets", REQUIRED_FIELD);
+
 	}
 
 	private void validateShowId(ValidationErrors errors) {
@@ -68,9 +77,6 @@ public class CalculatePriceCommand implements Validatable {
 	private void validateNoTickets(ValidationErrors errors) {
 		if (tickets.isEmpty())
 			errors.add("tickets", REQUIRED_FIELD);
-		if (tickets.contains(null))
-			errors.add("tickets", NO_NULL_ELEMENTS);
-		tickets.remove(null);
 		for (ReservationItem ticket : tickets) {
 			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())
 				errors.add("ticket kind", REQUIRED_FIELD);

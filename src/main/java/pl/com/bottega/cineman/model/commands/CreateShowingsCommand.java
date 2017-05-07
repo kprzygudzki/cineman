@@ -47,7 +47,7 @@ public class CreateShowingsCommand implements Validatable {
 	}
 
 	@Override
-	public void validate(ValidationErrors errors) {
+	public void trimAndValidate(ValidationErrors errors) {
 		if (cinemaId == null)
 			errors.add("cinemaId", REQUIRED_FIELD);
 		if (movieId == null)
@@ -63,7 +63,7 @@ public class CreateShowingsCommand implements Validatable {
 			if (dates.isEmpty())
 				errors.add("dates", REQUIRED_FIELD);
 		} else {
-			calendar.validate(errors);
+			calendar.trimAndValidate(errors);
 		}
 	}
 

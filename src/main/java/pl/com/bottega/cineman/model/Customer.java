@@ -19,13 +19,6 @@ public class Customer implements Validatable {
 	private String email;
 	private String phone;
 
-	public Customer(String firstName, String lastName, String email, String phone) {
-		this.firstName = firstName.trim();
-		this.lastName = lastName.trim();
-		this.email = email.trim();
-		this.phone = phone.trim();
-	}
-
 	public Customer() {
 	}
 
@@ -62,15 +55,51 @@ public class Customer implements Validatable {
 	}
 
 	@Override
-	public void validate(ValidationErrors errors) {
-		if (firstName == null || firstName.isEmpty())
+	public void trimAndValidate(ValidationErrors errors) {
+		validateFirstName(errors);
+		validateLastName(errors);
+		validateEmail(errors);
+		validatePhone(errors);
+	}
+
+	private void validateFirstName(ValidationErrors errors) {
+		if (firstName == null)
 			errors.add("firstName", "is a required field and cannot be empty");
-		if (lastName == null || lastName.isEmpty())
-			errors.add("firstName", "is a required field and cannot be empty");
-		if (email == null || email.isEmpty())
-			errors.add("firstName", "is a required field and cannot be empty");
-		if (phone == null || phone.isEmpty())
-			errors.add("firstName", "is a required field and cannot be empty");
+		else {
+			firstName = firstName.trim();
+			if (firstName.isEmpty())
+				errors.add("firstName", "is a required field and cannot be empty");
+		}
+	}
+
+	private void validateLastName(ValidationErrors errors) {
+		if (lastName == null)
+			errors.add("lastName", "is a required field and cannot be empty");
+		else {
+			lastName = lastName.trim();
+			if (lastName.isEmpty())
+				errors.add("lastName", "is a required field and cannot be empty");
+		}
+	}
+
+	private void validateEmail(ValidationErrors errors) {
+		if (email == null)
+			errors.add("email", "is a required field and cannot be empty");
+		else {
+			email = email.trim();
+			if (email.isEmpty())
+				errors.add("email", "is a required field and cannot be empty");
+		}
+	}
+
+	private void validatePhone(ValidationErrors errors) {
+		if (phone == null)
+			errors.add("phone", "is a required field and cannot be empty");
+		else {
+			phone = phone.trim();
+			if (phone.isEmpty())
+				errors.add("phone", "is a required field and cannot be empty");
+		}
 	}
 
 }

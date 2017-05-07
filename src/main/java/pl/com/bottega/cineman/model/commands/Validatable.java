@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface Validatable {
 
-	void validate(ValidationErrors errors);
+	void trimAndValidate(ValidationErrors errors);
 
 	class ValidationErrors {
 
