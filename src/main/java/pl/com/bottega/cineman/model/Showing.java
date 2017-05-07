@@ -21,14 +21,16 @@ public class Showing {
 	private Movie movie;
 
 	private LocalDateTime beginsAt;
+	private LocalDateTime endsAt;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "showing", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Reservation> reservations = new HashSet<>();
 
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
 		this.movie = movie;
 		this.beginsAt = beginsAt;
+		this.endsAt = beginsAt.plusMinutes(movie.getLength());
 	}
 
 	public Showing() {
@@ -37,9 +39,13 @@ public class Showing {
 	public ReservationNumber createReservation(CreateReservationCommand command) {
 		Set<Seat> seats = command.getSeats();
 		getViewingRoom().ensureLegal(seats);
-		Reservation reservation = new Reservation(command);
+		Reservation reservation = new Reservation(this, command);
 		reservations.add(reservation);
 		return reservation.getNumber();
+	}
+
+	public ViewingRoom getViewingRoom() {
+		return new ViewingRoom(reservations);
 	}
 
 	public Long getId() {
@@ -58,12 +64,8 @@ public class Showing {
 		return movie;
 	}
 
-	LocalDateTime getBeginsAt() {
+	public LocalDateTime getBeginsAt() {
 		return beginsAt;
-	}
-
-	public ViewingRoom getViewingRoom() {
-		return new ViewingRoom(reservations);
 	}
 
 	public void export(ShowingExporter exporter) {
