@@ -1,10 +1,13 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -36,10 +39,21 @@ public class Showing {
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
 		Set<Seat> seats = command.getSeats();
+		ensureLegalTicketKinds(command);
 		getViewingRoom().ensureLegal(seats);
 		Reservation reservation = new Reservation(command);
 		reservations.add(reservation);
 		return reservation.getNumber();
+	}
+
+	private void ensureLegalTicketKinds(CreateReservationCommand command) {
+		Set<ReservationItem> tickets = command.getTickets();
+		Map<String, BigDecimal> pricing = movie.getPricing().getPrices();
+		for (ReservationItem ticket : tickets) {
+			String kind = ticket.getKind();
+			if (!pricing.containsKey(kind))
+				throw new InvalidRequestException(String.format("%s is not a valid kind of ticket", kind));
+		}
 	}
 
 	public Long getId() {

@@ -7,12 +7,16 @@ import pl.com.bottega.cineman.model.Seat;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+
 public class CreateReservationCommand implements Validatable {
 
 	private static final String REQUIRED_FIELD = "is a required field and can not be empty";
 	private static final String AT_LEAST_ONE = "must at least be 1";
 	private static final String NOT_MORE_THAN = "must be no bigger than %s";
 	private static final String UNIQUE_TICKET_KINDS = "must contain unique ticket kinds";
+	private static final String NOT_EQUAL_NUMBER = "must be equal to seats number";
+	private static final String NOT_NULL_ELEMENT = "cannot contain empty elements";
 
 	private Long showId;
 	private Set<ReservationItem> tickets;
@@ -55,7 +59,9 @@ public class CreateReservationCommand implements Validatable {
 	}
 
 	@Override
-	public void validate(ValidationErrors errors) {
+	public void trimAndValidate(ValidationErrors errors) {
+		if (showId == null)
+			errors.add("showId", REQUIRED_FIELD);
 		if (seats == null)
 			errors.add("seats", REQUIRED_FIELD);
 		else
@@ -64,7 +70,10 @@ public class CreateReservationCommand implements Validatable {
 			errors.add("tickets", REQUIRED_FIELD);
 		else
 			validateTickets(errors);
-		customer.validate(errors);
+		if (customer == null)
+			errors.add("customer", REQUIRED_FIELD);
+		else
+			customer.trimAndValidate(errors);
 	}
 
 	private void validateSeats(ValidationErrors errors) {
@@ -102,19 +111,38 @@ public class CreateReservationCommand implements Validatable {
 	}
 
 	private void validateTickets(ValidationErrors errors) {
-		tickets.remove(null);
-		if (tickets.isEmpty())
+		if (tickets == null || tickets.isEmpty())
 			errors.add("tickets", REQUIRED_FIELD);
+		if (tickets.contains(null))
+			errors.add("tickets", NOT_NULL_ELEMENT);
+		tickets.remove(null);
+		for (ReservationItem ticket : tickets) {
+			if (isNull(ticket.getCount()))
+				errors.add("ticket count", REQUIRED_FIELD);
+			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())
+				errors.add("ticket kind", REQUIRED_FIELD);
+		}
 		for (ReservationItem ticket : tickets) {
 			ensureTicketKindPresent(errors, ticket);
 			ensureTicketCountPresent(errors, ticket);
 			ensureTicketCountBiggerThenZero(errors, ticket);
 		}
+		ensureTicketCountEqualsSeats(errors);
 		ensureUniqueTicketKinds(errors);
 	}
 
+	private void ensureTicketCountEqualsSeats(ValidationErrors errors) {
+		Integer ticketCount = 0;
+		for (ReservationItem ticket : tickets) {
+			if (ticket.getCount() != null)
+				ticketCount += ticket.getCount();
+		}
+		if (seats != null && ticketCount != seats.size())
+			errors.add("ticket count", NOT_EQUAL_NUMBER);
+	}
+
 	private void ensureTicketCountBiggerThenZero(ValidationErrors errors, ReservationItem ticket) {
-		if (ticket.getCount().compareTo(1) < 0)
+		if (ticket.getCount() != null && ticket.getCount().compareTo(1) < 0)
 			errors.add("ticket count", AT_LEAST_ONE);
 	}
 

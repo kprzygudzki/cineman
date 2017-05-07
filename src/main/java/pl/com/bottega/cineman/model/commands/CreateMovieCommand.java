@@ -66,7 +66,7 @@ public class CreateMovieCommand implements Validatable {
 	}
 
 	@Override
-	public void validate(ValidationErrors errors) {
+	public void trimAndValidate(ValidationErrors errors) {
 		if (title == null || title.isEmpty() || title.trim().equals(""))
 			errors.add("title", REQUIRED_FIELD);
 		if (description == null || description.isEmpty() || description.trim().equals(""))

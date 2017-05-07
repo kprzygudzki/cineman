@@ -51,7 +51,7 @@ public class Calendar implements Validatable {
 	}
 
 	@Override
-	public void validate(ValidationErrors errors) {
+	public void trimAndValidate(ValidationErrors errors) {
 		if (fromDate == null)
 			errors.add("fromDate", REQUIRED_FIELD);
 		if (fromDate.isBefore(LocalDateTime.now()))

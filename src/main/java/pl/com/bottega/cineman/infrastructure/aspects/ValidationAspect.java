@@ -14,7 +14,7 @@ public class ValidationAspect {
 	@Before( "execution(* pl.com.bottega.cineman.application..*.*(..)) && args(validatable,..)" )
 	public void validate(Validatable validatable) {
 		ValidationErrors errors = new ValidationErrors();
-		validatable.validate(errors);
+		validatable.trimAndValidate(errors);
 		if (!errors.isValid())
 			throw new InvalidCommandException(errors);
 	}
