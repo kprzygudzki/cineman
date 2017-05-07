@@ -10,8 +10,8 @@ import static java.util.Objects.isNull;
 public class CalculatePriceCommand implements Validatable {
 
 	private static final String REQUIRED_FIELD = "missing required field";
-	private static final String DUPLICATED_ITEM_TYPE = "item type can not be duplicated";
-	public static final String NO_NULL_ELEMENTS = "can not contain null elements";
+	private static final String DUPLICATED_ITEM_TYPE = "ticket types must be unique";
+	private static final String NO_NULL_ELEMENTS = "elements can not by empty";
 
 	private Long showId;
 	private Set<ReservationItem> tickets;
