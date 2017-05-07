@@ -25,12 +25,16 @@ public class Reservation {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
-	public Reservation(CreateReservationCommand command) {
-		seats = command.getSeats();
-		items = command.getTickets();
-		number = ReservationNumber.generate();
-		status = PENDING;
-		customer = command.getCustomer();
+	@ManyToOne
+	private Showing showing;
+
+	public Reservation(Showing showing, CreateReservationCommand command) {
+		this.showing = showing;
+		this.seats = command.getSeats();
+		this.items = command.getTickets();
+		this.number = ReservationNumber.generate();
+		this.status = PENDING;
+		this.customer = command.getCustomer();
 	}
 
 	public Reservation() {
@@ -44,4 +48,11 @@ public class Reservation {
 		return number;
 	}
 
+	public void export(ReservationExporter exporter) {
+		exporter.addNumber(number);
+		exporter.addStatus(status);
+		exporter.addSeats(seats);
+		exporter.addItemsAndShowing(items, showing);
+		exporter.addCustomer(customer);
+	}
 }

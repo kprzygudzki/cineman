@@ -84,4 +84,12 @@ public class Movie {
 		return id != null ? id.hashCode() : 0;
 	}
 
+	Integer getLength() {
+		return length;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
 }
