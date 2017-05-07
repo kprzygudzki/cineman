@@ -11,6 +11,7 @@ public class CalculatePriceCommand implements Validatable {
 
 	private static final String REQUIRED_FIELD = "missing required field";
 	private static final String DUPLICATED_ITEM_TYPE = "item type can not be duplicated";
+	public static final String NO_NULL_ELEMENTS = "can not contain null elements";
 
 	private Long showId;
 	private Set<ReservationItem> tickets;
@@ -42,8 +43,8 @@ public class CalculatePriceCommand implements Validatable {
 
 	private void validateReservationItem(ValidationErrors errors) {
 		notExistItem(errors);
-		duplicatedItemType(errors);
 		validateNoTickets(errors);
+		duplicatedItemType(errors);
 	}
 
 	private void duplicatedItemType(ValidationErrors errors) {
@@ -67,6 +68,8 @@ public class CalculatePriceCommand implements Validatable {
 	private void validateNoTickets(ValidationErrors errors) {
 		if (tickets.isEmpty())
 			errors.add("tickets", REQUIRED_FIELD);
+		if (tickets.contains(null))
+			errors.add("tickets", NO_NULL_ELEMENTS);
 		tickets.remove(null);
 		for (ReservationItem ticket : tickets) {
 			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())

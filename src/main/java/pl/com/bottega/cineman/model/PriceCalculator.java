@@ -20,13 +20,16 @@ public class PriceCalculator {
 	public CalculationResult calculatePrices(CalculatePriceCommand command) {
 		Collection<CalculationItem> calculationItems = new HashSet<>();
 		Showing showing = showingRepository.get(command.getShowId());
+		Pricing pricing = showing.getMovie().getPricing();
+		if (pricing == null)
+			throw new ResourceNotFoundException("pricing for movie", showing.getMovie().getId());
+		Map<String, BigDecimal> prices = pricing.getPrices();
 		Set<ReservationItem> tickets = command.getTickets();
-		Map<String, BigDecimal> pricing = showing.getMovie().getPricing().getPrices();
 		for (ReservationItem ticket : tickets) {
 			String kind = ticket.getKind();
-			if (!pricing.containsKey(kind))
+			if (!prices.containsKey(kind))
 				throw new InvalidRequestException(String.format("%s is not a valid kind of ticket", kind));
-			BigDecimal unitPrice = pricing.get(kind);
+			BigDecimal unitPrice = prices.get(kind);
 			CalculationItem items = new CalculationItem(ticket, unitPrice);
 			calculationItems.add(items);
 		}
