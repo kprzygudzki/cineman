@@ -55,7 +55,7 @@ public class Customer implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
 		validateFirstName(errors);
 		validateLastName(errors);
 		validateEmail(errors);

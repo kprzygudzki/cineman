@@ -10,9 +10,8 @@ public class CreateShowingsCommand implements Validatable {
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
-	private static final String REQUIRED_FIELD = "is a required field and can't be blank";
-	private static final String MAX_ONE_REQUIRED = "either calendar or dates is required; can't both be blank";
-	private static final String MIN_ONE_REQUIRED = "either calendar or dates is required; can't provide both";
+	private static final String MAX_ONE_FIELD_REQUIRED = "either is required; can't both be blank";
+	private static final String MIN_ONE_FIELD_REQUIRED = "either is required; can't provide both";
 
 	public Long getCinemaId() {
 		return cinemaId;
@@ -47,24 +46,43 @@ public class CreateShowingsCommand implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
+		validateCinemaId(errors);
+		validateMovieId(errors);
+		validateDatesAndCalendar(errors);
+	}
+
+	private void validateCinemaId(ValidationErrors errors) {
 		if (cinemaId == null)
 			errors.add("cinemaId", REQUIRED_FIELD);
+	}
+
+	private void validateMovieId(ValidationErrors errors) {
 		if (movieId == null)
 			errors.add("movieId", REQUIRED_FIELD);
-		if (dates == null && calendar == null) {
-			errors.add("calendar", MAX_ONE_REQUIRED);
-			errors.add("dates", MAX_ONE_REQUIRED);
-		} else if (calendar != null && dates != null) {
-			errors.add("calendar", MIN_ONE_REQUIRED);
-			errors.add("dates", MIN_ONE_REQUIRED);
-		} else if (dates != null) {
-			dates.remove(null);
-			if (dates.isEmpty())
-				errors.add("dates", REQUIRED_FIELD);
-		} else {
-			calendar.trimAndValidate(errors);
-		}
+	}
+
+	private void validateDatesAndCalendar(ValidationErrors errors) {
+		if (calendar == null && dates == null)
+			errors.add("calendar and dates", MAX_ONE_FIELD_REQUIRED);
+		else if (calendar != null && dates != null)
+			errors.add("calendar and dates", MIN_ONE_FIELD_REQUIRED);
+		else if (dates != null)
+			validateDates(errors);
+		else
+			calendar.validate(errors);
+	}
+
+	private void validateDates(ValidationErrors errors) {
+		if (dates.isEmpty())
+			errors.add("dates", REQUIRED_FIELD);
+		if (dates.remove(null))
+			errors.add("dates", NON_NULL_ELEMENT);
+		for (LocalDateTime date : dates)
+			if (date.isBefore(LocalDateTime.now())) {
+				errors.add("dates", FUTURE_DATE_REQUIRED);
+				break;
+			}
 	}
 
 }
