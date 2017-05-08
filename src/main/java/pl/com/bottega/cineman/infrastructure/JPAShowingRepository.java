@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-@Transactional
 public class JPAShowingRepository implements ShowingRepository {
 
 	@PersistenceContext

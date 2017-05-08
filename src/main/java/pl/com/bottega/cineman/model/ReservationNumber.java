@@ -9,7 +9,7 @@ public class ReservationNumber implements Serializable {
 
 	private String reservationNumber;
 
-	private ReservationNumber(String reservationNumber) {
+	public ReservationNumber(String reservationNumber) {
 		this.reservationNumber = reservationNumber;
 	}
 

@@ -1,11 +1,9 @@
 package pl.com.bottega.cineman.infrastructure;
 
 import org.springframework.context.annotation.Bean;
-import pl.com.bottega.cineman.application.AdminPanel;
-import pl.com.bottega.cineman.application.CinemaCatalog;
-import pl.com.bottega.cineman.application.MovieCatalog;
-import pl.com.bottega.cineman.application.ReservationProcess;
+import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.application.impl.StandardAdminPanel;
+import pl.com.bottega.cineman.application.impl.StandardPaymentCollector;
 import pl.com.bottega.cineman.application.impl.StandardReservationProcess;
 import pl.com.bottega.cineman.model.*;
 
@@ -43,6 +41,11 @@ public class Configuration {
 	}
 
 	@Bean
+	public ReservationRepository reservationRepository() {
+		return new JPAReservationRepository();
+	}
+
+	@Bean
 	public AdminPanel adminPanel(CinemaRepository cinemaRepository,
 								 MovieRepository movieRepository,
 								 ShowingRepository showingRepository,
@@ -53,6 +56,11 @@ public class Configuration {
 	@Bean
 	public ReservationProcess reservationProcess(PriceCalculator priceCalculator, ShowingRepository showingRepository) {
 		return new StandardReservationProcess(priceCalculator, showingRepository);
+	}
+
+	@Bean
+	public PaymentCollector paymentCollector(ReservationRepository reservationRepository) {
+		return new StandardPaymentCollector(reservationRepository);
 	}
 
 	@Bean

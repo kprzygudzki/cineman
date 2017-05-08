@@ -26,7 +26,7 @@ public class Showing {
 	private LocalDateTime beginsAt;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Reservation> reservations = new HashSet<>();
+	private Set<Reservation> reservations;
 
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
@@ -38,6 +38,8 @@ public class Showing {
 	}
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
+		if (this.reservations == null)
+			this.reservations = new HashSet<>();
 		Set<Seat> seats = command.getSeats();
 		ensureLegalTicketKinds(command);
 		getViewingRoom().ensureLegal(seats);

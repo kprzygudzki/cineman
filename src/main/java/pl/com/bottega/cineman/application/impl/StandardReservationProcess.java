@@ -7,6 +7,9 @@ import pl.com.bottega.cineman.model.*;
 import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
 
+import javax.transaction.Transactional;
+
+@Transactional
 public class StandardReservationProcess implements ReservationProcess {
 
 	private PriceCalculator priceCalculator;
