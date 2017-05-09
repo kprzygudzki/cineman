@@ -4,7 +4,11 @@ import pl.com.bottega.cineman.model.CreditCard;
 import pl.com.bottega.cineman.model.PaymentType;
 import pl.com.bottega.cineman.model.ReservationNumber;
 
-public class CollectPaymentCommand {
+import static java.util.Objects.isNull;
+
+public class CollectPaymentCommand implements Validatable {
+
+	private static final String REQUIRED_FIELD = "missing required field";
 
 	private PaymentType type;
 	private Long cashierId;
@@ -41,5 +45,21 @@ public class CollectPaymentCommand {
 
 	public void setReservationNumber(ReservationNumber reservationNumber) {
 		this.reservationNumber = reservationNumber;
+	}
+
+	@Override
+	public void trimAndValidate(ValidationErrors errors) {
+		validatePaymentType(errors);
+		validateCashierId(errors);
+	}
+
+	private void validateCashierId(ValidationErrors errors) {
+		if (isNull(cashierId))
+			errors.add("cashier id", REQUIRED_FIELD);
+	}
+
+	private void validatePaymentType(ValidationErrors errors) {
+		if (isNull(type))
+			errors.add("payment type", REQUIRED_FIELD);
 	}
 }
