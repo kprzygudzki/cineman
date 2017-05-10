@@ -2,10 +2,7 @@ package pl.com.bottega.cineman.model;
 
 import pl.com.bottega.cineman.model.commands.CollectPaymentCommand;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,11 +12,13 @@ public class PaymentTransaction {
 	@GeneratedValue
 	private Long id;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private PaymentType type;
+
 	private Long cashierId;
 	private LocalDateTime paymentDate;
 	private boolean successful;
+
 	private String errorMessage;
 
 	public PaymentTransaction(CollectPaymentCommand command) {
@@ -28,4 +27,5 @@ public class PaymentTransaction {
 		this.paymentDate = LocalDateTime.now();
 		this.successful = true;
 	}
+
 }

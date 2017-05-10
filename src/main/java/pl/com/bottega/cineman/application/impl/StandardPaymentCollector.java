@@ -20,7 +20,7 @@ public class StandardPaymentCollector implements PaymentCollector {
 	public void collectPayment(CollectPaymentCommand command) {
 		Reservation reservation = reservationRepository.get(command.getReservationNumber());
 		if (reservation == null)
-			throw new IllegalArgumentException(String.format("Reservation %s does not exist", command.getReservationNumber()));
+			throw new IllegalArgumentException("Reservation does not exist");
 		reservation.collectPayment(command);
 	}
 

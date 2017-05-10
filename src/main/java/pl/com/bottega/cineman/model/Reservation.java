@@ -2,6 +2,7 @@ package pl.com.bottega.cineman.model;
 
 import pl.com.bottega.cineman.model.commands.CollectPaymentCommand;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
+import pl.com.bottega.cineman.model.commands.InvalidActionException;
 
 import javax.persistence.*;
 import java.util.HashSet;

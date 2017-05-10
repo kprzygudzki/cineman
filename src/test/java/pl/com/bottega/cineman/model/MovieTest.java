@@ -6,7 +6,6 @@ import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.MovieDto;
 import pl.com.bottega.cineman.application.MovieDtoBuilder;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
-import pl.com.bottega.cineman.model.commands.DefineMoviePricesCommand;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

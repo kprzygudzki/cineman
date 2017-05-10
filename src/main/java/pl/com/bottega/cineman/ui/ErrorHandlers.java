@@ -9,6 +9,7 @@ import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.IllegalSeatingException;
 import pl.com.bottega.cineman.model.ResourceNotFoundException;
 import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
+import pl.com.bottega.cineman.model.commands.InvalidActionException;
 import pl.com.bottega.cineman.model.commands.InvalidCommandException;
 import pl.com.bottega.cineman.model.commands.Validatable;
 
@@ -66,6 +67,17 @@ public class ErrorHandlers {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 		return new ResponseEntity<>(
+				String.format("{\"error\": \"%s\"}", ex.getMessage()),
+				headers,
+				HttpStatus.UNPROCESSABLE_ENTITY
+		);
+	}
+
+	@ExceptionHandler(InvalidActionException.class)
+	public ResponseEntity<String> handleInvalidActionException(InvalidActionException ex) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		return new ResponseEntity<String>(
 				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,
 				HttpStatus.UNPROCESSABLE_ENTITY
