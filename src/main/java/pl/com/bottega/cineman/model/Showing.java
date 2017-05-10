@@ -36,7 +36,7 @@ public class Showing {
 		this.endsAt = beginsAt.plusMinutes(movie.getLength());
 	}
 
-	public Showing() {
+	private Showing() {
 	}
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
@@ -89,4 +89,10 @@ public class Showing {
 		exporter.addBeginsAt(beginsAt);
 	}
 
+	public Pricing getPricing() {
+		Pricing pricing = movie.getPricing();
+		if (pricing == null)
+			throw new ResourceNotFoundException("pricing for movie", movie.getId());
+		return pricing;
+	}
 }

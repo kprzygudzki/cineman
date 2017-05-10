@@ -54,7 +54,7 @@ public class Configuration {
 
 	@Bean
 	PriceCalculator priceCalculator() {
-		return new PriceCalculator(showingRepository());
+		return new StandardPriceCalculator(showingRepository());
 	}
 
 	@Bean
