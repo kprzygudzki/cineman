@@ -19,8 +19,6 @@ public class StandardPaymentCollector implements PaymentCollector {
 	@Override
 	public void collectPayment(CollectPaymentCommand command) {
 		Reservation reservation = reservationRepository.get(command.getReservationNumber());
-		if (reservation == null)
-			throw new IllegalArgumentException("Reservation does not exist");
 		reservation.collectPayment(command);
 	}
 
