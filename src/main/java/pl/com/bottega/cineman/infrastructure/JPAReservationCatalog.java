@@ -4,6 +4,7 @@ import pl.com.bottega.cineman.application.ReservationCatalog;
 import pl.com.bottega.cineman.application.ReservationDto;
 import pl.com.bottega.cineman.application.ReservationDtoBuilder;
 import pl.com.bottega.cineman.application.ReservationsQuery;
+import pl.com.bottega.cineman.model.PriceCalculator;
 import pl.com.bottega.cineman.model.Reservation;
 import pl.com.bottega.cineman.model.ReservationStatus;
 
@@ -17,6 +18,12 @@ public class JPAReservationCatalog implements ReservationCatalog {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	private PriceCalculator priceCalculator;
+
+	public JPAReservationCatalog(PriceCalculator priceCalculator) {
+		this.priceCalculator = priceCalculator;
+	}
 
 	@Override
 	public List<ReservationDto> getReservations(ReservationsQuery reservationsQuery) {
@@ -39,7 +46,9 @@ public class JPAReservationCatalog implements ReservationCatalog {
 		criteria.where(builder.and(preparePredicates(reservationsQuery, builder, reservation)));
 		criteria.distinct(true);
 		criteria.orderBy(builder.asc(reservation.get("showing").get("beginsAt")));
-		return entityManager.createQuery(criteria).getResultList();
+		List<Reservation> reservations = entityManager.createQuery(criteria).getResultList();
+		injectPriceCalculator(reservations);
+		return reservations;
 	}
 
 	private Predicate[] preparePredicates(
@@ -80,6 +89,11 @@ public class JPAReservationCatalog implements ReservationCatalog {
 	private ReservationDto createReservationDto(ReservationDtoBuilder builder, Reservation reservation) {
 		reservation.export(builder);
 		return builder.build();
+	}
+
+	private void injectPriceCalculator(List<Reservation> reservations) {
+		for (Reservation reservation : reservations)
+			reservation.setPriceCalculator(priceCalculator);
 	}
 
 }

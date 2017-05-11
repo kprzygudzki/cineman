@@ -4,8 +4,7 @@ import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class StandardPriceCalculator implements PriceCalculator {
 	}
 
 	private CalculationResult getCalculationResult(Map<String, BigDecimal> prices, Set<ReservationItem> tickets) {
-		List<CalculationItem> calculationItems = new LinkedList<>();
+		Set<CalculationItem> calculationItems = new HashSet<>();
 		for (ReservationItem ticket : tickets)
 			calculationItems.add(getCalculationItem(prices, ticket));
 		return CalculationResult.of(calculationItems);
