@@ -55,7 +55,7 @@ public class StripePaymentFacade implements PaymentFacade {
 		params.put("number", creditCard.getNumber());
 		params.put("cvc", creditCard.getCvc());
 		params.put("exp_year", creditCard.getExpirationYear().toString());
-		params.put("exp_month", creditCard.getExpirationMonth().toString());
+		params.put("exp_month", creditCard.getExpirationMonth().ordinal());
 		return params;
 	}
 
