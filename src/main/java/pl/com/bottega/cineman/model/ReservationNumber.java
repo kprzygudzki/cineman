@@ -21,6 +21,9 @@ public class ReservationNumber implements Serializable {
 		return new ReservationNumber(number);
 	}
 
+	private ReservationNumber() {
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
