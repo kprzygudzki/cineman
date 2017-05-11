@@ -34,7 +34,7 @@ public class PaymentTransaction {
 	public PaymentTransaction(ChargeResult chargeResult) {
 		type = CREDIT_CARD;
 		paymentDate = LocalDateTime.now();
-		successful = chargeResult.isSuccessful();
+		successful = chargeResult.isPaid();
 		errorMessage = chargeResult.getErrorMessage();
 	}
 

@@ -75,7 +75,7 @@ public class Reservation {
 		ChargeResult chargeResult = paymentFacade.charge(creditCard, calculationResult.getTotalPrice());
 		PaymentTransaction paymentTransaction = new PaymentTransaction(chargeResult);
 		paymentTransactions.add(paymentTransaction);
-		if (chargeResult.isSuccessful())
+		if (chargeResult.isPaid())
 			status = PAID;
 		else
 			status = PAYMENT_FAILED;

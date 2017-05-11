@@ -1,6 +1,7 @@
 package pl.com.bottega.cineman.infrastructure;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.application.impl.StandardAdminPanel;
 import pl.com.bottega.cineman.application.impl.StandardPaymentCollector;
@@ -74,8 +75,9 @@ public class Configuration {
 	}
 
 	@Bean
-	PaymentFacade paymentFacade() {
-		return new StripePaymentFacade();
+	PaymentFacade paymentFacade(Environment environment) {
+		String private_api_key = environment.getProperty("stripe_private_api_key");
+		return new StripePaymentFacade(private_api_key);
 	}
 
 }
