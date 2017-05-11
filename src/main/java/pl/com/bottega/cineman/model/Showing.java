@@ -24,26 +24,26 @@ public class Showing {
 	private Movie movie;
 
 	private LocalDateTime beginsAt;
+	private LocalDateTime endsAt;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Reservation> reservations;
+	@OneToMany(mappedBy = "showing", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Reservation> reservations = new HashSet<>();
 
 	Showing(Cinema cinema, Movie movie, LocalDateTime beginsAt) {
 		this.cinema = cinema;
 		this.movie = movie;
 		this.beginsAt = beginsAt;
+		this.endsAt = beginsAt.plusMinutes(movie.getLength());
 	}
 
 	public Showing() {
 	}
 
 	public ReservationNumber createReservation(CreateReservationCommand command) {
-		if (this.reservations == null)
-			this.reservations = new HashSet<>();
 		Set<Seat> seats = command.getSeats();
 		ensureLegalTicketKinds(command);
 		getViewingRoom().ensureLegal(seats);
-		Reservation reservation = new Reservation(command);
+		Reservation reservation = new Reservation(this, command);
 		reservations.add(reservation);
 		return reservation.getNumber();
 	}
@@ -56,6 +56,10 @@ public class Showing {
 			if (!pricing.containsKey(kind))
 				throw new InvalidRequestException(String.format("%s is not a valid kind of ticket", kind));
 		}
+	}
+
+	public ViewingRoom getViewingRoom() {
+		return new ViewingRoom(reservations);
 	}
 
 	public Long getId() {
@@ -74,12 +78,8 @@ public class Showing {
 		return movie;
 	}
 
-	LocalDateTime getBeginsAt() {
+	public LocalDateTime getBeginsAt() {
 		return beginsAt;
-	}
-
-	public ViewingRoom getViewingRoom() {
-		return new ViewingRoom(reservations);
 	}
 
 	public void export(ShowingExporter exporter) {
@@ -87,6 +87,13 @@ public class Showing {
 		exporter.addCinema(cinema);
 		exporter.addMovie(movie);
 		exporter.addBeginsAt(beginsAt);
+	}
+
+	public Pricing getPricing() {
+		Pricing pricing = movie.getPricing();
+		if (pricing == null)
+			throw new ResourceNotFoundException("pricing for movie", movie.getId());
+		return pricing;
 	}
 
 }

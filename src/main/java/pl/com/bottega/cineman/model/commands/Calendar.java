@@ -12,9 +12,6 @@ public class Calendar implements Validatable {
 	private Set<DayOfWeek> weekDays;
 	private Set<LocalTime> hours;
 
-	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
-	private static final String REQUIRED_FUTURE_DATE = "must be in the future";
-
 	public Calendar() {
 	}
 
@@ -51,29 +48,39 @@ public class Calendar implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
+		validateFromDate(errors);
+		validateUntilDate(errors);
+		validateWeekDays(errors);
+		validateHours(errors);
+	}
+
+	private void validateFromDate(ValidationErrors errors) {
 		if (fromDate == null)
 			errors.add("fromDate", REQUIRED_FIELD);
-		if (fromDate.isBefore(LocalDateTime.now()))
-			errors.add("fromDate", REQUIRED_FUTURE_DATE);
+		else if (fromDate.isBefore(LocalDateTime.now()))
+			errors.add("fromDate", FUTURE_DATE_REQUIRED);
+	}
+
+	private void validateUntilDate(ValidationErrors errors) {
 		if (untilDate == null)
 			errors.add("untilDate", REQUIRED_FIELD);
-		if (untilDate.isBefore(LocalDateTime.now()))
-			errors.add("untilDate", REQUIRED_FUTURE_DATE);
-		if (weekDays == null)
+		else if (untilDate.isBefore(LocalDateTime.now()))
+			errors.add("untilDate", FUTURE_DATE_REQUIRED);
+	}
+
+	private void validateWeekDays(ValidationErrors errors) {
+		if (weekDays == null || weekDays.isEmpty())
 			errors.add("weekDays", REQUIRED_FIELD);
-		else {
-			weekDays.remove(null);
-			if (weekDays.isEmpty())
-				errors.add("weekDays", REQUIRED_FIELD);
-		}
-		if (hours == null)
+		else if (weekDays.remove(null))
+			errors.add("weekDays", NON_NULL_ELEMENT);
+	}
+
+	private void validateHours(ValidationErrors errors) {
+		if (hours == null || hours.isEmpty())
 			errors.add("times", REQUIRED_FIELD);
-		else {
-			hours.remove(null);
-			if (hours.isEmpty())
-				errors.add("times", REQUIRED_FIELD);
-		}
+		else if (hours.remove(null))
+			errors.add("times", NON_NULL_ELEMENT);
 	}
 
 }

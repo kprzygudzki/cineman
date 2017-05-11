@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.com.bottega.cineman.application.InvalidRequestException;
+import pl.com.bottega.cineman.model.DuplicateCinemaException;
 import pl.com.bottega.cineman.model.IllegalSeatingException;
 import pl.com.bottega.cineman.model.ResourceNotFoundException;
 import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;

@@ -38,8 +38,24 @@ public class Customer implements Validatable {
 		this.phone = phone;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
 		validateFirstName(errors);
 		validateLastName(errors);
 		validateEmail(errors);

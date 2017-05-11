@@ -4,15 +4,16 @@ import java.util.Set;
 
 public class CreateMovieCommand implements Validatable {
 
+	private static final String REQUIRED_FIELD = "is a required field and can not be blank";
+	private static final String EMPTY_FIELDS = "is a required field and can not contain empty fields";
+	private static final String NEGATIVE_FIELD = "must be at least 1";
+
 	private String title;
 	private String description;
 	private Set<String> actors;
 	private Set<String> genres;
 	private Integer minAge;
 	private Integer length;
-
-	private static final String REQUIRED_FIELD = "is a required field and cannot be blank";
-	private static final String NEGATIVE_FIELD = "cannot be zero or negative";
 
 	public CreateMovieCommand() {
 	}
@@ -66,40 +67,71 @@ public class CreateMovieCommand implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
-		if (title == null || title.isEmpty() || title.trim().equals(""))
-			errors.add("title", REQUIRED_FIELD);
-		if (description == null || description.isEmpty() || description.trim().equals(""))
-			errors.add("description", REQUIRED_FIELD);
-		if (actors == null)
-			errors.add("actors", REQUIRED_FIELD);
-		else{
-			actors.remove(null);
-			for(String actor : actors)
-				if(actor.trim().equals(""))
-					errors.add("actors", "cannot contain empty field");
-			if (actors.isEmpty())
-				errors.add("actors", REQUIRED_FIELD);
-		}
-		if (genres == null)
-			errors.add("genres", REQUIRED_FIELD);
-		else {
-			genres.remove(null);
-			for (String genre : genres) {
-				if (genre.trim().equals(""))
-					errors.add("genres", "cannot contain empty field");
-			}
-			if (genres.isEmpty())
-				errors.add("genres", REQUIRED_FIELD);
-		}
-		if (minAge == null)
-			errors.add("minAge", REQUIRED_FIELD);
-		if (minAge <= 0)
-			errors.add("minAge", NEGATIVE_FIELD);
+	public void validate(ValidationErrors errors) {
+		validateTitle(errors);
+		validateDescription(errors);
+		validateActors(errors);
+		validateGenres(errors);
+		validateMinAge(errors);
+		validateLength(errors);
+	}
+
+	private void validateLength(ValidationErrors errors) {
 		if (length == null)
 			errors.add("length", REQUIRED_FIELD);
-		if (length <= 0)
+		else if (length.compareTo(1) < 0)
 			errors.add("length", NEGATIVE_FIELD);
+	}
+
+	private void validateMinAge(ValidationErrors errors) {
+		if (minAge == null)
+			errors.add("minAge", REQUIRED_FIELD);
+		else if (minAge.compareTo(1) < 0)
+			errors.add("minAge", NEGATIVE_FIELD);
+	}
+
+	private void validateTitle(ValidationErrors errors) {
+		if (title == null) {
+			errors.add("title", REQUIRED_FIELD);
+			return;
+		}
+		title = title.trim();
+		if (title.isEmpty())
+			errors.add("title", REQUIRED_FIELD);
+	}
+
+	private void validateDescription(ValidationErrors errors) {
+		if (description == null) {
+			errors.add("description", REQUIRED_FIELD);
+			return;
+		}
+		description = description.trim();
+		if (description.isEmpty())
+			errors.add("description", REQUIRED_FIELD);
+	}
+
+	private void validateActors(ValidationErrors errors) {
+		if (actors == null) {
+			errors.add("actors", REQUIRED_FIELD);
+			return;
+		}
+		if (actors.remove(null))
+			errors.add("actors", EMPTY_FIELDS);
+		for (String actor : actors)
+			if (actor.trim().isEmpty())
+				errors.add("actors", EMPTY_FIELDS);
+	}
+
+	private void validateGenres(ValidationErrors errors) {
+		if (genres == null) {
+			errors.add("genres", REQUIRED_FIELD);
+			return;
+		}
+		if (genres.remove(null))
+			errors.add("actors", EMPTY_FIELDS);
+		for (String genre : genres)
+			if (genre.trim().isEmpty())
+				errors.add("genres", EMPTY_FIELDS);
 	}
 
 }

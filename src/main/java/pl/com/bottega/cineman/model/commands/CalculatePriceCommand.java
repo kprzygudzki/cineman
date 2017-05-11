@@ -9,10 +9,6 @@ import static java.util.Objects.isNull;
 
 public class CalculatePriceCommand implements Validatable {
 
-	private static final String REQUIRED_FIELD = "missing required field";
-	private static final String DUPLICATED_ITEM_TYPE = "item type can not be duplicated";
-	private static final String NO_NULL_ELEMENTS = "can not contain null elements";
-
 	private Long showId;
 	private Set<ReservationItem> tickets;
 
@@ -36,37 +32,9 @@ public class CalculatePriceCommand implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
 		validateShowId(errors);
-		validateReservationItem(errors);
-	}
-
-	private void validateReservationItem(ValidationErrors errors) {
-		notExistItem(errors);
-		if (tickets != null) {
-			ensureNotNullElements(errors);
-			validateNoTickets(errors);
-			duplicatedItemType(errors);
-		}
-	}
-
-	private void ensureNotNullElements(ValidationErrors errors) {
-		if (tickets.contains(null))
-			errors.add("tickets", NO_NULL_ELEMENTS);
-		tickets.remove(null);
-	}
-
-	private void duplicatedItemType(ValidationErrors errors) {
-		Set<String> kinds = new HashSet<>();
-		for (ReservationItem ticket : tickets) {
-			if (!kinds.add(ticket.getKind()))
-				errors.add("duplicatedItemType", DUPLICATED_ITEM_TYPE);
-		}
-	}
-
-	private void notExistItem(ValidationErrors errors) {
-		if (isNull(tickets))
-			errors.add("tickets", REQUIRED_FIELD);
+		validateTickets(errors);
 	}
 
 	private void validateShowId(ValidationErrors errors) {
@@ -74,14 +42,23 @@ public class CalculatePriceCommand implements Validatable {
 			errors.add("showId", REQUIRED_FIELD);
 	}
 
-	private void validateNoTickets(ValidationErrors errors) {
-		if (tickets.isEmpty())
+	private void validateTickets(ValidationErrors errors) {
+		if (isNull(tickets) || tickets.isEmpty()) {
 			errors.add("tickets", REQUIRED_FIELD);
+			return;
+		}
+		if (tickets.remove(null))
+			errors.add("tickets", NON_NULL_ELEMENT);
+		for (ReservationItem ticket : tickets)
+			ticket.validate(errors);
+		validateUniqueKinds(errors);
+	}
+
+	private void validateUniqueKinds(ValidationErrors errors) {
+		Set<String> kinds = new HashSet<>();
 		for (ReservationItem ticket : tickets) {
-			if (isNull(ticket.getKind()) || ticket.getKind().trim().isEmpty())
-				errors.add("ticket kind", REQUIRED_FIELD);
-			if (isNull(ticket.getCount()))
-				errors.add("ticket count", REQUIRED_FIELD);
+			if (!kinds.add(ticket.getKind()))
+				errors.add("tickets", UNIQUE_TICKET_KINDS);
 		}
 	}
 

@@ -9,11 +9,22 @@ public class CalculationItem {
 	private BigDecimal unitPrice;
 	private BigDecimal totalPrice;
 
-	public CalculationItem(ReservationItem reservationItem, BigDecimal unitPrice) {
-		this.kind = reservationItem.getKind();
-		this.count = reservationItem.getCount();
+	private CalculationItem(String kind, Integer count, BigDecimal unitPrice, BigDecimal totalPrice) {
+		this.kind = kind;
+		this.count = count;
 		this.unitPrice = unitPrice;
-		this.totalPrice = calculateTotalPrice(reservationItem, unitPrice);
+		this.totalPrice = totalPrice;
+	}
+
+	public static CalculationItem of(ReservationItem reservationItem, BigDecimal unitPrice) {
+		String kind = reservationItem.getKind();
+		Integer count = reservationItem.getCount();
+		BigDecimal totalPrice = calculateTotalPrice(reservationItem.getCount(), unitPrice);
+		return new CalculationItem(kind, count, unitPrice, totalPrice);
+	}
+
+	private static BigDecimal calculateTotalPrice(Integer count, BigDecimal unitPrice) {
+		return unitPrice.multiply(BigDecimal.valueOf(count));
 	}
 
 	private BigDecimal calculateTotalPrice(ReservationItem reservationItemCount, BigDecimal reservationItemUnitPrice) {

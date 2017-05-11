@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.com.bottega.cineman.application.*;
+import pl.com.bottega.cineman.model.DuplicateCinemaException;
 import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
-import pl.com.bottega.cineman.model.commands.DuplicateCinemaException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

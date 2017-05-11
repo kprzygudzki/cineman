@@ -16,23 +16,23 @@ public class Configuration {
 	}
 
 	@Bean
-	public MovieRepository movieRepository() {
-		return new JPAMovieRepository();
-	}
-
-	@Bean
-	public ShowingRepository showingRepository() {
-		return new JPAShowingRepository();
-	}
-
-	@Bean
 	public CinemaCatalog cinemaCatalog() {
 		return new JPACinemaCatalog();
 	}
 
 	@Bean
+	public MovieRepository movieRepository() {
+		return new JPAMovieRepository();
+	}
+
+	@Bean
 	public MovieCatalog movieCatalog() {
 		return new JPAMovieCatalog();
+	}
+
+	@Bean
+	public ShowingRepository showingRepository() {
+		return new JPAShowingRepository();
 	}
 
 	@Bean
@@ -65,7 +65,12 @@ public class Configuration {
 
 	@Bean
 	PriceCalculator priceCalculator() {
-		return new PriceCalculator(showingRepository());
+		return new StandardPriceCalculator(showingRepository());
+	}
+
+	@Bean
+	ReservationCatalog reservationCatalog() {
+		return new JPAReservationCatalog();
 	}
 
 }

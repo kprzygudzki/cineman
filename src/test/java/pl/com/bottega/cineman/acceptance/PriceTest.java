@@ -11,7 +11,7 @@ import pl.com.bottega.cineman.model.PriceCalculator;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional		// TODO acceptance test suites should not be run within a transaction; please use DbCleaner instead
-public class PriceCalculatorTest {
+public class PriceTest {
 
 	@Autowired
 	PriceCalculator priceCalculator;
