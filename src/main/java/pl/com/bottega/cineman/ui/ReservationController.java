@@ -1,11 +1,7 @@
 package pl.com.bottega.cineman.ui;
 
 import org.springframework.web.bind.annotation.*;
-import pl.com.bottega.cineman.application.PaymentCollector;
-import pl.com.bottega.cineman.application.ReservationCatalog;
-import pl.com.bottega.cineman.application.ReservationDto;
-import pl.com.bottega.cineman.application.ReservationProcess;
-import pl.com.bottega.cineman.application.ReservationsQuery;
+import pl.com.bottega.cineman.application.*;
 import pl.com.bottega.cineman.model.CalculationResult;
 import pl.com.bottega.cineman.model.ReservationNumber;
 import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
@@ -44,8 +40,7 @@ public class ReservationController {
 
 	@PutMapping("/reservations/{reservationNumber}/payment")
 	void collectPayment(@PathVariable String reservationNumber, @RequestBody CollectPaymentCommand command) {
-		ReservationNumber number = new ReservationNumber(reservationNumber);
-		command.setReservationNumber(number);
+		command.setReservationNumber(ReservationNumber.from(reservationNumber));
 		paymentCollector.collectPayment(command);
 	}
 

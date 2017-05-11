@@ -1,8 +1,8 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.CollectPaymentCommand;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
-import pl.com.bottega.cineman.model.commands.InvalidActionException;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -64,7 +64,7 @@ public class Reservation {
 
 	private void ensureReservationStatus() {
 		if (status != PENDING && status != PAYMENT_FAILED)
-			throw new InvalidActionException("Reservation has to be PENDING OR PAYMENT_FAILED");
+			throw new InvalidRequestException(String.format("Reservation %s can not accept payment", number.toString()));
 	}
 
 	private void payByCash(CollectPaymentCommand command) {

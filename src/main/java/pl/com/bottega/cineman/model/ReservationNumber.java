@@ -9,7 +9,7 @@ public class ReservationNumber implements Serializable {
 
 	private String reservationNumber;
 
-	public ReservationNumber(String reservationNumber) {
+	private ReservationNumber(String reservationNumber) {
 		this.reservationNumber = reservationNumber;
 	}
 
@@ -17,7 +17,8 @@ public class ReservationNumber implements Serializable {
 		return new ReservationNumber(UUID.randomUUID().toString());
 	}
 
-	private ReservationNumber() {
+	public static ReservationNumber from(String number) {
+		return new ReservationNumber(number);
 	}
 
 	@Override
@@ -31,6 +32,11 @@ public class ReservationNumber implements Serializable {
 	@Override
 	public int hashCode() {
 		return reservationNumber.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return reservationNumber;
 	}
 
 	public String getReservationNumber() {
