@@ -48,7 +48,7 @@ public class CollectPaymentCommand implements Validatable {
 	}
 
 	@Override
-	public void trimAndValidate(ValidationErrors errors) {
+	public void validate(ValidationErrors errors) {
 		validatePaymentType(errors);
 		validateCashierId(errors);
 	}
@@ -62,4 +62,5 @@ public class CollectPaymentCommand implements Validatable {
 		if (isNull(type))
 			errors.add("payment type", REQUIRED_FIELD);
 	}
+
 }

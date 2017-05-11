@@ -8,9 +8,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static pl.com.bottega.cineman.model.ReservationStatus.PAID;
-import static pl.com.bottega.cineman.model.ReservationStatus.PAYMENT_FAILED;
-import static pl.com.bottega.cineman.model.ReservationStatus.PENDING;
+import static pl.com.bottega.cineman.model.PaymentType.CASH;
+import static pl.com.bottega.cineman.model.ReservationStatus.*;
 
 @Entity
 public class Reservation {
@@ -54,28 +53,28 @@ public class Reservation {
 	public void collectPayment(CollectPaymentCommand command) {
 		ensureReservationStatus();
 		preparePaymentHistory();
-		if (command.getType().equals(PaymentType.CASH))
+		if (command.getType() == CASH)
 			payByCash(command);
 	}
 
 	private void preparePaymentHistory() {
-		if (this.paymentTransactions == null)
-			this.paymentTransactions = new HashSet<>();
+		if (paymentTransactions == null)
+			paymentTransactions = new HashSet<>();
 	}
 
 	private void ensureReservationStatus() {
-		if (!(this.status.equals(PENDING) || this.status.equals(PAYMENT_FAILED)))
+		if (status != PENDING && status != PAYMENT_FAILED)
 			throw new InvalidActionException("Reservation has to be PENDING OR PAYMENT_FAILED");
 	}
 
 	private void payByCash(CollectPaymentCommand command) {
 		PaymentTransaction paymentTransaction = new PaymentTransaction(command);
 		paymentTransactions.add(paymentTransaction);
-		this.status = PAID;
+		status = PAID;
 	}
 
 	public void setPaymentFacade(PaymentFacade facade) {
-
+		paymentFacade = facade;
 	}
 
 	Set<Seat> getSeats() {
