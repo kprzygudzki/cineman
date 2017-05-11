@@ -10,8 +10,13 @@ public interface ReservationExporter {
 
 	void addSeats(Set<Seat> seats);
 
-	void addItemsAndShowing(Set<ReservationItem> items, Showing showing);
-
 	void addCustomer(Customer customer);
+
+	default void addItems(Set<ReservationItem> items) {
+	}
+
+	void addShowing(Showing showing);
+
+	void addCalculationResult(CalculationResult calculationResult);
 
 }

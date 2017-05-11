@@ -1,25 +1,26 @@
 package pl.com.bottega.cineman.application;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import pl.com.bottega.cineman.model.CalculationItem;
 import pl.com.bottega.cineman.model.Customer;
 import pl.com.bottega.cineman.model.Seat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public class ReservationDto {
 
 	private String number;
 	private Show show;
 	private Movie movie;
-	private List<Ticket> tickets;
-	private List<Seat> seats;
+	private Set<CalculationItem> tickets;
+	private Set<Seat> seats;
 	private Customer customer;
 	private String status;
 	private BigDecimal totalPrice;
 
-	class Show {
+	public static class Show {
 
 		private Long Id;
 
@@ -44,7 +45,7 @@ public class ReservationDto {
 
 	}
 
-	class Movie {
+	public static class Movie {
 
 		private Long id;
 		private String title;
@@ -63,47 +64,6 @@ public class ReservationDto {
 
 		public void setTitle(String title) {
 			this.title = title;
-		}
-
-	}
-
-	class Ticket {
-
-		private String kind;
-		private Integer count;
-		private BigDecimal unitPrice;
-		private BigDecimal totalPrice;
-
-		public String getKind() {
-			return kind;
-		}
-
-		public void setKind(String kind) {
-			this.kind = kind;
-		}
-
-		public Integer getCount() {
-			return count;
-		}
-
-		public void setCount(Integer count) {
-			this.count = count;
-		}
-
-		public BigDecimal getUnitPrice() {
-			return unitPrice;
-		}
-
-		public void setUnitPrice(BigDecimal unitPrice) {
-			this.unitPrice = unitPrice;
-		}
-
-		public BigDecimal getTotalPrice() {
-			return totalPrice;
-		}
-
-		public void setTotalPrice(BigDecimal totalPrice) {
-			this.totalPrice = totalPrice;
 		}
 
 	}
@@ -132,19 +92,19 @@ public class ReservationDto {
 		this.movie = movie;
 	}
 
-	public List<Ticket> getTickets() {
+	public Set<CalculationItem> getTickets() {
 		return tickets;
 	}
 
-	public void setTickets(List<Ticket> tickets) {
+	public void setTickets(Set<CalculationItem> tickets) {
 		this.tickets = tickets;
 	}
 
-	public List<Seat> getSeats() {
+	public Set<Seat> getSeats() {
 		return seats;
 	}
 
-	public void setSeats(List<Seat> seats) {
+	public void setSeats(Set<Seat> seats) {
 		this.seats = seats;
 	}
 
