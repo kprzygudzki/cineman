@@ -4,13 +4,15 @@ import pl.com.bottega.cineman.model.ShowingExporter;
 
 import java.time.LocalDateTime;
 
-public class ShowingDtoBuilder implements ShowingExporter {
+import static pl.com.bottega.cineman.application.ReservationDto.Show;
 
-	private ShowingDto dto = new ShowingDto();
+public class ReservationShowDtoBuilder implements ShowingExporter {
 
-	public ShowingDto build() {
-		ShowingDto result = dto;
-		dto = new ShowingDto();
+	private Show dto = new Show();
+
+	public Show build() {
+		Show result = dto;
+		dto = new Show();
 		return result;
 	}
 
@@ -21,7 +23,7 @@ public class ShowingDtoBuilder implements ShowingExporter {
 
 	@Override
 	public void addBeginsAt(LocalDateTime beginsAt) {
-		dto.setTime(beginsAt.toLocalTime());
+		dto.setTime(beginsAt);
 	}
 
 }

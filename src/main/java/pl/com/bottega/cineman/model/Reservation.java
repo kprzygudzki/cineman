@@ -52,7 +52,9 @@ public class Reservation {
 		exporter.addNumber(number);
 		exporter.addStatus(status);
 		exporter.addSeats(seats);
-		exporter.addItemsAndShowing(items, showing);
+		exporter.addItems(items);
+		exporter.addShowing(showing);
 		exporter.addCustomer(customer);
+		exporter.addCalculationResult(getCalculationResult());
 	}
 }
