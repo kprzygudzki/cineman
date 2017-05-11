@@ -45,10 +45,9 @@ public class JPAReservationCatalog implements ReservationCatalog {
 	private Predicate[] preparePredicates(
 			ReservationsQuery reservationsQuery, CriteriaBuilder builder, Root<Reservation> reservation) {
 		String query = "%" + reservationsQuery.getQuery().toLowerCase() + "%";
-		ReservationStatus status = reservationsQuery.getStatus();
 		List<Predicate> predicates = new LinkedList<>();
 		predicates.add(getMatchingQueryPredicate(builder, reservation, query));
-		predicates.add(getStatusPredicate(builder, reservation, status));
+		predicates.add(getStatusPredicate(builder, reservation));
 		predicates.add(getFutureShowsPredicate(builder, reservation));
 		return predicates.toArray(new Predicate[]{});
 	}
@@ -57,9 +56,12 @@ public class JPAReservationCatalog implements ReservationCatalog {
 		return builder.like(builder.lower(reservation.get("customer").get("lastName")), query);
 	}
 
-	private Predicate getStatusPredicate(
-			CriteriaBuilder builder, Root<Reservation> reservation, ReservationStatus status) {
-		return builder.equal(reservation.get("status"), status);
+	private Predicate getStatusPredicate(CriteriaBuilder builder, Root<Reservation> reservation) {
+		//TODO rework to take a collection of statuses as a parameter
+		return builder.or(
+				builder.equal(reservation.get("status"), ReservationStatus.PENDING),
+				builder.equal(reservation.get("status"), ReservationStatus.PAYMENT_FAILED)
+		);
 	}
 
 	private Predicate getFutureShowsPredicate(CriteriaBuilder builder, Root<Reservation> reservation) {
