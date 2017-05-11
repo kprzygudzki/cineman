@@ -10,9 +10,6 @@ public class CreateShowingsCommand implements Validatable {
 	private List<LocalDateTime> dates;
 	private Calendar calendar;
 
-	private static final String MAX_ONE_FIELD_REQUIRED = "either is required; can't both be blank";
-	private static final String MIN_ONE_FIELD_REQUIRED = "either is required; can't provide both";
-
 	public Long getCinemaId() {
 		return cinemaId;
 	}
@@ -64,9 +61,9 @@ public class CreateShowingsCommand implements Validatable {
 
 	private void validateDatesAndCalendar(ValidationErrors errors) {
 		if (calendar == null && dates == null)
-			errors.add("calendar and dates", MAX_ONE_FIELD_REQUIRED);
+			errors.add("calendar and dates", MAX_ONE_REQUIRED);
 		else if (calendar != null && dates != null)
-			errors.add("calendar and dates", MIN_ONE_FIELD_REQUIRED);
+			errors.add("calendar and dates", MIN_ONE_REQUIRED);
 		else if (dates != null)
 			validateDates(errors);
 		else

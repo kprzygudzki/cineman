@@ -10,7 +10,7 @@ public class CreditCard implements Validatable {
 	private Long number;
 	private Month expirationMonth;
 	private Year expirationYear;
-	private int cvc;
+	private Integer cvc;
 
 	public CreditCard() {
 	}
@@ -39,16 +39,24 @@ public class CreditCard implements Validatable {
 		this.expirationYear = expirationYear;
 	}
 
-	public int getCvc() {
+	public Integer getCvc() {
 		return cvc;
 	}
 
-	public void setCvc(int cvc) {
+	public void setCvc(Integer cvc) {
 		this.cvc = cvc;
 	}
 
 	@Override
 	public void validate(ValidationErrors errors) {
+		if (number == null)
+			errors.add("number", REQUIRED_FIELD);
+		if (expirationMonth == null)
+			errors.add("exporationMonth", REQUIRED_FIELD);
+		if (expirationYear == null)
+			errors.add("expirationYear", REQUIRED_FIELD);
+		if (cvc == null)
+			errors.add("cvc", REQUIRED_FIELD);
 	}
 
 }

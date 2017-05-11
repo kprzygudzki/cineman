@@ -14,6 +14,8 @@ public interface Validatable {
 	String POSITIVE_REQUIRED = "must be bigger than 0";
 	String POSITIVE_OR_ZERO_REQUIRED = "can not be less than 0";
 	String EQUAL_REQUIRED = "must be equal";
+	String MAX_ONE_REQUIRED = "either is required; can't both be blank";
+	String MIN_ONE_REQUIRED = "either is required; can't provide both";
 
 	void validate(ValidationErrors errors);
 

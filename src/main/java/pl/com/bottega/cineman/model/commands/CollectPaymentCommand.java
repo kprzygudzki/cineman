@@ -5,6 +5,8 @@ import pl.com.bottega.cineman.model.PaymentType;
 import pl.com.bottega.cineman.model.ReservationNumber;
 
 import static java.util.Objects.isNull;
+import static pl.com.bottega.cineman.model.PaymentType.CASH;
+import static pl.com.bottega.cineman.model.PaymentType.CREDIT_CARD;
 
 public class CollectPaymentCommand implements Validatable {
 
@@ -50,12 +52,19 @@ public class CollectPaymentCommand implements Validatable {
 	@Override
 	public void validate(ValidationErrors errors) {
 		validatePaymentType(errors);
-		validateCashierId(errors);
+		if (type == CASH)
+			validateCashierId(errors);
+		else if (type == CREDIT_CARD)
+			validateCreditCard(errors);
+	}
+
+	private void validateCreditCard(ValidationErrors errors) {
+		creditCard.validate(errors);
 	}
 
 	private void validateCashierId(ValidationErrors errors) {
-		if (isNull(cashierId))
-			errors.add("cashier id", REQUIRED_FIELD);
+		if (cashierId == null)
+			errors.add("cashierId", REQUIRED_FIELD);
 	}
 
 	private void validatePaymentType(ValidationErrors errors) {
