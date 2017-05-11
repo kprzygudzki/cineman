@@ -1,6 +1,5 @@
 package pl.com.bottega.cineman.model;
 
-import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.commands.CollectPaymentCommand;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
 
@@ -9,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static pl.com.bottega.cineman.model.PaymentType.CASH;
-import static pl.com.bottega.cineman.model.ReservationStatus.*;
+import static pl.com.bottega.cineman.model.ReservationStatus.PAID;
+import static pl.com.bottega.cineman.model.ReservationStatus.PENDING;
 
 @Entity
 public class Reservation {
@@ -51,7 +51,7 @@ public class Reservation {
 	}
 
 	public void collectPayment(CollectPaymentCommand command) {
-		ensureReservationStatus();
+		status.ensureCanAcceptPayment();
 		preparePaymentHistory();
 		if (command.getType() == CASH)
 			payByCash(command);
@@ -60,11 +60,6 @@ public class Reservation {
 	private void preparePaymentHistory() {
 		if (paymentTransactions == null)
 			paymentTransactions = new HashSet<>();
-	}
-
-	private void ensureReservationStatus() {
-		if (status != PENDING && status != PAYMENT_FAILED)
-			throw new InvalidRequestException(String.format("Reservation %s can not accept payment", number.toString()));
 	}
 
 	private void payByCash(CollectPaymentCommand command) {
@@ -92,4 +87,5 @@ public class Reservation {
 		exporter.addItemsAndShowing(items, showing);
 		exporter.addCustomer(customer);
 	}
+
 }
