@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public enum PaymentType {
 
 	@JsonProperty("cash")
-	CASH
+	CASH,
+	@JsonProperty("credit_card")
+	CREDIT_CARD
 
 }

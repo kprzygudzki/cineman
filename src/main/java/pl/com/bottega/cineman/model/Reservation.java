@@ -1,5 +1,6 @@
 package pl.com.bottega.cineman.model;
 
+import pl.com.bottega.cineman.model.commands.CalculatePriceCommand;
 import pl.com.bottega.cineman.model.commands.CollectPaymentCommand;
 import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
 
@@ -8,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static pl.com.bottega.cineman.model.PaymentType.CASH;
-import static pl.com.bottega.cineman.model.ReservationStatus.PAID;
-import static pl.com.bottega.cineman.model.ReservationStatus.PENDING;
+import static pl.com.bottega.cineman.model.PaymentType.CREDIT_CARD;
+import static pl.com.bottega.cineman.model.ReservationStatus.*;
 
 @Entity
 public class Reservation {
@@ -32,11 +33,14 @@ public class Reservation {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<PaymentTransaction> paymentTransactions;
 
+	@ManyToOne
+	private Showing showing;
+
 	@Transient
 	private PaymentFacade paymentFacade;
 
-	@ManyToOne
-	private Showing showing;
+	@Transient
+	private PriceCalculator priceCalculator;
 
 	public Reservation(Showing showing, CreateReservationCommand command) {
 		this.showing = showing;
@@ -55,11 +59,8 @@ public class Reservation {
 		preparePaymentHistory();
 		if (command.getType() == CASH)
 			payByCash(command);
-	}
-
-	private void preparePaymentHistory() {
-		if (paymentTransactions == null)
-			paymentTransactions = new HashSet<>();
+		else if (command.getType() == CREDIT_CARD)
+			payByCreditCard(command);
 	}
 
 	private void payByCash(CollectPaymentCommand command) {
@@ -68,8 +69,36 @@ public class Reservation {
 		status = PAID;
 	}
 
+	private void payByCreditCard(CollectPaymentCommand command) {
+		CreditCard creditCard = command.getCreditCard();
+		CalculationResult calculationResult = getCalculationResult();
+		ChargeResult chargeResult = paymentFacade.charge(creditCard, calculationResult.getTotalPrice());
+		PaymentTransaction paymentTransaction = new PaymentTransaction(chargeResult);
+		paymentTransactions.add(paymentTransaction);
+		if (chargeResult.isSuccessful())
+			status = PAID;
+		else
+			status = PAYMENT_FAILED;
+	}
+
+	private CalculationResult getCalculationResult() {
+		CalculatePriceCommand calculateCommand = new CalculatePriceCommand();
+		calculateCommand.setShowId(showing.getId());
+		calculateCommand.setTickets(items);
+		return priceCalculator.calculatePrices(calculateCommand);
+	}
+
+	private void preparePaymentHistory() {
+		if (paymentTransactions == null)
+			paymentTransactions = new HashSet<>();
+	}
+
 	public void setPaymentFacade(PaymentFacade facade) {
 		paymentFacade = facade;
+	}
+
+	public void setPriceCalculator(PriceCalculator priceCalculator) {
+		this.priceCalculator = priceCalculator;
 	}
 
 	Set<Seat> getSeats() {

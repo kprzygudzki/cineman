@@ -41,8 +41,8 @@ public class Configuration {
 	}
 
 	@Bean
-	public ReservationRepository reservationRepository() {
-		return new JPAReservationRepository();
+	public ReservationRepository reservationRepository(PaymentFacade paymentFacade, PriceCalculator priceCalculator) {
+		return new JPAReservationRepository(paymentFacade, priceCalculator);
 	}
 
 	@Bean
@@ -64,13 +64,18 @@ public class Configuration {
 	}
 
 	@Bean
+	ReservationCatalog reservationCatalog() {
+		return new JPAReservationCatalog();
+	}
+
+	@Bean
 	PriceCalculator priceCalculator() {
 		return new StandardPriceCalculator(showingRepository());
 	}
 
 	@Bean
-	ReservationCatalog reservationCatalog() {
-		return new JPAReservationCatalog();
+	PaymentFacade paymentFacade() {
+		return new StripePaymentFacade();
 	}
 
 }
