@@ -24,8 +24,6 @@ public class PaymentTransaction {
 
 	private String errorMessage;
 
-	private ChargeResult chargeResult;
-
 	public PaymentTransaction(CollectPaymentCommand command) {
 		this.type = CASH;
 		this.cashierId = command.getCashierId();
@@ -38,7 +36,6 @@ public class PaymentTransaction {
 		paymentDate = Instant.ofEpochSecond(chargeResult.getCreatedAt());
 		successful = chargeResult.isPaid();
 		errorMessage = chargeResult.getErrorMessage();
-		this.chargeResult = chargeResult;
 	}
 
 	private PaymentTransaction() {
