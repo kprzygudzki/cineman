@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.com.bottega.cineman.application.InvalidRequestException;
 import pl.com.bottega.cineman.model.DuplicateCinemaException;
 import pl.com.bottega.cineman.model.IllegalSeatingException;
+import pl.com.bottega.cineman.model.PaymentFailureException;
 import pl.com.bottega.cineman.model.ResourceNotFoundException;
 import pl.com.bottega.cineman.model.commands.InvalidCommandException;
 import pl.com.bottega.cineman.model.commands.Validatable;
@@ -72,4 +73,14 @@ public class ErrorHandlers {
 		);
 	}
 
+	@ExceptionHandler(PaymentFailureException.class)
+	public ResponseEntity<String> handlePaymentFailureException(PaymentFailureException ex) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		return new ResponseEntity<>(
+				String.format("{\"error\": \"%s\"}", ex.getMessage()),
+				headers,
+				HttpStatus.UNPROCESSABLE_ENTITY
+		);
+	}
 }

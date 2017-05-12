@@ -1,4 +1,4 @@
-package pl.com.bottega.cineman.application;
+package pl.com.bottega.cineman.helper;
 
 public interface DbCleaner {
 	

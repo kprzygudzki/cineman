@@ -1,7 +1,10 @@
 package pl.com.bottega.cineman.model;
 
+import org.junit.Before;
 import org.junit.Test;
 import pl.com.bottega.cineman.model.commands.Calendar;
+import pl.com.bottega.cineman.model.commands.CreateCinemaCommand;
+import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 import pl.com.bottega.cineman.model.commands.CreateShowingsCommand;
 
 import java.time.DayOfWeek;
@@ -18,8 +21,8 @@ public class ShowingFactoryTest {
 
 	private ShowingFactory showingFactory = new ShowingFactory();
 
-	private Cinema cinema = new Cinema();
-	private Movie movie = new Movie();
+	private Cinema cinema;
+	private Movie movie;
 	private List<LocalDateTime> dates = new LinkedList<>();
 	private Calendar calendar = new Calendar();
 
@@ -27,6 +30,12 @@ public class ShowingFactoryTest {
 			LocalDateTime.of(2017, 4, 9, 14, 35);
 	private LocalDateTime anotherLocalDateTime =
 			LocalDateTime.of(2017, 4, 9, 17, 50);
+
+	@Before
+	public void setUp() {
+		movie = new Movie(prepareCreateMovieCommand());
+		cinema = new Cinema(prepareCreateCinemaCommand());
+	}
 
 	@Test
 	public void shouldRememberCinema() {
@@ -134,6 +143,36 @@ public class ShowingFactoryTest {
 		times.add(LocalTime.of(17, 50));
 		calendar.setHours(times);
 		command.setCalendar(calendar);
+		return command;
+	}
+
+	private CreateCinemaCommand prepareCreateCinemaCommand() {
+		String city = "Lublin";
+		String name = "Felicity";
+		CreateCinemaCommand command = new CreateCinemaCommand();
+		command.setCity(city);
+		command.setName(name);
+		return command;
+	}
+
+	private CreateMovieCommand prepareCreateMovieCommand() {
+		String title = "Pulp Fiction";
+		String description = "You have to see this";
+		Set<String> genres = new HashSet<>();
+		genres.add("Crime");
+		genres.add("Drama");
+		Set<String> actors = new HashSet<>();
+		actors.add("Samuel L. Jackson");
+		actors.add("Uma Thurman");
+		Integer minAge = 16;
+		Integer length = 178;
+		CreateMovieCommand command = new CreateMovieCommand();
+		command.setTitle(title);
+		command.setDescription(description);
+		command.setGenres(genres);
+		command.setActors(actors);
+		command.setMinAge(minAge);
+		command.setLength(length);
 		return command;
 	}
 

@@ -21,35 +21,33 @@ public class StripePaymentFacade implements PaymentFacade {
 
 	@Override
 	public ChargeResult charge(CreditCard creditCard, BigDecimal amount) {
+		RequestOptions requestOptions = createRequestOptions();
+		Map<String, Object> chargeParams = createChargeParams(creditCard, amount);
+		ChargeResult chargeResult;
+		try {
+			Charge charge = Charge.create(chargeParams, requestOptions);
+			chargeResult = createChargeResult(charge);
+		} catch (StripeException ex) {
+			chargeResult = createChargeResult(ex);
+		}
+		return chargeResult;
+	}
+
+	private RequestOptions createRequestOptions() {
+		return (new RequestOptions.RequestOptionsBuilder()).setApiKey(private_api_key).build();
+	}
+
+	private Map<String, Object> createChargeParams(CreditCard creditCard, BigDecimal amount) {
 		int stripeAcceptedAmount = convertToStripeAcceptedAmount(amount);
-		RequestOptions requestOptions = (new RequestOptions.RequestOptionsBuilder()).setApiKey(private_api_key).build();
 		Map<String, Object> chargeParams = new HashMap<>();
 		chargeParams.put("amount", stripeAcceptedAmount);
 		chargeParams.put("currency", "PLN");
 		chargeParams.put("description", "Payment for cinema tickets");
-		chargeParams.put("source", getSourceParams(creditCard));
-		try {
-			Charge charge = Charge.create(chargeParams, requestOptions);
-			return createChargeResult(charge);
-		} catch (StripeException ex) {
-			ChargeResult result = new ChargeResult();
-			result.setPaid(false);
-			return result;
-		}
-//		catch (AuthenticationException ex) {
-//			ex.printStackTrace();
-//		} catch (InvalidRequestException ex) {
-//			ex.printStackTrace();
-//		} catch (APIConnectionException ex) {
-//			ex.printStackTrace();
-//		} catch (CardException ex) {
-//			ex.printStackTrace();
-//		} catch (APIException ex) {
-//			ex.printStackTrace();
-//		}
+		chargeParams.put("source", createSourceParams(creditCard));
+		return chargeParams;
 	}
 
-	private Map<String, Object> getSourceParams(CreditCard creditCard) {
+	private Map<String, Object> createSourceParams(CreditCard creditCard) {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("object", "card");
 		params.put("number", creditCard.getNumber());
@@ -71,6 +69,14 @@ public class StripePaymentFacade implements PaymentFacade {
 		result.setCurrency(charge.getCurrency());
 		result.setPaid(charge.getPaid());
 		result.setStatus(charge.getStatus());
+		return result;
+	}
+
+	private ChargeResult createChargeResult(StripeException exception) {
+		ChargeResult result = new ChargeResult();
+		result.setPaid(false);
+		result.setStatus("failed");
+		result.setErrorMessage(exception.getMessage());
 		return result;
 	}
 

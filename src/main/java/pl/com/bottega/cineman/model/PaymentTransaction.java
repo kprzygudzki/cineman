@@ -33,8 +33,11 @@ public class PaymentTransaction {
 
 	public PaymentTransaction(ChargeResult chargeResult) {
 		type = CREDIT_CARD;
-		paymentDate = Instant.ofEpochSecond(chargeResult.getCreatedAt());
 		successful = chargeResult.isPaid();
+		if (paymentDate != null)
+			paymentDate = Instant.ofEpochSecond(chargeResult.getCreatedAt());
+		else
+			paymentDate = Instant.now();
 		errorMessage = chargeResult.getErrorMessage();
 	}
 

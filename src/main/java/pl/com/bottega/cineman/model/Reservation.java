@@ -77,8 +77,10 @@ public class Reservation {
 		paymentTransactions.add(paymentTransaction);
 		if (chargeResult.isPaid())
 			status = PAID;
-		else
+		else {
 			status = PAYMENT_FAILED;
+			throw new PaymentFailureException(chargeResult.getErrorMessage());
+		}
 	}
 
 	private CalculationResult getCalculationResult() {

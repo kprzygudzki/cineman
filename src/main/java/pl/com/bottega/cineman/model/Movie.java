@@ -41,7 +41,7 @@ public class Movie {
 		this.length = command.getLength();
 	}
 
-	Movie() {
+	private Movie() {
 	}
 
 	public void definePricing(DefineMoviePricesCommand command) {

@@ -1,7 +1,7 @@
 package pl.com.bottega.cineman.infrastructure;
 
 import org.springframework.stereotype.Component;
-import pl.com.bottega.cineman.application.DbCleaner;
+import pl.com.bottega.cineman.helper.DbCleaner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

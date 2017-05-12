@@ -1,16 +1,11 @@
 package pl.com.bottega.cineman.model;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import pl.com.bottega.cineman.application.AdminPanel;
 import pl.com.bottega.cineman.application.MovieDto;
 import pl.com.bottega.cineman.application.MovieDtoBuilder;
 import pl.com.bottega.cineman.model.commands.CreateMovieCommand;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,10 +18,6 @@ public class MovieTest {
 	private Set<String> genres;
 	private Integer minAge;
 	private Integer length;
-	private Map<String, BigDecimal> prices = new HashMap<>();
-
-	@Autowired
-	private AdminPanel adminPanel;
 
 	@Test
 	public void shouldRememberTitle() {

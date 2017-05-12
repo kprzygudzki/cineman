@@ -22,7 +22,7 @@ public class Cinema {
 		this.city = command.getCity();
 	}
 
-	Cinema() {
+	private Cinema() {
 	}
 
 	public void export(CinemaExporter exporter) {
