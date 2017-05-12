@@ -11,17 +11,17 @@ import pl.com.bottega.cineman.model.IllegalSeatingException;
 import pl.com.bottega.cineman.model.PaymentFailureException;
 import pl.com.bottega.cineman.model.ResourceNotFoundException;
 import pl.com.bottega.cineman.model.commands.InvalidCommandException;
-import pl.com.bottega.cineman.model.commands.Validatable;
+import pl.com.bottega.cineman.model.commands.Validatable.ValidationErrors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @ControllerAdvice
 public class ErrorHandlers {
 
-	private static final String APPLICATION_JSON = "application/json";
-
 	@ExceptionHandler(InvalidCommandException.class)
-	public ResponseEntity<Validatable.ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
+	public ResponseEntity<ValidationErrors> handleInvalidCommandException(InvalidCommandException ex) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				ex.getErrors(),
 				headers,
@@ -32,7 +32,7 @@ public class ErrorHandlers {
 	@ExceptionHandler(DuplicateCinemaException.class)
 	public ResponseEntity<String> handleDuplicateCinemaException() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				"{\"error\": \"Cinema with that city and name already exists\"}",
 				headers,
@@ -43,7 +43,7 @@ public class ErrorHandlers {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,
@@ -54,7 +54,7 @@ public class ErrorHandlers {
 	@ExceptionHandler(InvalidRequestException.class)
 	public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException ex) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,
@@ -65,7 +65,7 @@ public class ErrorHandlers {
 	@ExceptionHandler(IllegalSeatingException.class)
 	public ResponseEntity<String> handleIllegalSeatingException(IllegalSeatingException ex) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,
@@ -76,7 +76,7 @@ public class ErrorHandlers {
 	@ExceptionHandler(PaymentFailureException.class)
 	public ResponseEntity<String> handlePaymentFailureException(PaymentFailureException ex) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+		headers.set(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE);
 		return new ResponseEntity<>(
 				String.format("{\"error\": \"%s\"}", ex.getMessage()),
 				headers,

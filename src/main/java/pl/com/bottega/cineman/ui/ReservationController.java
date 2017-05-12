@@ -10,17 +10,22 @@ import pl.com.bottega.cineman.model.commands.CreateReservationCommand;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
+
 @RestController
 public class ReservationController {
 
 	private ReservationProcess reservationProcess;
 	private PaymentCollector paymentCollector;
 	private ReservationCatalog reservationCatalog;
+	private TicketPrinter ticketPrinter;
 
-	public ReservationController(ReservationProcess reservationProcess, PaymentCollector paymentCollector, ReservationCatalog reservationCatalog) {
+	public ReservationController(ReservationProcess reservationProcess, PaymentCollector paymentCollector,
+								 ReservationCatalog reservationCatalog, TicketPrinter ticketPrinter) {
 		this.reservationProcess = reservationProcess;
 		this.paymentCollector = paymentCollector;
 		this.reservationCatalog = reservationCatalog;
+		this.ticketPrinter = ticketPrinter;
 	}
 
 	@PostMapping("/price_calculator")
@@ -42,6 +47,12 @@ public class ReservationController {
 	void collectPayment(@PathVariable String reservationNumber, @RequestBody CollectPaymentCommand command) {
 		command.setReservationNumber(ReservationNumber.from(reservationNumber));
 		paymentCollector.collectPayment(command);
+	}
+
+	@GetMapping(value = "/reservations/{reservationNumber}/tickets", produces = APPLICATION_PDF_VALUE)
+	@ResponseBody
+	byte[] printTicket(@PathVariable String reservationNumber) {
+		return ticketPrinter.printTickets(reservationNumber);
 	}
 
 }

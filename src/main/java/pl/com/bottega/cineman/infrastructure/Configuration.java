@@ -65,19 +65,24 @@ public class Configuration {
 	}
 
 	@Bean
-	ReservationCatalog reservationCatalog(PriceCalculator priceCalculator) {
+	public ReservationCatalog reservationCatalog(PriceCalculator priceCalculator) {
 		return new JPAReservationCatalog(priceCalculator);
 	}
 
 	@Bean
-	PriceCalculator priceCalculator() {
-		return new StandardPriceCalculator(showingRepository());
+	public PriceCalculator priceCalculator(ShowingRepository showingRepository) {
+		return new StandardPriceCalculator(showingRepository);
 	}
 
 	@Bean
-	PaymentFacade paymentFacade(Environment environment) {
+	public PaymentFacade paymentFacade(Environment environment) {
 		String private_api_key = environment.getProperty("stripe_private_api_key");
 		return new StripePaymentFacade(private_api_key);
+	}
+
+	@Bean
+	public TicketPrinter ticketPrinter(ReservationRepository reservationRepository) {
+		return new ItextTicketPrinter(reservationRepository);
 	}
 
 }
