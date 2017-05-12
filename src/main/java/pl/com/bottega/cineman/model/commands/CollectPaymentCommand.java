@@ -10,8 +10,6 @@ import static pl.com.bottega.cineman.model.PaymentType.CREDIT_CARD;
 
 public class CollectPaymentCommand implements Validatable {
 
-	private static final String REQUIRED_FIELD = "missing required field";
-
 	private PaymentType type;
 	private Long cashierId;
 	private CreditCard creditCard;
@@ -59,7 +57,10 @@ public class CollectPaymentCommand implements Validatable {
 	}
 
 	private void validateCreditCard(ValidationErrors errors) {
-		creditCard.validate(errors);
+		if (creditCard != null)
+			creditCard.validate(errors);
+		else
+			errors.add("creditCard", REQUIRED_FIELD);
 	}
 
 	private void validateCashierId(ValidationErrors errors) {
@@ -69,7 +70,7 @@ public class CollectPaymentCommand implements Validatable {
 
 	private void validatePaymentType(ValidationErrors errors) {
 		if (isNull(type))
-			errors.add("payment type", REQUIRED_FIELD);
+			errors.add("type", REQUIRED_FIELD);
 	}
 
 }
