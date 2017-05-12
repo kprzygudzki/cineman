@@ -5,6 +5,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import pl.com.bottega.cineman.application.TicketPrinter;
+import pl.com.bottega.cineman.model.ReservationNumber;
 import pl.com.bottega.cineman.model.ReservationRepository;
 
 import java.io.ByteArrayOutputStream;
@@ -18,7 +19,7 @@ public class ItextTicketPrinter implements TicketPrinter {
 	}
 
 	@Override
-	public byte[] printTickets(String reservationNumber) {
+	public byte[] printTickets(ReservationNumber reservationNumber) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		PdfWriter writer = new PdfWriter(outputStream);
 		PdfDocument pdf = new PdfDocument(writer);

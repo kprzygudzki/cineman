@@ -52,7 +52,7 @@ public class ReservationController {
 	@GetMapping(value = "/reservations/{reservationNumber}/tickets", produces = APPLICATION_PDF_VALUE)
 	@ResponseBody
 	byte[] printTicket(@PathVariable String reservationNumber) {
-		return ticketPrinter.printTickets(reservationNumber);
+		return ticketPrinter.printTickets(ReservationNumber.from(reservationNumber));
 	}
 
 }
